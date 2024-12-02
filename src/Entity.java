@@ -1,50 +1,57 @@
 public abstract class Entity {
     public String name;
-    public boolean state;
-    public char gender;
+    public boolean isAlive;
+    public String gender;
 
-    public Entity(String name, char gender){
+    public Entity(String name){
         this.name = name;
-        this.gender = gender;
+        gender = "It";
+        isAlive = true;
     }
 
-    public abstract void talk();
+    public String toString() {
+        return null;
+    }
 
     public static class Human extends Entity{
-        public Human(String name, char gender){
-            super(name, gender);
+        public Human(String name, String gender){
+            super(name);
+            this.gender = gender;
         }
 
-        public void talk(){
-            System.out.println("CHAEWON NUMBER ONE!!");
+        public String toString(){
+            return "CHAEWON NUMBER ONE!!";
         }
     }
 
     public static class Compy extends Entity{
-        public Compy(String name, char gender){
-            super(name, gender);
+        public Compy(String name, String gender){
+            super(name);
+            this.gender = gender;
         }
 
-        public void talk(){
-            System.out.println("compy mwew mwew krek krek!!");
+        public String toString(){
+            return "Compy mwew mwew krek krek!!";
         }
     }
     public static class Coelacanth extends Entity{
-        public Coelacanth(String name, char gender){
-            super(name, gender);
+        public Coelacanth(String name, String gender){
+            super(name);
+            this.gender = gender;
         }
 
-        public void talk(){
-            System.out.println("silikent blop blop blop chaewonxsimon!!");
+        public String toString(){
+            return "Silikent blop blop chaewonxsimon!!";
         }
     }
     public static class Pterosaur extends Entity{
-        public Pterosaur(String name, char gender){
-            super(name, gender);
+        public Pterosaur(String name, String gender){
+            super(name);
+            this.gender = gender;
         }
 
-        public void talk(){
-            System.out.println("Ptero qwak qwak cak!! cok?");
+        public String toString(){
+            return "Ptero qwak qwak cak!! cok?";
         }
     }
 }

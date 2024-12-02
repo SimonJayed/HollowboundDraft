@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="CharacterPICK">
-  <grid id="27dc6" binding="charPanel" layout-manager="GridLayoutManager" row-count="13" column-count="7" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+  <grid id="27dc6" binding="charPanel" layout-manager="GridLayoutManager" row-count="14" column-count="7" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="0" left="0" bottom="0" right="0"/>
     <constraints>
-      <xy x="20" y="20" width="594" height="415"/>
+      <xy x="20" y="20" width="594" height="435"/>
     </constraints>
     <properties>
       <background color="-16777216"/>
@@ -42,12 +42,12 @@
       </component>
       <hspacer id="c0fc4">
         <constraints>
-          <grid row="1" column="0" row-span="10" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+          <grid row="1" column="0" row-span="11" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
       </hspacer>
       <hspacer id="1c127">
         <constraints>
-          <grid row="1" column="6" row-span="10" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+          <grid row="1" column="6" row-span="11" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
       </hspacer>
       <vspacer id="1371f">
@@ -65,7 +65,7 @@
           <text value="Catchphrase: "/>
         </properties>
       </component>
-      <component id="e2fdb" class="javax.swing.JTextField" binding="textField1" default-binding="true">
+      <component id="e2fdb" class="javax.swing.JTextField" binding="tfCPHRASE">
         <constraints>
           <grid row="4" column="2" row-span="1" col-span="4" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
             <preferred-size width="150" height="-1"/>
@@ -87,7 +87,7 @@
       </component>
       <component id="6844e" class="javax.swing.JButton" binding="bSUBMIT">
         <constraints>
-          <grid row="12" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+          <grid row="13" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
           <background color="-1773569"/>
@@ -147,7 +147,7 @@
       </component>
       <component id="a3c42" class="javax.swing.JLabel" binding="imgRACE" custom-create="true">
         <constraints>
-          <grid row="7" column="2" row-span="4" col-span="3" vsize-policy="0" hsize-policy="0" anchor="10" fill="0" indent="0" use-parent-layout="false"/>
+          <grid row="8" column="2" row-span="4" col-span="3" vsize-policy="0" hsize-policy="0" anchor="10" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
           <text value=""/>
@@ -155,26 +155,28 @@
       </component>
       <vspacer id="1672a">
         <constraints>
-          <grid row="11" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+          <grid row="12" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
         </constraints>
       </vspacer>
       <vspacer id="93607">
         <constraints>
-          <grid row="6" column="5" row-span="5" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+          <grid row="9" column="5" row-span="3" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
         </constraints>
       </vspacer>
       <vspacer id="83554">
         <constraints>
-          <grid row="8" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false">
+          <grid row="9" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false">
             <preferred-size width="11" height="77"/>
           </grid>
         </constraints>
       </vspacer>
       <component id="15f75" class="javax.swing.JLabel" binding="lblCPHRASE">
         <constraints>
-          <grid row="6" column="2" row-span="1" col-span="3" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+          <grid row="7" column="2" row-span="1" col-span="4" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
+          <font name="Consolas" size="16"/>
+          <foreground color="-394241"/>
           <text value=""/>
         </properties>
       </component>
@@ -234,6 +236,21 @@
           </component>
         </children>
       </grid>
+      <component id="91f86" class="javax.swing.JLabel" binding="lblFNAME">
+        <constraints>
+          <grid row="7" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <font name="Consolas" size="16"/>
+          <foreground color="-394241"/>
+          <text value=""/>
+        </properties>
+      </component>
+      <vspacer id="db4c9">
+        <constraints>
+          <grid row="6" column="3" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+        </constraints>
+      </vspacer>
     </children>
   </grid>
   <buttonGroups>

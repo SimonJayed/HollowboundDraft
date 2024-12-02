@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class FightPanel extends CharacterPICK{
     private JButton attackButton;
@@ -27,7 +29,21 @@ public class FightPanel extends CharacterPICK{
         setLocationRelativeTo(null);
         setResizable(false);
         setVisible(true);
+
+        attackButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ImageIcon boom = new ImageIcon("./img/boom.jpg");
+
+                JLabel boomLbl = new JLabel(boom);
+                jpanel.add(boomLbl);
+                jpanel.revalidate();
+                jpanel.repaint();
+            }
+        });
     }
+
+
 
     private void createUIComponents() {
         // TODO: place custom component creation code here
