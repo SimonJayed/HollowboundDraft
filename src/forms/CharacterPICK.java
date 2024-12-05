@@ -1,5 +1,6 @@
 package forms;
 
+import anim.shrik;
 import entity.Entity;
 import main.GamePanel;
 
@@ -118,21 +119,22 @@ public class CharacterPICK extends JFrame implements Forms{
         bSUBMIT.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JFrame window = new JFrame();
-                window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-                window.setResizable(false);
-                window.setSize(768, 576);
-                window.setTitle("REMAIN");
-
-                GamePanel gamePanel = new GamePanel();
-                window.add(gamePanel);
-
-                window.pack();
-
-                window.setLocationRelativeTo(null);
-                window.setVisible(true);
-
-                gamePanel.startGameThread();
+                new shrik();
+//                JFrame window = new JFrame();
+//                window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+//                window.setResizable(false);
+//                window.setSize(768, 576);
+//                window.setTitle("REMAIN");
+//
+//                GamePanel gamePanel = new GamePanel();
+//                window.add(gamePanel);
+//
+//                window.pack();
+//
+//                window.setLocationRelativeTo(null);
+//                window.setVisible(true);
+//
+//                gamePanel.startGameThread();
                 dispose();
             }
         });
