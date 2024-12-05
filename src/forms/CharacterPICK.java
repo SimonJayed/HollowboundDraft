@@ -1,17 +1,19 @@
+package forms;
+
+import entity.Entity;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class CharacterPICK extends JFrame{
+public class CharacterPICK extends JFrame implements Forms{
     private JLabel lblNAME;
     private JTextField tfNAME;
     private JLabel lblGENDER;
     private JRadioButton rbMALE;
     private JRadioButton rbFEMALE;
-    private JRadioButton rbOthers;
+    private JRadioButton rbOTHERS;
     private JRadioButton rbIT;
-    private JLabel lblPHRASE;
-    private JTextField tfCPHRASE;
     private JButton bSUBMIT;
     private JLabel lblSELECT;
     private JLabel lblRACE;
@@ -27,6 +29,23 @@ public class CharacterPICK extends JFrame{
     private Entity p1;
 
     public CharacterPICK(){
+        Forms.customizeButton(rbHUMAN);
+        Forms.customizeButton(rbCOMPY);
+        Forms.customizeButton(rbCOELE);
+        Forms.customizeButton(rbPTERO);
+        Forms.customizeButton(rbMALE);
+        Forms.customizeButton(rbFEMALE);
+        Forms.customizeButton(rbOTHERS);
+        Forms.customizeButton(rbIT);
+        Forms.customizeButton(bSUBMIT);
+
+        setContentPane(charPanel);
+        setSize(570, 650);
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+        setResizable(false);
+        setVisible(true);
+
 
         rbHUMAN.addActionListener(new ActionListener() {
             @Override

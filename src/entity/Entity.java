@@ -1,3 +1,5 @@
+package entity;
+
 public abstract class Entity {
     public String name;
     public boolean isAlive;
