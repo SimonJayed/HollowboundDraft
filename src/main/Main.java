@@ -1,4 +1,6 @@
-package forms;
+package main;
+
+import forms.CharacterPICK;
 
 import javax.swing.*;
 

@@ -1,10 +1,13 @@
 package forms;
 
 import entity.Entity;
+import main.GamePanel;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 public class CharacterPICK extends JFrame implements Forms{
     private JLabel lblNAME;
@@ -46,6 +49,23 @@ public class CharacterPICK extends JFrame implements Forms{
         setResizable(false);
         setVisible(true);
 
+        tfNAME.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                String name = tfNAME.getText();
+                lblFNAME.setText(name + ":");
+            }
+        });
 
         rbHUMAN.addActionListener(new ActionListener() {
             @Override
@@ -54,7 +74,6 @@ public class CharacterPICK extends JFrame implements Forms{
                 String name = tfNAME.getText();
                 p1 = new Entity.Human(name, rbMALE.isSelected() ? "Male" : "Female");
                 lblCPHRASE.setText(p1.toString());
-                lblFNAME.setText(name + ":");
                 charPanel.revalidate();
                 charPanel.repaint();
             }
@@ -67,7 +86,6 @@ public class CharacterPICK extends JFrame implements Forms{
                 String name = tfNAME.getText();
                 p1 = new Entity.Compy(name, rbMALE.isSelected() ? "Male" : "Female");
                 lblCPHRASE.setText(p1.toString());
-                lblFNAME.setText(name + ":");
                 charPanel.revalidate();
                 charPanel.repaint();
             }
@@ -80,7 +98,6 @@ public class CharacterPICK extends JFrame implements Forms{
                 String name = tfNAME.getText();
                 p1 = new Entity.Coelacanth(name, rbMALE.isSelected() ? "Male" : "Female");
                 lblCPHRASE.setText(p1.toString());
-                lblFNAME.setText(name + ":");
                 charPanel.revalidate();
                 charPanel.repaint();
             }
@@ -93,7 +110,6 @@ public class CharacterPICK extends JFrame implements Forms{
                 String name = tfNAME.getText();
                 p1 = new Entity.Pterosaur(name, rbMALE.isSelected() ? "Male" : "Female");
                 lblCPHRASE.setText(p1.toString());
-                lblFNAME.setText(name + ":");
                 charPanel.revalidate();
                 charPanel.repaint();
             }
@@ -102,7 +118,21 @@ public class CharacterPICK extends JFrame implements Forms{
         bSUBMIT.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                FightPanel app = new FightPanel();
+                JFrame window = new JFrame();
+                window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+                window.setResizable(false);
+                window.setSize(768, 576);
+                window.setTitle("REMAIN");
+
+                GamePanel gamePanel = new GamePanel();
+                window.add(gamePanel);
+
+                window.pack();
+
+                window.setLocationRelativeTo(null);
+                window.setVisible(true);
+
+                gamePanel.startGameThread();
                 dispose();
             }
         });

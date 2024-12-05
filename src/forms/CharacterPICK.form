@@ -28,7 +28,7 @@
         </constraints>
         <properties>
           <font name="Bradley Hand ITC" size="16"/>
-          <foreground color="-394241"/>
+          <foreground color="-16777216"/>
         </properties>
       </component>
       <component id="2f4e5" class="javax.swing.JLabel" binding="lblGENDER">

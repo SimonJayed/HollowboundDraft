@@ -1,14 +1,24 @@
 package entity;
 
-public abstract class Entity {
+import java.awt.image.BufferedImage;
+
+public class Entity {
     public String name;
-    public boolean isAlive;
     public String gender;
+
+    public int x, y, speed;
+
+    public BufferedImage up1, up2, down1, down2, left1, left2, right1, right2;
+    public String direction;
+
+    public int spriteCounter = 0;
+    public int spriteNum = 1;
+
+    public Entity(){}
 
     public Entity(String name){
         this.name = name;
         gender = "It";
-        isAlive = true;
     }
 
     public String toString() {
