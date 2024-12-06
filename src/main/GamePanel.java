@@ -1,8 +1,9 @@
 package main;
 
 import entity.Player;
+import tile.TileManager;
 
-import javax.swing.JPanel;
+import javax.swing.*;
 import java.awt.*;
 
 public class GamePanel extends JPanel implements Runnable {
@@ -11,25 +12,26 @@ public class GamePanel extends JPanel implements Runnable {
     final int scale = 3;
 
     public final int tileSize = originalTileSize * scale;
-    final int maxscreenCol = 16;
-    final int maxscreenRow = 12;
+    public final int maxscreenCol = 16;
+    public final int maxscreenRow = 12;
 
-    final int screenWidth = tileSize * maxscreenCol;
-    final int screenHeight = tileSize * maxscreenRow;
+    public final int screenWidth = tileSize * maxscreenCol;
+    public final int screenHeight = tileSize * maxscreenRow;
+
+    public final int maxWorldCol = 50;
+    public final int maxWorldRow = 50;
+    public final int worldWidth = tileSize * maxWorldCol;
+    public final int worldHeight = tileSize * maxWorldRow;
 
 
     int FPS = 60;
 
+    TileManager tileM = new TileManager(this);
     KeyHandler keyH = new KeyHandler();
-
     Thread gameThread;
+    public CollisionChecker cChecker = new CollisionChecker(this);
+    public Player player = new Player(this, keyH);
 
-    Player player = new Player(this, keyH);
-
-
-    int playerX = 100;
-    int playerY = 100;
-    int playerSpeed = 4;
 
     public GamePanel(){
 
@@ -61,10 +63,17 @@ public class GamePanel extends JPanel implements Runnable {
             lastTime = currentTime;
 
             if (delta >= 1){
-                update();
-                repaint();
-                delta--;
-                drawCount++;
+                try{
+                    update();
+                    repaint();
+                    delta--;
+                    drawCount++;
+                } catch (ArrayIndexOutOfBoundsException e){
+                    JOptionPane.showMessageDialog(null, "You got erased from existence", "Dead Lol", JOptionPane.ERROR_MESSAGE);
+                    player.worldX = tileSize * 23;
+                    player.worldY = tileSize * 21;
+                }
+
             }
 
             if (timer >= 1000000000){
@@ -84,8 +93,11 @@ public class GamePanel extends JPanel implements Runnable {
 
         Graphics2D g2 = (Graphics2D) g;
 
+
+        tileM.draw(g2);
         player.draw(g2);
 
         g2.dispose();
     }
+
 }

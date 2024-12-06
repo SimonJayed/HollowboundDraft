@@ -13,17 +13,29 @@ public class Player extends Entity{
     GamePanel gp;
     KeyHandler keyH;
 
+    public final int screenX;
+    public final int screenY;
+
     public Player(GamePanel gp, KeyHandler keyH){
         this.gp = gp;
         this.keyH = keyH;
+
+        screenX = gp.screenWidth/2 - (gp.tileSize/2);
+        screenY = gp.screenHeight/2 - (gp.tileSize/2);
+
+        solidArea = new Rectangle();
+        solidArea.x = 8;
+        solidArea.y = 16;
+        solidArea.width = 32;
+        solidArea.height = 32;
 
         setDefaultValues();
         getPlayerImage();
     }
 
     public void setDefaultValues(){
-        x = 100;
-        y = 100;
+        worldX = gp.tileSize * 23;
+        worldY = gp.tileSize * 21;
         speed = 4;
         direction = "down";
     }
@@ -31,14 +43,14 @@ public class Player extends Entity{
     public void getPlayerImage(){
 
         try{
-            up1 = ImageIO.read(getClass().getResourceAsStream("/res/player/up1.png"));
-            up2 = ImageIO.read(getClass().getResourceAsStream("/res/player/up2.png"));
-            down1 = ImageIO.read(getClass().getResourceAsStream("/res/player/down1.png"));
-            down2 = ImageIO.read(getClass().getResourceAsStream("/res/player/down2.png"));
-            left1 = ImageIO.read(getClass().getResourceAsStream("/res/player/left1.png"));
-            left2 = ImageIO.read(getClass().getResourceAsStream("/res/player/left2.png"));
-            right1 = ImageIO.read(getClass().getResourceAsStream("/res/player/right1.png"));
-            right2 = ImageIO.read(getClass().getResourceAsStream("/res/player/right2.png"));
+            up1 = ImageIO.read(getClass().getResourceAsStream("/player/up1.png"));
+            up2 = ImageIO.read(getClass().getResourceAsStream("/player/up2.png"));
+            down1 = ImageIO.read(getClass().getResourceAsStream("/player/down1.png"));
+            down2 = ImageIO.read(getClass().getResourceAsStream("/player/down2.png"));
+            left1 = ImageIO.read(getClass().getResourceAsStream("/player/left1.png"));
+            left2 = ImageIO.read(getClass().getResourceAsStream("/player/left2.png"));
+            right1 = ImageIO.read(getClass().getResourceAsStream("/player/right1.png"));
+            right2 = ImageIO.read(getClass().getResourceAsStream("/player/right2.png"));
         } catch (IOException e){
             e.printStackTrace();
         }
@@ -47,20 +59,62 @@ public class Player extends Entity{
     public void update(){
         if (keyH.upPressed == true){
             direction = "up";
-            y -= speed;
         }
         if (keyH.downPressed == true){
             direction = "down";
-            y += speed;
         }
         if (keyH.rightPressed == true){
             direction = "right";
-            x += speed;
         }
         if (keyH.leftPressed == true){
             direction = "left";
-            x -= speed;
         }
+
+        collisionOn = false;
+        gp.cChecker.checkTile(this);
+
+        if (collisionOn == false && (keyH.downPressed || keyH.leftPressed || keyH.upPressed || keyH.rightPressed)) {
+            switch (direction) {
+                case "up": {
+                    if(collisionOn){
+                        worldY += speed;
+                    }
+                    else{
+                        worldY -= speed;
+                    }
+                    break;
+                }
+                case "down": {
+                    if(collisionOn){
+                        worldY -= speed;
+                    }
+                    else{
+                        worldY += speed;
+                    }
+                    break;
+                }
+                case "left": {
+                    if(collisionOn){
+                        worldX += speed;
+                    }
+                    else{
+                        worldX -= speed;
+                    }
+                    break;
+                }
+                case "right": {
+                    if(collisionOn){
+                        worldX -= speed;
+                    }
+                    else{
+                        worldX += speed;
+                    }
+                    break;
+                }
+            }
+        }
+
+
 
         spriteCounter++;
         if (spriteCounter > 12){
@@ -118,7 +172,7 @@ public class Player extends Entity{
                 break;
             }
         }
-        g2.drawImage(image, x, y, gp.tileSize, gp.tileSize, null);
+        g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
 
     }
 }

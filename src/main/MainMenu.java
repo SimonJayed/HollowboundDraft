@@ -1,13 +1,15 @@
-package forms;
+package main;
+
+import forms.ButtonHoverEffect;
+import forms.CharacterPICK;
+import forms.Forms;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
-public class MainMenu extends JFrame implements Forms{
+public class MainMenu extends JFrame implements Forms {
     private JPanel pnlMAIN;
     private JLabel lblTITLE;
     private JButton btnSTART;

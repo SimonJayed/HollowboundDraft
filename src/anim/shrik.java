@@ -27,7 +27,6 @@ public class shrik extends JFrame {
         }
     }
 
-
     public shrik() {
         // Populate frames
         generateFrames();
@@ -48,7 +47,7 @@ public class shrik extends JFrame {
         add(panel); // Add JPanel to JFrame
 
         // Create a Timer to update frames
-        timer = new Timer(50, new ActionListener() { // 30ms per frame
+        timer = new Timer(50, new ActionListener() { // 50ms per frame
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (frameIndex < frames.length) { // Play frames until the last frame
@@ -60,30 +59,33 @@ public class shrik extends JFrame {
                                 panel.getWidth(), panel.getHeight(), Image.SCALE_SMOOTH
                         );
                         animationLabel.setIcon(new ImageIcon(scaledImage)); // Update JLabel's icon
-                    } else {
-                        System.err.println("Warning: Image not found -> " + currentFrame);
                     }
+//                    else {
+//                        System.err.println("Warning: Image not found -> " + currentFrame);
+//                    }
+
 
                     frameIndex++; // Move to the next frame
                 } else {
-                    timer.stop();
+                    timer.stop(); // Stop the timer after the last frame
 
-                JFrame window = new JFrame();
-                window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-                window.setResizable(false);
-                window.setSize(768, 576);
-                window.setTitle("REMAIN");
+                    // Create a new window for the game panel
+                    JFrame window = new JFrame();
+                    window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+                    window.setResizable(false);
+                    window.setSize(768, 576);
+                    window.setTitle("REMAIN");
 
-                GamePanel gamePanel = new GamePanel();
-                window.add(gamePanel);
+                    GamePanel gamePanel = new GamePanel();
+                    window.add(gamePanel);
 
-                window.pack();
+                    window.pack();
+                    window.setLocationRelativeTo(null);
+                    window.setVisible(true); // Make the window visible
 
-                window.setLocationRelativeTo(null);
-                window.setVisible(true);
+                    gamePanel.startGameThread(); // Start the game thread
 
-                gamePanel.startGameThread();
-                    dispose();// Stop the timer after the last frame
+                    dispose(); // Dispose of the animation JFrame
                 }
             }
         });
