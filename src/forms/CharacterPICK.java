@@ -5,6 +5,7 @@ import entity.Entity;
 import main.GamePanel;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -29,6 +30,8 @@ public class CharacterPICK extends JFrame implements Forms{
     public JPanel charPanel;
     private JLabel lblCPHRASE;
     private JLabel lblFNAME;
+    private ButtonGroup bgRACE;
+    private ButtonGroup bgGENDER;
 
     private Entity p1;
 
@@ -49,6 +52,9 @@ public class CharacterPICK extends JFrame implements Forms{
         setLocationRelativeTo(null);
         setResizable(false);
         setVisible(true);
+
+//        rbMALE.isSelected();
+//        rbHUMAN.isSelected();
 
         tfNAME.addKeyListener(new KeyListener() {
             @Override
@@ -119,23 +125,18 @@ public class CharacterPICK extends JFrame implements Forms{
         bSUBMIT.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new shrik();
-//                JFrame window = new JFrame();
-//                window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-//                window.setResizable(false);
-//                window.setSize(768, 576);
-//                window.setTitle("REMAIN");
-//
-//                GamePanel gamePanel = new GamePanel();
-//                window.add(gamePanel);
-//
-//                window.pack();
-//
-//                window.setLocationRelativeTo(null);
-//                window.setVisible(true);
-//
-//                gamePanel.startGameThread();
-                dispose();
+                try {
+                    String name = tfNAME.getText(); // Get text from the text field
+                    if (name != null && !name.trim().isEmpty() && bgGENDER.getSelection() != null && bgRACE.getSelection() != null) { // Check if the name is not null and not empty
+                        new shrik();
+                        dispose();
+                    } else {
+                        throw new Exception("Enter the fields properly, dude."); // Throw an exception if the name is invalid
+                    }
+                } catch (Exception ex) {
+                    System.out.println(ex.getMessage()); // Print error message to console
+                    JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE); // Show an error dialog
+                }
             }
         });
     }
