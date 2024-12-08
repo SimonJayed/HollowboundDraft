@@ -17,8 +17,6 @@ public class CharacterPICK extends JFrame implements Forms{
     private JLabel lblGENDER;
     private JRadioButton rbMALE;
     private JRadioButton rbFEMALE;
-    private JRadioButton rbOTHERS;
-    private JRadioButton rbIT;
     private JButton bSUBMIT;
     private JLabel lblSELECT;
     private JLabel lblRACE;
@@ -68,7 +66,19 @@ public class CharacterPICK extends JFrame implements Forms{
             @Override
             public void keyReleased(KeyEvent e) {
                 String name = tfNAME.getText();
-                lblFNAME.setText(name + ":");
+
+                tfNAME.setToolTipText("15 character/letter limit");
+                if (name.length() > 15) {
+                    name = name.substring(0, 15);
+                    tfNAME.setText(name);
+                }
+
+                if (name.trim().isEmpty()){
+                    lblFNAME.setText("");
+                }
+                else{
+                    lblFNAME.setText(name + ":");
+                }
             }
         });
 
@@ -77,7 +87,7 @@ public class CharacterPICK extends JFrame implements Forms{
             public void actionPerformed(ActionEvent e) {
                 updateImage("./img/human.png");
                 String name = tfNAME.getText();
-                p1 = new Entity.Human(name, rbMALE.isSelected() ? "Male" : "Female");
+                p1 = new Entity.Human(name, rbMALE.isSelected() ? "Male" : "Female", "Human");
                 lblCPHRASE.setText(p1.toString());
                 charPanel.revalidate();
                 charPanel.repaint();
@@ -89,7 +99,7 @@ public class CharacterPICK extends JFrame implements Forms{
             public void actionPerformed(ActionEvent e) {
                 updateImage("./img/compy.png");
                 String name = tfNAME.getText();
-                p1 = new Entity.Compy(name, rbMALE.isSelected() ? "Male" : "Female");
+                p1 = new Entity.Compy(name, rbMALE.isSelected() ? "Male" : "Female", "Compy");
                 lblCPHRASE.setText(p1.toString());
                 charPanel.revalidate();
                 charPanel.repaint();
@@ -101,7 +111,7 @@ public class CharacterPICK extends JFrame implements Forms{
             public void actionPerformed(ActionEvent e) {
                 updateImage("./img/coele.png");
                 String name = tfNAME.getText();
-                p1 = new Entity.Coelacanth(name, rbMALE.isSelected() ? "Male" : "Female");
+                p1 = new Entity.Coelacanth(name, rbMALE.isSelected() ? "Male" : "Female", "Coelecanth");
                 lblCPHRASE.setText(p1.toString());
                 charPanel.revalidate();
                 charPanel.repaint();
@@ -113,7 +123,7 @@ public class CharacterPICK extends JFrame implements Forms{
             public void actionPerformed(ActionEvent e) {
                 updateImage("./img/ptero.png");
                 String name = tfNAME.getText();
-                p1 = new Entity.Pterosaur(name, rbMALE.isSelected() ? "Male" : "Female");
+                p1 = new Entity.Pterosaur(name, rbMALE.isSelected() ? "Male" : "Female", "Pterosaur");
                 lblCPHRASE.setText(p1.toString());
                 charPanel.revalidate();
                 charPanel.repaint();

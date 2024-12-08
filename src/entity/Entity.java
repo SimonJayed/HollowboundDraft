@@ -6,6 +6,7 @@ import java.awt.image.BufferedImage;
 public class Entity {
     public String name;
     public String gender;
+    public String race;
 
     public int worldX, worldY, speed;
 
@@ -22,7 +23,6 @@ public class Entity {
 
     public Entity(String name){
         this.name = name;
-        gender = "Male";
     }
 
     public String toString() {
@@ -30,9 +30,10 @@ public class Entity {
     }
 
     public static class Human extends Entity{
-        public Human(String name, String gender){
+        public Human(String name, String gender, String race){
             super(name);
             this.gender = gender;
+            this.race = race;
         }
 
         public String toString(){
@@ -41,9 +42,10 @@ public class Entity {
     }
 
     public static class Compy extends Entity{
-        public Compy(String name, String gender){
+        public Compy(String name, String gender, String race){
             super(name);
             this.gender = gender;
+            this.race = race;
         }
 
         public String toString(){
@@ -51,9 +53,10 @@ public class Entity {
         }
     }
     public static class Coelacanth extends Entity{
-        public Coelacanth(String name, String gender){
+        public Coelacanth(String name, String gender, String race){
             super(name);
             this.gender = gender;
+            this.race = race;
         }
 
         public String toString(){
@@ -61,9 +64,10 @@ public class Entity {
         }
     }
     public static class Pterosaur extends Entity{
-        public Pterosaur(String name, String gender){
+        public Pterosaur(String name, String gender, String race){
             super(name);
             this.gender = gender;
+            this.race = race;
         }
 
         public String toString(){

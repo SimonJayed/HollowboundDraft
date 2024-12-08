@@ -53,7 +53,7 @@ public class MainMenu extends JFrame implements Forms {
         btnGALLERY.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                JOptionPane.showMessageDialog(null, "Coming Soon");
             }
         });
 
