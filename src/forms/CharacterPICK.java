@@ -3,6 +3,7 @@ package forms;
 import anim.shrik;
 import entity.Entity;
 import main.GamePanel;
+import main.MainMenu;
 
 import javax.swing.*;
 import java.awt.*;
@@ -28,12 +29,15 @@ public class CharacterPICK extends GameWindowForm implements Forms{
     public JPanel charPanel;
     private JLabel lblCPHRASE;
     private JLabel lblFNAME;
+//    private JButton bBACK;
     private ButtonGroup bgRACE;
     private ButtonGroup bgGENDER;
+    private MainMenu mainMenu;
 
     private Entity p1;
 
     public CharacterPICK(){
+        this.mainMenu = mainMenu;
         Forms.customizeButton(rbHUMAN, 12);
         Forms.customizeButton(rbCOMPY, 12);
         Forms.customizeButton(rbCOELE, 12);
@@ -41,6 +45,7 @@ public class CharacterPICK extends GameWindowForm implements Forms{
         Forms.customizeButton(rbMALE, 12);
         Forms.customizeButton(rbFEMALE, 12);
         Forms.customizeButton(bSUBMIT, 12);
+//        Forms.customizeButton(bBACK, 12);
         Forms.customizeButton(lblNAME, 12);
         Forms.customizeButton(lblGENDER, 12);
         Forms.customizeButton(lblRACE, 12);
@@ -53,6 +58,7 @@ public class CharacterPICK extends GameWindowForm implements Forms{
 
 //        rbMALE.isSelected();
 //        rbHUMAN.isSelected();
+
 
         tfNAME.addKeyListener(new KeyListener() {
             @Override

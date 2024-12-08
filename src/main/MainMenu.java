@@ -32,31 +32,40 @@ public class MainMenu extends GameWindowForm implements Forms {
         btnGALLERY.addMouseListener(hoverEffect);
         btnEXIT.addMouseListener(hoverEffect);
 
-        btnSTART.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                CharacterPICK app = new CharacterPICK();
+            btnSTART.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    CharacterPICK charPICK = new CharacterPICK();
 
-                app.setVisible(true);
-                dispose();
-            }
-        });
+                    charPICK.setVisible(true);
+                    dispose();
+                }
+            });
 
-        btnGALLERY.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null, "Coming Soon");
-            }
-        });
+            btnGALLERY.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    JOptionPane.showMessageDialog(null, "Coming Soon");
+                }
+            });
 
-        // Add an ActionListener to the "Exit" button
-        btnEXIT.addActionListener(e -> dispose());
-    }
+            // Add an ActionListener to the "Exit" button
+            btnEXIT.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    int choice = JOptionPane.showConfirmDialog(null, "Are you sure?", "Confirmation", JOptionPane.YES_NO_OPTION);
 
-    public static void main(String[] args) {
-        MainMenu app = new MainMenu();
+                    if (choice == JOptionPane.YES_OPTION) {
+                        System.exit(0);
+                    }
+                }
+            });
+        }
 
-        app.setContentPane(app.pnlMAIN);
-        app.setVisible(true);
-    }
+        public static void main(String[] args) {
+            MainMenu app = new MainMenu();
+
+            app.setContentPane(app.pnlMAIN);
+            app.setVisible(true);
+        }
 }

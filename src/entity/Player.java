@@ -2,6 +2,7 @@ package entity;
 
 import main.GamePanel;
 import main.KeyHandler;
+import object.OBJ_Boots;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -144,15 +145,31 @@ public class Player extends Entity{
                 case "Key":{
                     hasKey++;
                     gp.obj[i] = null;
-//                    System.out.println("Key: " + hasKey);
+                    gp.ui.showMessage("Obtained KEY!");
                     break;
                 }
                 case "Door":{
                     if (hasKey > 0) {
                         gp.obj[i] = null;
                         hasKey--;
+                        gp.ui.showMessage("Door opened");
                     }
-//                    System.out.println("Key: " + hasKey);
+                    else{
+                        gp.ui.showMessage("Key required");
+                    }
+                    break;
+                }
+                case "Boots":{
+                    speed += 1;
+                    gp.obj[i] = null;
+                    gp.ui.showMessage("Speed increased!");
+                    break;
+                }
+                case "Chest":{
+                    gp.obj[i] = null;
+                    gp.ui.showMessage("Chest opened!");
+
+                    gp.ui.gameFinished = true;
                     break;
                 }
             }
