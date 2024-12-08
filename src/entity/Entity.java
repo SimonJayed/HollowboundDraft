@@ -22,7 +22,7 @@ public class Entity {
 
     public Entity(String name){
         this.name = name;
-        gender = "It";
+        gender = "Male";
     }
 
     public String toString() {

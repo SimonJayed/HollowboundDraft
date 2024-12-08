@@ -35,6 +35,17 @@ public class MainMenu extends JFrame implements Forms {
             @Override
             public void actionPerformed(ActionEvent e) {
                 CharacterPICK app = new CharacterPICK();
+                app.setTitle("REMAIN");
+
+                ImageIcon logo = new ImageIcon("./img/dino1.png");
+                app.setIconImage(logo.getImage());
+
+
+                app.setSize(570, 650);
+                app.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+                app.setLocationRelativeTo(null);
+                app.setResizable(false);
+                app.setVisible(true);
                 dispose();
             }
         });
