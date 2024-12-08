@@ -3,13 +3,14 @@ package main;
 import forms.ButtonHoverEffect;
 import forms.CharacterPICK;
 import forms.Forms;
+import forms.GameWindowForm;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class MainMenu extends JFrame implements Forms {
+public class MainMenu extends GameWindowForm implements Forms {
     private JPanel pnlMAIN;
     private JLabel lblTITLE;
     private JButton btnSTART;
@@ -17,9 +18,9 @@ public class MainMenu extends JFrame implements Forms {
     private JButton btnEXIT;
 
     public MainMenu(){
-        Forms.customizeButton(btnSTART);
-        Forms.customizeButton(btnGALLERY);
-        Forms.customizeButton(btnEXIT);
+        Forms.customizeButton(btnSTART, 20);
+        Forms.customizeButton(btnGALLERY, 20);
+        Forms.customizeButton(btnEXIT, 20);
 
         Color hoverColor = Color.WHITE;
         Color defaultColor = UIManager.getColor("Button.foreground");
@@ -35,16 +36,7 @@ public class MainMenu extends JFrame implements Forms {
             @Override
             public void actionPerformed(ActionEvent e) {
                 CharacterPICK app = new CharacterPICK();
-                app.setTitle("REMAIN");
 
-                ImageIcon logo = new ImageIcon("./img/dino1.png");
-                app.setIconImage(logo.getImage());
-
-
-                app.setSize(570, 650);
-                app.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-                app.setLocationRelativeTo(null);
-                app.setResizable(false);
                 app.setVisible(true);
                 dispose();
             }
@@ -65,16 +57,6 @@ public class MainMenu extends JFrame implements Forms {
         MainMenu app = new MainMenu();
 
         app.setContentPane(app.pnlMAIN);
-        app.setTitle("REMAIN");
-
-        ImageIcon logo = new ImageIcon("./img/dino1.png");
-        app.setIconImage(logo.getImage());
-
-
-        app.setSize(570, 650);
-        app.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        app.setLocationRelativeTo(null);
-        app.setResizable(false);
         app.setVisible(true);
     }
 }

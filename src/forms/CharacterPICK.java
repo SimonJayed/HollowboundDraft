@@ -11,7 +11,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-public class CharacterPICK extends JFrame implements Forms{
+public class CharacterPICK extends GameWindowForm implements Forms{
     private JLabel lblNAME;
     private JTextField tfNAME;
     private JLabel lblGENDER;
@@ -34,20 +34,22 @@ public class CharacterPICK extends JFrame implements Forms{
     private Entity p1;
 
     public CharacterPICK(){
-        Forms.customizeButton(rbHUMAN);
-        Forms.customizeButton(rbCOMPY);
-        Forms.customizeButton(rbCOELE);
-        Forms.customizeButton(rbPTERO);
-        Forms.customizeButton(rbMALE);
-        Forms.customizeButton(rbFEMALE);
-        Forms.customizeButton(bSUBMIT);
+        Forms.customizeButton(rbHUMAN, 12);
+        Forms.customizeButton(rbCOMPY, 12);
+        Forms.customizeButton(rbCOELE, 12);
+        Forms.customizeButton(rbPTERO, 12);
+        Forms.customizeButton(rbMALE, 12);
+        Forms.customizeButton(rbFEMALE, 12);
+        Forms.customizeButton(bSUBMIT, 12);
+        Forms.customizeButton(lblNAME, 12);
+        Forms.customizeButton(lblGENDER, 12);
+        Forms.customizeButton(lblRACE, 12);
+        Forms.customizeButton(lblSELECT, 20);
+        Forms.customizeButton(tfNAME, 12);
+        Forms.customizeButton(lblFNAME, 12);
+        Forms.customizeButton(lblCPHRASE, 12);
 
         setContentPane(charPanel);
-        setSize(570, 650);
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
-        setResizable(false);
-        setVisible(true);
 
 //        rbMALE.isSelected();
 //        rbHUMAN.isSelected();
