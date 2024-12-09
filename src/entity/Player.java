@@ -2,16 +2,16 @@ package entity;
 
 import main.GamePanel;
 import main.KeyHandler;
+import main.UtilityTool;
 import object.OBJ_Boots;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.nio.Buffer;
 
 public class Player extends Entity{
-
-    GamePanel gp;
     KeyHandler keyH;
 
     public final int screenX;
@@ -20,7 +20,7 @@ public class Player extends Entity{
     public int hasKey = 0;
 
     public Player(GamePanel gp, KeyHandler keyH){
-        this.gp = gp;
+        super(gp);
         this.keyH = keyH;
 
         screenX = gp.screenWidth/2 - (gp.tileSize/2);
@@ -46,22 +46,17 @@ public class Player extends Entity{
     }
 
     public void getPlayerImage(){
-
-        try{
-
-            up1 = ImageIO.read(getClass().getResourceAsStream("/player/human/up1.png"));
-            up2 = ImageIO.read(getClass().getResourceAsStream("/player/human/up2.png"));
-            down1 = ImageIO.read(getClass().getResourceAsStream("/player/human/down1.png"));
-            down2 = ImageIO.read(getClass().getResourceAsStream("/player/human/down2.png"));
-            left1 = ImageIO.read(getClass().getResourceAsStream("/player/human/left1.png"));
-            left2 = ImageIO.read(getClass().getResourceAsStream("/player/human/left2.png"));
-            right1 = ImageIO.read(getClass().getResourceAsStream("/player/human/right1.png"));
-            right2 = ImageIO.read(getClass().getResourceAsStream("/player/human/right2.png"));
-
-        } catch (IOException e){
-            e.printStackTrace();
-        }
+        up1 = setup("/player/human/up1");
+        up2 = setup("/player/human/up2");
+        down1 = setup("/player/human/down1");
+        down2 = setup("/player/human/down2");
+        left1 = setup("/player/human/left1");
+        left2 = setup("/player/human/left2");
+        right1 = setup("/player/human/right1");
+        right2 = setup("/player/human/right2");
     }
+
+
 
     public void update(){
         if (keyH.upPressed == true){
@@ -76,11 +71,17 @@ public class Player extends Entity{
         if (keyH.leftPressed == true){
             direction = "left";
         }
+//        if (keyH.tPressed == true) {
+//
+//        }
 
         collisionOn = false;
         gp.cChecker.checkTile(this);
         int objIndex = gp.cChecker.checkObject(this, true);
         pickUpObject(objIndex);
+
+        int npcIndex = gp.cChecker.checkEntity(this, gp.npc);
+        interactNPC(npcIndex);
 
         if (collisionOn == false && (keyH.downPressed || keyH.leftPressed || keyH.upPressed || keyH.rightPressed)) {
             switch (direction) {
@@ -177,9 +178,18 @@ public class Player extends Entity{
 
     }
 
+    public void interactNPC(int i){
+
+        if (i != 999){
+            if (keyH.enterPressed){
+                gp.gameState = gp.dialogueState;
+                gp.npc[i].speak();
+            }
+        }
+        keyH.enterPressed = false;
+    }
+
     public void draw(Graphics2D g2){
-//        g2.setColor(Color.white);
-//        g2.fillRect(x, y, gp.tileSize, gp.tileSize);
 
         BufferedImage image = null;
 
@@ -222,6 +232,5 @@ public class Player extends Entity{
             }
         }
         g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
-
     }
 }

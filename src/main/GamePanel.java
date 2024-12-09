@@ -1,5 +1,6 @@
 package main;
 
+import entity.Entity;
 import entity.Player;
 import object.SuperObject;
 import tile.TileManager;
@@ -19,16 +20,18 @@ public class GamePanel extends JPanel implements Runnable {
     public final int screenWidth = tileSize * maxscreenCol;
     public final int screenHeight = tileSize * maxscreenRow;
 
-    public final int maxWorldCol = 50;
-    public final int maxWorldRow = 50;
+    public final int maxWorldCol = 100;
+    public final int maxWorldRow = 100;
     public final int worldWidth = tileSize * maxWorldCol;
     public final int worldHeight = tileSize * maxWorldRow;
 
 
     int FPS = 60;
 
+    int failCTR = 0;
+
     TileManager tileM = new TileManager(this);
-    KeyHandler keyH = new KeyHandler();
+    KeyHandler keyH = new KeyHandler(this);
     Thread gameThread;
     public CollisionChecker cChecker = new CollisionChecker(this);
     public AssetSetter aSetter = new AssetSetter(this);
@@ -36,6 +39,12 @@ public class GamePanel extends JPanel implements Runnable {
 
     public Player player = new Player(this, keyH);
     public SuperObject obj[] = new SuperObject[10];
+    public Entity npc[] = new Entity[10];
+
+    public int gameState;
+    public final int playState = 1;
+    public final int pauseState = 2;
+    public final int dialogueState = 3;
 
 
     public GamePanel(){
@@ -50,11 +59,14 @@ public class GamePanel extends JPanel implements Runnable {
 
     public void setupGame(){
         aSetter.setObject();
+        aSetter.setNPC();
+        gameState = playState;
     }
 
     public void startGameThread(){
         gameThread = new Thread(this);
         gameThread.start();
+        gameState = 1;
     }
 
     public void run(){
@@ -79,9 +91,14 @@ public class GamePanel extends JPanel implements Runnable {
                     delta--;
                     drawCount++;
                 } catch (ArrayIndexOutOfBoundsException e){
+                    failCTR++;
                     JOptionPane.showMessageDialog(null, "You got erased from existence", "Dead Lol", JOptionPane.ERROR_MESSAGE);
                     player.worldX = tileSize * 23;
                     player.worldY = tileSize * 21;
+                    if (failCTR == 3){
+                        JOptionPane.showMessageDialog(null, "Game doesn't want you, bro. Peace Out.", "Death Loop", JOptionPane.INFORMATION_MESSAGE);
+                        System.exit(0);
+                    }
                 }
 
             }
@@ -95,7 +112,15 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void update(){
-        player.update();
+        if (gameState == playState){
+            player.update();
+
+            for (int i = 0; i < npc.length; i++){
+                if (npc[i] != null){
+                    npc[i].update();
+                }
+            }
+        }
     }
 
     public void paintComponent(Graphics g){
@@ -110,9 +135,15 @@ public class GamePanel extends JPanel implements Runnable {
                 obj[i].draw(g2, this);
             }
         }
+        for (int i = 0; i < npc.length; i++){
+            if (npc[i] != null){
+                npc[i].draw(g2);
+            }
+        }
         player.draw(g2);
 
         ui.draw(g2);
+
 
         g2.dispose();
     }

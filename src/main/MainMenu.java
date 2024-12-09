@@ -25,7 +25,6 @@ public class MainMenu extends GameWindowForm implements Forms {
         Color hoverColor = Color.WHITE;
         Color defaultColor = UIManager.getColor("Button.foreground");
 
-        // Create a reusable MouseListener
         ButtonHoverEffect hoverEffect = new ButtonHoverEffect(hoverColor, defaultColor);
 
         btnSTART.addMouseListener(hoverEffect);
@@ -49,7 +48,6 @@ public class MainMenu extends GameWindowForm implements Forms {
                 }
             });
 
-            // Add an ActionListener to the "Exit" button
             btnEXIT.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
