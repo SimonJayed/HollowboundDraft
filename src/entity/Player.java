@@ -7,6 +7,7 @@ import object.OBJ_Boots;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.Buffer;
@@ -42,7 +43,11 @@ public class Player extends Entity{
         worldX = gp.tileSize * 23;
         worldY = gp.tileSize * 21;
         speed = 4;
+//        speed = 10;
         direction = "down";
+
+        maxLife = 6;
+        life = maxLife;
     }
 
     public void getPlayerImage(){
@@ -59,16 +64,16 @@ public class Player extends Entity{
 
 
     public void update(){
-        if (keyH.upPressed == true){
+        if (gp.keyH.upPressed == true){
             direction = "up";
         }
-        if (keyH.downPressed == true){
+        if (gp.keyH.downPressed == true){
             direction = "down";
         }
-        if (keyH.rightPressed == true){
+        if (gp.keyH.rightPressed == true){
             direction = "right";
         }
-        if (keyH.leftPressed == true){
+        if (gp.keyH.leftPressed == true){
             direction = "left";
         }
 //        if (keyH.tPressed == true) {
@@ -82,6 +87,10 @@ public class Player extends Entity{
 
         int npcIndex = gp.cChecker.checkEntity(this, gp.npc);
         interactNPC(npcIndex);
+
+        gp.eHandler.checkEvent();
+
+        gp.keyH.enterPressed = false;
 
         if (collisionOn == false && (keyH.downPressed || keyH.leftPressed || keyH.upPressed || keyH.rightPressed)) {
             switch (direction) {
@@ -186,7 +195,6 @@ public class Player extends Entity{
                 gp.npc[i].speak();
             }
         }
-        keyH.enterPressed = false;
     }
 
     public void draw(Graphics2D g2){

@@ -2,18 +2,26 @@
 
     import main.GamePanel;
 
-    import java.util.Random;
 
     public class NPC_OldMan extends Entity {
 
         public NPC_OldMan(GamePanel gp) {
             super(gp);
 
-            direction = "right";
+            name = "Gary";
             speed = 1;
+            maxLife = 10;
+            life = maxLife;
 
             getImage();
             setDialogue();
+
+            this.solidArea.x = 8;
+            this.solidArea.y = 16;
+            this.solidArea.width = 32;
+            this.solidArea.height = 32;
+            this.solidAreaDefaultX = this.solidArea.x;
+            this.solidAreaDefaultY = this.solidArea.y;
         }
 
         public void getImage() {
@@ -31,8 +39,7 @@
             actionLockCounter++;
 
             if (actionLockCounter >= 120) {
-                Random random = new Random();
-                int i = random.nextInt(100) + 1;
+                int i = gp.randomize(100);
 
                 if (i <= 25) {
                     direction = "up";
