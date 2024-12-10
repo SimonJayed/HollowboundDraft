@@ -4,9 +4,7 @@ import main.GamePanel;
 import main.UtilityTool;
 
 import javax.imageio.ImageIO;
-import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -25,23 +23,25 @@ public class TileManager {
         mapTileNum = new int[gp.maxWorldCol][gp.maxWorldRow];
 
         getTileImage();
-        loadMap("/maps/world02.txt");
+        loadMap("/maps/islandmap1.txt");
     }
 
     public void getTileImage() {
-//        setup(0, "grass", false);
-//        setup(1, "wall", true);
-//        setup(2, "water", true);
-//        setup(3, "earth", false);
-//        setup(4, "tree", true);
-//        setup(5, "sand", false);
-
-        setup(0, "blkgrass", false);
+        setup(0, "blk", false);
         setup(1, "wall", true);
         setup(2, "blkwater", true);
         setup(3, "blkdirt", false);
         setup(4, "blktree", true);
         setup(5, "blkdirt", false);
+        setup(6, "mtWall", true);
+
+//
+//        setup(0, "blkgrass", false);
+//        setup(1, "wall", true);
+//        setup(2, "blkwater", true);
+//        setup(3, "blkdirt", false);
+//        setup(4, "blktree", true);
+//        setup(5, "blkdirt", false);
     }
 
     public void setup(int index, String imageName, boolean collision){

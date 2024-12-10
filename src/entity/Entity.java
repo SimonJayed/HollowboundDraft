@@ -23,7 +23,7 @@ public class Entity {
     public BufferedImage up1, up2, up3, down1, down2, down3, left1, left2, left3, right1, right2, right3;
     public BufferedImage attackUp1, attackUp2, attackUp3, attackDown1, attackDown2, attackDown3, attackLeft1, attackLeft2, attackLeft3, attackRight1, attackRight2, attackRight3;
     public BufferedImage runUp1, runUp2, runUp3, runDown1, runDown2, runDown3, runLeft1, runLeft2, runLeft3, runRight1, runRight2, runRight3;
-    public BufferedImage image, image2, image3;
+    public BufferedImage image1, image2, image3;
 
     public Rectangle solidArea = new Rectangle(0, 0, 48, 48);
     public Rectangle attackArea = new Rectangle(0, 0, 48, 48);
@@ -181,13 +181,9 @@ public class Entity {
     }
     public void spriteAnim(int spriteQuantity){
         spriteCounter++;
-
-        // Reset spriteCounter after completing a full cycle
         if (spriteCounter > spriteQuantity * 13) {
             spriteCounter = 1;
         }
-
-        // Calculate the current sprite number
         spriteNum = (spriteCounter - 1) / 13 + 1;
     }
 
@@ -250,7 +246,7 @@ public class Entity {
 
 
     public void interactNPC(int i){
-        if (gp.keyH.enterPressed == true || gp.mouseH.lmbPressed == true){
+        if (gp.keyH.enterPressed == true ){
             if (i != 999 ){
                 if(gp.npc[i].type != 2) {
                     gp.gameState = gp.dialogueState;
@@ -308,7 +304,7 @@ public class Entity {
 
 
     public void draw(Graphics2D g2){
-        BufferedImage image = null;
+        BufferedImage image1 = null;
 
         int screenX = worldX - gp.player.worldX + gp.player.screenX;
         int screenY = worldY - gp.player.worldY + gp.player.screenY;
@@ -320,37 +316,37 @@ public class Entity {
             switch (direction) {
                 case "up": {
                     if (spriteNum == 1){
-                        image = up1;
+                        image1 = up1;
                     }
                     if (spriteNum == 2) {
-                        image = up2;
+                        image1 = up2;
                     }
                     break;
                 }
                 case "down": {
                     if (spriteNum == 1){
-                        image = down1;
+                        image1 = down1;
                     }
                     if (spriteNum == 2) {
-                        image = down2;
+                        image1 = down2;
                     }
                     break;
                 }
                 case "left": {
                     if (spriteNum == 1){
-                        image = left1;
+                        image1 = left1;
                     }
                     if (spriteNum == 2) {
-                        image = left2;
+                        image1 = left2;
                     }
                     break;
                 }
                 case "right": {
                     if (spriteNum == 1){
-                        image = right1;
+                        image1 = right1;
                     }
                     if (spriteNum == 2) {
-                        image = right2;
+                        image1 = right2;
                     }
                     break;
                 }
@@ -384,7 +380,7 @@ public class Entity {
         if (isDying == true){
             dyingAnimation(g2);
         }
-        g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize,  null);
+        g2.drawImage(image1, screenX, screenY, gp.tileSize, gp.tileSize,  null);
 
         changeAlpha(g2,1f);
     }
@@ -431,16 +427,15 @@ public class Entity {
 
     public BufferedImage setup(String imagePath, int width, int height){
         UtilityTool uTool = new UtilityTool();
-        BufferedImage image = null;
+        BufferedImage image1 = null;
 
         try{
-//            image = ImageIO.read(getClass().getResourceAsStream("/player/" + imageRace + "/" + imageName + ".png"));
-            image = ImageIO.read(getClass().getResourceAsStream(imagePath + ".png"));
-            image = uTool.scaleImage(image, width, height);
+            image1 = ImageIO.read(getClass().getResourceAsStream(imagePath + ".png"));
+            image1 = uTool.scaleImage(image1, width, height);
         } catch (IOException e){
             e.printStackTrace();
         }
-        return image;
+        return image1;
     }
 
     public Entity(String name){

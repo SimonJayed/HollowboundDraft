@@ -9,7 +9,7 @@ public class KeyHandler implements KeyListener {
             enterPressed, shiftPressed, ctrPressed, tabPressed;
 
 
-    boolean checkDrawTime = false;
+    boolean showDebugTest = false;
 
     public KeyHandler(GamePanel gp){
         this.gp = gp;
@@ -51,6 +51,9 @@ public class KeyHandler implements KeyListener {
                 gp.gameState = gp.pauseState;
                 System.out.println("p pressed and " + gp.gameState);
             }
+            if (code == KeyEvent.VK_R){
+                gp.tileM.loadMap("/maps/islandmap1.txt");
+            }
             if (code == KeyEvent.VK_TAB){
                 tabPressed = true;
             }
@@ -64,12 +67,12 @@ public class KeyHandler implements KeyListener {
             }
 
             if (code == KeyEvent.VK_T){
-                if (checkDrawTime == false){
-                    checkDrawTime = true;
+                if (showDebugTest == false){
+                    showDebugTest = true;
                 }
 
-                else if(checkDrawTime == true){
-                    checkDrawTime = false;
+                else if(showDebugTest == true){
+                    showDebugTest = false;
                 }
             }
         }

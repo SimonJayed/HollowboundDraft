@@ -43,8 +43,8 @@ public class Player extends Entity{
     }
 
     public void setDefaultValues(){
-        worldX = gp.tileSize * 23;
-        worldY = gp.tileSize * 21;
+        worldX = gp.tileSize * 12;
+        worldY = gp.tileSize * 18;
         speed = 2;
         tempSpeed = speed;
         direction = "down";
@@ -143,7 +143,6 @@ public class Player extends Entity{
             gp.eHandler.checkEvent();
 
             gp.keyH.enterPressed = false;
-            gp.mouseH.lmbPressed = false;
 
             if (collisionOn == false && keyH.enterPressed == false) {
                 switch (direction) {
@@ -206,7 +205,6 @@ public class Player extends Entity{
             }
 
             gp.keyH.enterPressed = false;
-            gp.mouseH.lmbPressed = false;
             keyH.ctrPressed = false;
 
             spriteCounter++;

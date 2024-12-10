@@ -24,7 +24,7 @@ public class GamePanel extends JPanel implements Runnable {
     public final int screenHeight = tileSize * maxscreenRow;
 
     public final int maxWorldCol = 100;
-    public final int maxWorldRow = 100;
+    public final int maxWorldRow = 200;
     public final int worldWidth = tileSize * maxWorldCol;
     public final int worldHeight = tileSize * maxWorldRow;
 
@@ -35,7 +35,6 @@ public class GamePanel extends JPanel implements Runnable {
 
     TileManager tileM = new TileManager(this);
     public KeyHandler keyH = new KeyHandler(this);
-    public MouseHandler mouseH = new MouseHandler(this);
     Thread gameThread;
     public CollisionChecker cChecker = new CollisionChecker(this);
     public AssetSetter aSetter = new AssetSetter(this);
@@ -59,7 +58,6 @@ public class GamePanel extends JPanel implements Runnable {
         this.setBackground(Color.black);
         this.setDoubleBuffered(true);
         this.addKeyListener(keyH);
-        this.addMouseListener(mouseH);
         this.setFocusable(true);
     }
 
@@ -124,9 +122,7 @@ public class GamePanel extends JPanel implements Runnable {
 
             for (int i = 0; i < npc.length; i++){
                 if (npc[i] != null){
-                    if (npc[i].isAlive == true && npc[i].isDying == false) {
                         npc[i].update();
-                    }
                     if (npc[i].isAlive == false){
                         npc[i] = null;
                     }
@@ -152,27 +148,18 @@ public class GamePanel extends JPanel implements Runnable {
         Graphics2D g2 = (Graphics2D) g;
 
         long drawStart = 0;
-        if (keyH.checkDrawTime){
+        if (keyH.showDebugTest){
             drawStart = System.nanoTime();
         }
-
-
         tileM.draw(g2);
 
+        entityList.clear();
         entityList.add(player);
 
-        for (int i = 0; i < npc.length; i++) {
-            if (npc[i] != null) {
-                entityList.add(npc[i]);
-            }
-            for (i = 0; i < obj.length; i++) {
-                if (obj[i] != null) {
-                    entityList.add(obj[i]);
-                }
-            }
-            for (i = 0; i < monster.length; i++) {
-                if (monster[i] != null) {
-                    entityList.add(monster[i]);
+        for (Entity[] entities : new Entity[][] {npc, obj, monster}) {
+            for (Entity e : entities) {
+                if (e != null) {
+                    entityList.add(e);
                 }
             }
         }
@@ -180,33 +167,36 @@ public class GamePanel extends JPanel implements Runnable {
 
         Collections.sort(entityList, new Comparator<Entity>() {
             @Override
-            public int compare(Entity o1, Entity o2) {
-                int result = Integer.compare(o1.worldX, o2.worldY);
+            public int compare(Entity e1, Entity e2) {
+                int result = Integer.compare(e1.worldY, e2.worldY);
                 return result;
-            }
-
-            @Override
-            public boolean equals(Object obj) {
-                return false;
             }
         });
 
-        for (int i = 0; i < entityList.size(); i++){
-            entityList.get(i).draw(g2);
+        for (Entity entity : entityList) {
+            entity.draw(g2);
         }
 
         entityList.clear();
 
         ui.draw(g2);
 
-        if (keyH.checkDrawTime){
+        if (keyH.showDebugTest){
             long drawEnd = System.nanoTime();
             long passed = drawEnd - drawStart;
 
-            g2.setFont(g2.getFont().deriveFont(30f));
+            g2.setFont(g2.getFont().deriveFont(23f));
             g2.setColor(Color.white);
-            g2.drawString("Draw Time: " + passed, 10, 400);
-            System.out.println("Draw Time: " + passed);
+            int x = 10;
+            int y = 400;
+            int lineHeight = 20;
+
+            g2.drawString("WorldX" + player.worldX, x, y);y += lineHeight;
+            g2.drawString("WorldY" + player.worldY, x, y);y += lineHeight;
+            g2.drawString("Col" + (player.worldX+ player.solidArea.x)/tileSize, x, y);y += lineHeight;
+            g2.drawString("Row" + (player.worldY+ player.solidArea.y)/tileSize, x, y);y += lineHeight;
+
+            g2.drawString("Draw Time: " + passed , x, y );
         }
 
 

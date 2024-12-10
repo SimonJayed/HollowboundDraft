@@ -12,8 +12,6 @@ public class NPC_Stalker extends Entity {
         maxLife = 10;
         life = maxLife;
 
-        getImage();
-        setDialogue();
 
         this.solidArea.x = 8;
         this.solidArea.y = 16;
@@ -21,6 +19,9 @@ public class NPC_Stalker extends Entity {
         this.solidArea.height = 32;
         this.solidAreaDefaultX = this.solidArea.x;
         this.solidAreaDefaultY = this.solidArea.y;
+
+        getImage();
+        setDialogue();
     }
 
     public void getImage() {
@@ -51,6 +52,7 @@ public class NPC_Stalker extends Entity {
             }
             actionLockCounter = 0;
         }
+        spriteAnim(2);
     }
 
     public void collideEntity(){
