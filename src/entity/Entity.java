@@ -20,6 +20,7 @@ public class Entity {
 
     public BufferedImage up1, up2, down1, down2, left1, left2, right1, right2;
     public BufferedImage attackUp1, attackUp2, attackDown1, attackDown2, attackLeft1, attackLeft2, attackRight1, attackRight2;
+    public BufferedImage runUp1, runUp2, runUp3, runDown1, runDown2, runDown3, runLeft1, runLeft2, runLeft3, runRight1, runRight2, runRight3;
     public BufferedImage image, image2, image3;
 
     public Rectangle solidArea = new Rectangle(0, 0, 48, 48);
@@ -27,28 +28,28 @@ public class Entity {
     public String direction = "down";
     public int spriteCounter = 0;
     public int spriteNum = 1;
-
     public int solidAreaDefaultX, solidAreaDefaultY;
-
     public int type;
 
 
     public String dialogues[] = new String[20];
     int dialogueIndex = 0;
 
-
     public boolean collision = false;
     public boolean invincible = false;
     public boolean collisionOn = false;
     public boolean attacking = false;
+    public boolean running = false;
     public boolean isAlive = true;
     public boolean isDying = false;
+    public boolean hpBarOn = true;
 
     public int buffer = 0;
     public int actionLockCounter = 0;
     public int invincibleCounter = 0;
     public int collideCounter = 0;
     int dyingCounter = 0;
+    int hpBarCounter = 0;
 
     public int maxLife;
     public int life;
@@ -58,28 +59,30 @@ public class Entity {
     }
 
     public void speak(){
-        if (dialogues[dialogueIndex] == null){
-            dialogueIndex = 0;
-        }
-        gp.ui.currentDialogue = dialogues[dialogueIndex];
-        dialogueIndex++;
+        if (type != 2){
+            if (dialogues[dialogueIndex] == null){
+                dialogueIndex = 0;
+            }
+            gp.ui.currentDialogue = dialogues[dialogueIndex];
+            dialogueIndex++;
 
-        switch (gp.player.direction){
-            case "up": {
-                direction = "down";
-                break;
-            }
-            case "down": {
-                direction = "up";
-                break;
-            }
-            case "left": {
-                direction = "right";
-                break;
-            }
-            case "right": {
-                direction = "left";
-                break;
+            switch (gp.player.direction){
+                case "up": {
+                    direction = "down";
+                    break;
+                }
+                case "down": {
+                    direction = "up";
+                    break;
+                }
+                case "left": {
+                    direction = "right";
+                    break;
+                }
+                case "right": {
+                    direction = "left";
+                    break;
+                }
             }
         }
     }
@@ -159,6 +162,11 @@ public class Entity {
         }
     }
 
+    public void damageReaction(){
+        actionLockCounter = 0;
+        direction = gp.player.direction;
+    }
+
     public void draw(Graphics2D g2){
 
         BufferedImage image = null;
@@ -209,24 +217,44 @@ public class Entity {
                 }
             }
         }
-        if (invincible == true){
-            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.4f));
+        if (type == 2 && hpBarOn == true){
+
+            double oneScale = (double) gp.tileSize/maxLife;
+            double hpBarValue = oneScale * life;
+
+            g2.setColor(new Color(35,35,35));
+            g2.fillRect(screenX - 1, screenY - 16, gp.tileSize+2, 12);
+
+            g2.setColor(new Color(255,0,30));
+            g2.fillRect(screenX, screenY - 15, (int) hpBarValue, 10);
+
+            hpBarCounter++;
+
+            if (hpBarCounter > 600){
+                hpBarCounter = 0;
+                hpBarOn = false;
+            }
         }
 
+
+        if (invincible == true){
+            hpBarOn = true;
+            hpBarCounter = 0;
+            changeAlpha(g2, 0.4f);
+        }
         if (isDying == true){
             dyingAnimation(g2);
         }
         g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize,  null);
 
-        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
-
+        changeAlpha(g2,1f);
     }
 
     public void dyingAnimation(Graphics2D g2){
 
         dyingCounter++;
 
-        int i = 15;
+        int i = 40;
 
         if (dyingCounter <= i){
             changeAlpha(g2, 0f);

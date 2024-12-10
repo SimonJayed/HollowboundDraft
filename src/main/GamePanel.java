@@ -29,7 +29,7 @@ public class GamePanel extends JPanel implements Runnable {
     public final int worldHeight = tileSize * maxWorldRow;
 
 
-    int FPS = 60;
+    int FPS = 80;
 
     int failCTR = 0;
 
@@ -77,7 +77,7 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void run(){
-        double drawInterval = 1000000000/FPS;
+        final double drawInterval = 1_000_000_000.0 / FPS;
         double delta = 0;
         long lastTime = System.nanoTime();
         long currentTime;
@@ -95,7 +95,7 @@ public class GamePanel extends JPanel implements Runnable {
                 try{
                     update();
                     repaint();
-                    delta--;
+                    delta-=1;
                     drawCount++;
                 } catch (ArrayIndexOutOfBoundsException e){
                     failCTR++;
@@ -148,8 +148,12 @@ public class GamePanel extends JPanel implements Runnable {
 
     public void paintComponent(Graphics g){
         super.paintComponent(g);
-
         Graphics2D g2 = (Graphics2D) g;
+
+        long drawStart = 0;
+        if (keyH.checkDrawTime){
+            drawStart = System.nanoTime();
+        }
 
 
         tileM.draw(g2);
@@ -168,12 +172,6 @@ public class GamePanel extends JPanel implements Runnable {
             for (i = 0; i < monster.length; i++) {
                 if (monster[i] != null) {
                     entityList.add(monster[i]);
-                    if (monster[i].isAlive == true && monster[i].isDying == false) {
-                        monster[i].update();
-                    }
-                    if (monster[i].isAlive == false){
-                        monster[i] = null;
-                    }
                 }
             }
         }
@@ -199,6 +197,17 @@ public class GamePanel extends JPanel implements Runnable {
         entityList.clear();
 
         ui.draw(g2);
+
+        if (keyH.checkDrawTime){
+            long drawEnd = System.nanoTime();
+            long passed = drawEnd - drawStart;
+
+            g2.setFont(g2.getFont().deriveFont(30f));
+            g2.setColor(Color.white);
+            g2.drawString("Draw Time: " + passed, 10, 400);
+            System.out.println("Draw Time: " + passed);
+        }
+
 
         g2.dispose();
     }

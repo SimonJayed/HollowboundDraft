@@ -82,6 +82,7 @@ public class NPC_OldMan extends Entity {
         } else {
             collideCounter = 25;
             gp.ui.showMessage("I'M GONNA TOUCH YOU!!", worldX, worldY);
+            type = 2;
         }
     }
 

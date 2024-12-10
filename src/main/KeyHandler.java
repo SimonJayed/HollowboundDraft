@@ -6,8 +6,10 @@ import java.awt.event.KeyListener;
 public class KeyHandler implements KeyListener {
     GamePanel gp;
     public boolean upPressed, downPressed, leftPressed, rightPressed,
-            enterPressed, shiftPressed;
+            enterPressed, shiftPressed, ctrPressed;
 
+
+    boolean checkDrawTime = false;
 
     public KeyHandler(GamePanel gp){
         this.gp = gp;
@@ -35,7 +37,15 @@ public class KeyHandler implements KeyListener {
                 rightPressed = true;
             }
             if (code == KeyEvent.VK_SHIFT){
-                shiftPressed = true;
+                if(shiftPressed == false){
+                    shiftPressed = true;
+                    gp.player.running = true;
+                }
+                else{
+                    shiftPressed = false;
+                    gp.player.running = false;
+                }
+
             }
             if (code == KeyEvent.VK_P){
                 gp.gameState = gp.pauseState;
@@ -43,6 +53,19 @@ public class KeyHandler implements KeyListener {
             }
             if (code == KeyEvent.VK_ENTER){
                 enterPressed = true;
+            }
+            if (code == KeyEvent.VK_CONTROL){
+                ctrPressed = true;
+            }
+
+            if (code == KeyEvent.VK_T){
+                if (checkDrawTime == false){
+                    checkDrawTime = true;
+                }
+
+                else if(checkDrawTime == true){
+                    checkDrawTime = false;
+                }
             }
         }
         else if (gp.gameState == gp.pauseState) {
@@ -73,8 +96,8 @@ public class KeyHandler implements KeyListener {
         if (code == KeyEvent.VK_D){
             rightPressed = false;
         }
-        if (code == KeyEvent.VK_SHIFT){
-            shiftPressed = false;
+        if (code == KeyEvent.VK_CONTROL){
+            ctrPressed = false;
         }
     }
 }

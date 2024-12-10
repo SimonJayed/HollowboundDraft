@@ -6,6 +6,8 @@ import java.awt.event.MouseListener;
 
 public class MouseHandler implements MouseListener {
     GamePanel gp;
+    public boolean lmbPressed;
+
     public MouseHandler (GamePanel gp){
         this.gp = gp;
     }
@@ -16,7 +18,9 @@ public class MouseHandler implements MouseListener {
         int code = e.getButton();
 
         if(code == MouseEvent.BUTTON1){
+            lmbPressed = true;
             gp.keyH.enterPressed = true;
+            System.out.println("LMB Pressed");
         }
     }
 
@@ -27,7 +31,12 @@ public class MouseHandler implements MouseListener {
 
     @Override
     public void mouseReleased(MouseEvent e) {
+        int code = e.getButton();
 
+        if(code == MouseEvent.BUTTON1){
+            lmbPressed = true;
+            gp.keyH.enterPressed = false;
+        }
     }
 
     @Override

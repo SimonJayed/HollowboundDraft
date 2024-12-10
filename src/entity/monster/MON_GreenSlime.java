@@ -54,4 +54,8 @@ public class MON_GreenSlime extends Entity {
             actionLockCounter = 0;
         }
     }
+
+    public void damageReaction(){
+        super.damageReaction();
+    }
 }

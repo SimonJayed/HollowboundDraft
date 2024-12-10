@@ -56,7 +56,7 @@ public class UI {
 
             messageCounter++;
 
-            if (messageCounter > 400 || gp.gameState == gp.dialogueState) {
+            if (messageCounter > 120 || gp.gameState == gp.dialogueState) {
                 messageCounter = 0;
                 messageOn = false;
             }
@@ -67,16 +67,16 @@ public class UI {
         messageOn = true;
 
         if (messageOn) {
-//                int length = (int)g2.getFontMetrics().getStringBounds(message, g2).getWidth();
+//            int length = (int)g2.getFontMetrics().getStringBounds(text, g2).getWidth();
             g2.setFont(g2.getFont().deriveFont(20f));
             g2.setColor(Color.yellow);
 
             g2.drawString(text, getXforCenteredText(text),  gp.player.screenY - 15);
-//                g2.drawString(message, entityX - gp.player.worldX + gp.player.screenX - length/2+18,  entityY - gp.player.worldY + gp.player.screenY - 5);
+//            g2.drawString(text, x - gp.player.worldX + gp.player.screenX - length/2+18,  y - gp.player.worldY + gp.player.screenY - 5);
 
             messageCounter++;
 
-            if (messageCounter > 400 || gp.gameState == gp.dialogueState) {
+            if (messageCounter > 120 || gp.gameState == gp.dialogueState) {
                 messageCounter = 0;
                 messageOn = false;
             }

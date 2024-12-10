@@ -55,18 +55,6 @@ public class AssetSetter {
         gp.npc[0] = new NPC_OldMan(gp);
         gp.npc[0].worldX = 21 * gp.tileSize;
         gp.npc[0].worldY = 21 * gp.tileSize;
-
-        gp.npc[1] = new NPC_Dino(gp);
-        gp.npc[1].worldX = 23 * gp.tileSize;
-        gp.npc[1].worldY = 23  * gp.tileSize;
-
-        gp.npc[4] = new NPC_Stalker(gp);
-        gp.npc[4].worldX = 25  * gp.tileSize;
-        gp.npc[4].worldY = 25  * gp.tileSize;
-
-        gp.npc[5] = new NPC_Human(gp);
-        gp.npc[5].worldX = 22  * gp.tileSize;
-        gp.npc[5].worldY = 22  * gp.tileSize;
     }
 
     public void setMonster(){
@@ -80,6 +68,6 @@ public class AssetSetter {
 
         gp.monster[2] = new MON_GreenSlime(gp);
         gp.monster[2].worldX = 20 * gp.tileSize;
-        gp.monster[2].worldY = 24 * gp.tileSize;
+        gp.monster[2].worldY = 21 * gp.tileSize;
     }
 }
