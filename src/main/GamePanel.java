@@ -35,6 +35,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     TileManager tileM = new TileManager(this);
     public KeyHandler keyH = new KeyHandler(this);
+    public MouseHandler mouseH = new MouseHandler(this);
     Thread gameThread;
     public CollisionChecker cChecker = new CollisionChecker(this);
     public AssetSetter aSetter = new AssetSetter(this);
@@ -44,6 +45,7 @@ public class GamePanel extends JPanel implements Runnable {
     public Player player = new Player(this, keyH);
     public Entity obj[] = new Entity[10];
     public Entity npc[] = new Entity[10];
+    public Entity monster[] = new Entity[20];
     ArrayList <Entity> entityList = new ArrayList<>();
 
     public int gameState;
@@ -53,18 +55,18 @@ public class GamePanel extends JPanel implements Runnable {
 
 
     public GamePanel(){
-
-
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.setBackground(Color.black);
         this.setDoubleBuffered(true);
         this.addKeyListener(keyH);
+        this.addMouseListener(mouseH);
         this.setFocusable(true);
     }
 
     public void setupGame(){
         aSetter.setObject();
         aSetter.setNPC();
+        aSetter.setMonster();
         gameState = playState;
     }
 
@@ -97,7 +99,7 @@ public class GamePanel extends JPanel implements Runnable {
                     drawCount++;
                 } catch (ArrayIndexOutOfBoundsException e){
                     failCTR++;
-                    JOptionPane.showMessageDialog(null, "You got erased from existence", "Dead Lol", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Someone got erased from existence", "Dead Lol", JOptionPane.ERROR_MESSAGE);
                     player.worldX = tileSize * 23;
                     player.worldY = tileSize * 21;
                     if (failCTR == 3){
@@ -122,7 +124,23 @@ public class GamePanel extends JPanel implements Runnable {
 
             for (int i = 0; i < npc.length; i++){
                 if (npc[i] != null){
-                    npc[i].update();
+                    if (npc[i].isAlive == true && npc[i].isDying == false) {
+                        npc[i].update();
+                    }
+                    if (npc[i].isAlive == false){
+                        npc[i] = null;
+                    }
+                }
+            }
+
+            for (int i = 0; i < monster.length; i++){
+                if (monster[i] != null){
+                    if (monster[i].isAlive == true && monster[i].isDying == false) {
+                        monster[i].update();
+                    }
+                    if (monster[i].isAlive == false){
+                        monster[i] = null;
+                    }
                 }
             }
         }
@@ -138,16 +156,28 @@ public class GamePanel extends JPanel implements Runnable {
 
         entityList.add(player);
 
-        for (int i = 0; i < npc.length; i++){
-            if (npc[i] != null){
+        for (int i = 0; i < npc.length; i++) {
+            if (npc[i] != null) {
                 entityList.add(npc[i]);
             }
-        }
-        for (int i = 0; i < obj.length; i++){
-            if (obj[i] != null){
-                entityList.add(obj[i]);
+            for (i = 0; i < obj.length; i++) {
+                if (obj[i] != null) {
+                    entityList.add(obj[i]);
+                }
+            }
+            for (i = 0; i < monster.length; i++) {
+                if (monster[i] != null) {
+                    entityList.add(monster[i]);
+                    if (monster[i].isAlive == true && monster[i].isDying == false) {
+                        monster[i].update();
+                    }
+                    if (monster[i].isAlive == false){
+                        monster[i] = null;
+                    }
+                }
             }
         }
+
 
         Collections.sort(entityList, new Comparator<Entity>() {
             @Override
@@ -166,9 +196,7 @@ public class GamePanel extends JPanel implements Runnable {
             entityList.get(i).draw(g2);
         }
 
-        for (int i = 0; i < entityList.size(); i++){
-            entityList.remove(i);
-        }
+        entityList.clear();
 
         ui.draw(g2);
 

@@ -10,27 +10,45 @@ import java.io.IOException;
 import java.util.Random;
 
 public class Entity {
-    GamePanel gp;
+    public GamePanel gp;
 
     public String name;
     public String gender;
     public String race;
-
     public int worldX, worldY;
     public int speed;
+
     public BufferedImage up1, up2, down1, down2, left1, left2, right1, right2;
+    public BufferedImage attackUp1, attackUp2, attackDown1, attackDown2, attackLeft1, attackLeft2, attackRight1, attackRight2;
+    public BufferedImage image, image2, image3;
+
+    public Rectangle solidArea = new Rectangle(0, 0, 48, 48);
+    public Rectangle attackArea = new Rectangle(0, 0, 48, 48);
     public String direction = "down";
     public int spriteCounter = 0;
     public int spriteNum = 1;
-    public Rectangle solidArea = new Rectangle(0, 0, 48, 48);
+
     public int solidAreaDefaultX, solidAreaDefaultY;
-    public boolean collisionOn = false;
-    public int actionLockCounter = 0;
-    public int collideCounter = 0;
+
+    public int type;
+
+
     public String dialogues[] = new String[20];
     int dialogueIndex = 0;
-    public BufferedImage image, image2, image3;
+
+
     public boolean collision = false;
+    public boolean invincible = false;
+    public boolean collisionOn = false;
+    public boolean attacking = false;
+    public boolean isAlive = true;
+    public boolean isDying = false;
+
+    public int buffer = 0;
+    public int actionLockCounter = 0;
+    public int invincibleCounter = 0;
+    public int collideCounter = 0;
+    int dyingCounter = 0;
 
     public int maxLife;
     public int life;
@@ -64,26 +82,42 @@ public class Entity {
                 break;
             }
         }
-
     }
-    public int collideEntity(int collideCounter){
-        if (gp.cChecker.checkEntity(gp.player, gp.npc) != 999) {
-            return collideCounter;
-        }
-        return 0;
+
+    public void collideEntity() {
+
     }
 
     public void setAction(){
 
     }
 
+    public void yap(Graphics2D g2){
+        g2.setFont(new Font("Arial", Font.PLAIN, 12));
+        g2.setColor(Color.white);
+        g2.drawString("X: " + worldX + ", Y: " + worldY, gp.player.screenX, gp.player.screenY - 10);
+    }
+
     public void update(){
         setAction();
+        if (gp.cChecker.checkEntity(this, gp.npc) != 999 || gp.player.collisionOn){
+            collideEntity();
+        }
+
 
         collisionOn = false;
         gp.cChecker.checkTile(this);
         gp.cChecker.checkObject(this, false);
-        gp.cChecker.checkPlayer(this);
+        gp.cChecker.checkEntity(this, gp.npc);
+        gp.cChecker.checkEntity(this, gp.monster);
+        boolean contactPlayer = gp.cChecker.checkPlayer(this);
+
+        if (this.type == 2 && contactPlayer == true) {
+            if (gp.player.invincible == false){
+                gp.player.life -= 1;
+                gp.player.invincible = true;
+            }
+        }
 
         if (collisionOn == false) {
             switch (direction) {
@@ -114,6 +148,14 @@ public class Entity {
                 spriteNum = 1;
             }
             spriteCounter = 0;
+        }
+
+        if (invincible == true){
+            invincibleCounter++;
+            if (invincibleCounter > 40){
+                invincible = false;
+                invincibleCounter = 0;
+            }
         }
     }
 
@@ -167,18 +209,67 @@ public class Entity {
                 }
             }
         }
-        g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+        if (invincible == true){
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.4f));
+        }
+
+        if (isDying == true){
+            dyingAnimation(g2);
+        }
+        g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize,  null);
+
+        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+
     }
 
+    public void dyingAnimation(Graphics2D g2){
 
-    public BufferedImage setup(String imagePath){
+        dyingCounter++;
+
+        int i = 15;
+
+        if (dyingCounter <= i){
+            changeAlpha(g2, 0f);
+        }
+        if (dyingCounter <= i && dyingCounter <= i*2){
+            changeAlpha(g2, 1f);
+        }
+        if (dyingCounter <= i*2 && dyingCounter <= i*3){
+            changeAlpha(g2, 0f);
+        }
+        if (dyingCounter <= i*3 && dyingCounter <= i*4){
+            changeAlpha(g2, 1f);
+        }
+        if (dyingCounter <= i*4 && dyingCounter <= i*5){
+            changeAlpha(g2, 0f);
+        }
+        if (dyingCounter <= i*5 && dyingCounter <= i*6){
+            changeAlpha(g2, 1f);
+        }
+        if (dyingCounter <= i*6 && dyingCounter <= i*7){
+            changeAlpha(g2, 0f);
+        }
+        if (dyingCounter <= i*7 && dyingCounter <= i*8){
+            changeAlpha(g2, 1f);
+        }
+        if (dyingCounter > i){
+            isDying = false;
+            isAlive = false;
+
+        }
+    }
+    public void changeAlpha(Graphics2D g2, float alphaValue){
+        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alphaValue));
+    }
+
+    public BufferedImage setup(String imagePath, int width, int height){
         UtilityTool uTool = new UtilityTool();
         BufferedImage image = null;
 
         try{
 //            image = ImageIO.read(getClass().getResourceAsStream("/player/" + imageRace + "/" + imageName + ".png"));
             image = ImageIO.read(getClass().getResourceAsStream(imagePath + ".png"));
-            image = uTool.scaleImage(image, gp.tileSize, gp.tileSize);
+            image = uTool.scaleImage(image, width, height);
         } catch (IOException e){
             e.printStackTrace();
         }

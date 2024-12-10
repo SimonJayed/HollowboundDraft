@@ -4,6 +4,7 @@ import entity.NPC_Dino;
 import entity.NPC_Human;
 import entity.NPC_OldMan;
 import entity.NPC_Stalker;
+import entity.monster.MON_GreenSlime;
 import object.OBJ_Boots;
 import object.OBJ_Chest;
 import object.OBJ_Door;
@@ -59,14 +60,6 @@ public class AssetSetter {
         gp.npc[1].worldX = 23 * gp.tileSize;
         gp.npc[1].worldY = 23  * gp.tileSize;
 
-        gp.npc[2] = new NPC_OldMan(gp);
-        gp.npc[2].worldX = gp.randomize(50)  * gp.tileSize;
-        gp.npc[2].worldY = gp.randomize(50)  * gp.tileSize;
-
-        gp.npc[3] = new NPC_OldMan(gp);
-        gp.npc[3].worldX = gp.randomize(50)  * gp.tileSize;
-        gp.npc[3].worldY = gp.randomize(50)  * gp.tileSize;
-
         gp.npc[4] = new NPC_Stalker(gp);
         gp.npc[4].worldX = 25  * gp.tileSize;
         gp.npc[4].worldY = 25  * gp.tileSize;
@@ -74,5 +67,19 @@ public class AssetSetter {
         gp.npc[5] = new NPC_Human(gp);
         gp.npc[5].worldX = 22  * gp.tileSize;
         gp.npc[5].worldY = 22  * gp.tileSize;
+    }
+
+    public void setMonster(){
+        gp.monster[0] = new MON_GreenSlime(gp);
+        gp.monster[0].worldX = 24 * gp.tileSize;
+        gp.monster[0].worldY = 21 * gp.tileSize;
+
+        gp.monster[1] = new MON_GreenSlime(gp);
+        gp.monster[1].worldX = 20 * gp.tileSize;
+        gp.monster[1].worldY = 24 * gp.tileSize;
+
+        gp.monster[2] = new MON_GreenSlime(gp);
+        gp.monster[2].worldX = 20 * gp.tileSize;
+        gp.monster[2].worldY = 24 * gp.tileSize;
     }
 }

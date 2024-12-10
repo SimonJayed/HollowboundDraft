@@ -19,6 +19,7 @@ public class UI {
     int messageCounter = 0;
     public boolean gameFinished = false;
     public String currentDialogue = "";
+    public int entityX = 0, entityY = 0;
 
     public boolean toggleTime = true;
 
@@ -43,55 +44,69 @@ public class UI {
     }
 
     public void showMessage(String text){
-        message = text;
         messageOn = true;
+
+        if (messageOn) {
+//                int length = (int)g2.getFontMetrics().getStringBounds(message, g2).getWidth();
+            g2.setFont(g2.getFont().deriveFont(20f));
+            g2.setColor(Color.yellow);
+
+            g2.drawString(text, getXforCenteredText(text),  gp.player.screenY - 15);
+//                g2.drawString(message, entityX - gp.player.worldX + gp.player.screenX - length/2+18,  entityY - gp.player.worldY + gp.player.screenY - 5);
+
+            messageCounter++;
+
+            if (messageCounter > 400 || gp.gameState == gp.dialogueState) {
+                messageCounter = 0;
+                messageOn = false;
+            }
+        }
+    }
+
+    public void showMessage(String text, int x, int y){
+        messageOn = true;
+
+        if (messageOn) {
+//                int length = (int)g2.getFontMetrics().getStringBounds(message, g2).getWidth();
+            g2.setFont(g2.getFont().deriveFont(20f));
+            g2.setColor(Color.yellow);
+
+            g2.drawString(text, getXforCenteredText(text),  gp.player.screenY - 15);
+//                g2.drawString(message, entityX - gp.player.worldX + gp.player.screenX - length/2+18,  entityY - gp.player.worldY + gp.player.screenY - 5);
+
+            messageCounter++;
+
+            if (messageCounter > 400 || gp.gameState == gp.dialogueState) {
+                messageCounter = 0;
+                messageOn = false;
+            }
+        }
     }
 
     public void draw(Graphics2D g2){
         this.g2 = g2;
+
         g2.setFont(customFont);
         g2.setColor(Color.white);
 
         if (gameFinished && !messageOn){
-
             gp.gameThread = null;
         }
-        else {
-            if(gp.gameState == gp.playState){
-                drawPlayerLife();
-                playTime += (double) 1/60;
-            }
-            else if (gp.gameState == gp.pauseState){
-                drawPlayerLife();
-                drawPauseScreen();
-            }
-            if (gp.gameState == gp.dialogueState){
-                drawPlayerLife();
-                drawDialogueScreen();
-            }
-//            if (toggleTime){
-//                g2.setFont(g2.getFont().deriveFont(20f));
-//                g2.setColor(Color.white);
-//                g2.drawString("Time: " + dFormat.format(playTime), gp.tileSize*11, gp.tileSize/2);
-//            }
-//            else{
-//                g2.dispose();
-//            }
-
-
-            if (messageOn) {
-                g2.setFont(g2.getFont().deriveFont(20f));
-                g2.setColor(Color.yellow);
-                g2.drawString(message, getXforCenteredText(message), gp.player.screenY - 15);
-
-                messageCounter++;
-
-                if (messageCounter > 120 || gp.gameState == gp.dialogueState) {
-                    messageCounter = 0;
-                    messageOn = false;
-                }
-            }
+        if(gp.gameState == gp.playState){
+            drawPlayerLife();
+            playTime += (double) 1/60;
         }
+        else if (gp.gameState == gp.pauseState){
+            drawPlayerLife();
+            drawPauseScreen();
+        }
+        if (gp.gameState == gp.dialogueState){
+            drawPlayerLife();
+            drawDialogueScreen();
+        }
+
+
+
     }
 
     public void drawPlayerLife(){

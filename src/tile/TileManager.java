@@ -29,12 +29,19 @@ public class TileManager {
     }
 
     public void getTileImage() {
-            setup(0, "grass", false);
-            setup(1, "wall", true);
-            setup(2, "water", true);
-            setup(3, "earth", false);
-            setup(4, "tree", true);
-            setup(5, "sand", false);
+//        setup(0, "grass", false);
+//        setup(1, "wall", true);
+//        setup(2, "water", true);
+//        setup(3, "earth", false);
+//        setup(4, "tree", true);
+//        setup(5, "sand", false);
+
+        setup(0, "blkgrass", false);
+        setup(1, "wall", true);
+        setup(2, "blkwater", true);
+        setup(3, "blkdirt", false);
+        setup(4, "blktree", true);
+        setup(5, "blkdirt", false);
     }
 
     public void setup(int index, String imageName, boolean collision){

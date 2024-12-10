@@ -8,11 +8,10 @@ public class KeyHandler implements KeyListener {
     public boolean upPressed, downPressed, leftPressed, rightPressed,
             enterPressed, shiftPressed;
 
-//    public boolean tPressed;
 
-public KeyHandler(GamePanel gp){
-    this.gp = gp;
-}
+    public KeyHandler(GamePanel gp){
+        this.gp = gp;
+    }
 
     @Override
     public void keyTyped(KeyEvent e) {
@@ -36,33 +35,22 @@ public KeyHandler(GamePanel gp){
                 rightPressed = true;
             }
             if (code == KeyEvent.VK_SHIFT){
-                gp.player.speed = 7;
+                shiftPressed = true;
             }
-
-//            if (code == KeyEvent.VK_T){
-//                if (gp.ui.toggleTime) {
-//                    gp.ui.toggleTime = false;
-//                }
-//                else{
-//                    gp.ui.toggleTime = true;
-//                }
-//            }
-
             if (code == KeyEvent.VK_P){
                 gp.gameState = gp.pauseState;
+                System.out.println("p pressed and " + gp.gameState);
             }
             if (code == KeyEvent.VK_ENTER){
                 enterPressed = true;
             }
         }
-
-        if (gp.gameState == gp.pauseState) {
+        else if (gp.gameState == gp.pauseState) {
             if (code == KeyEvent.VK_P){
                 gp.gameState = gp.playState;
             }
         }
-
-        if (gp.gameState == gp.dialogueState){
+        else if (gp.gameState == gp.dialogueState){
             if (code == KeyEvent.VK_ENTER){
                 gp.gameState = gp.playState;
             }
@@ -86,10 +74,7 @@ public KeyHandler(GamePanel gp){
             rightPressed = false;
         }
         if (code == KeyEvent.VK_SHIFT){
-            gp.player.speed = 4;
+            shiftPressed = false;
         }
-//        if (code == KeyEvent.VK_ENTER){
-//            enterPressed = false;
-//        }
     }
 }

@@ -24,14 +24,14 @@ public class NPC_Human extends Entity {
     }
 
     public void getImage() {
-        up1 = setup("/player/human/up1");
-        up2 = setup("/player/human/up2");
-        down1 = setup("/player/human/down1");
-        down2 = setup("/player/human/down2");
-        left1 = setup("/player/human/left1");
-        left2 = setup("/player/human/left2");
-        right1 = setup("/player/human/right1");
-        right2 = setup("/player/human/right2");
+        up1 = setup("/player/human/up1", gp.tileSize, gp.tileSize);
+        up2 = setup("/player/human/up2", gp.tileSize, gp.tileSize);
+        down1 = setup("/player/human/down1", gp.tileSize, gp.tileSize);
+        down2 = setup("/player/human/down2", gp.tileSize, gp.tileSize);
+        left1 = setup("/player/human/left1", gp.tileSize, gp.tileSize);
+        left2 = setup("/player/human/left2", gp.tileSize, gp.tileSize);
+        right1 = setup("/player/human/right1", gp.tileSize, gp.tileSize);
+        right2 = setup("/player/human/right2", gp.tileSize, gp.tileSize);
     }
 
     public void setAction() {
@@ -53,27 +53,32 @@ public class NPC_Human extends Entity {
         }
     }
 
-    public int collideEntity(int collideCounter){
-        collideCounter++;
-        System.out.println("Collide: " + collideCounter);
+    public void collideEntity(){
+        if (collisionOn || gp.player.collisionOn){
+            buffer++;
 
-        if (collideCounter <= 200) {
-            gp.ui.showMessage("Wtf, man");
-        } else if (collideCounter <= 600) {
-            if (collideCounter >= 350 && collideCounter <= 450){
-                gp.ui.showMessage("This is the last warning.");
+
+            if (buffer >= 60) {
+                collideCounter++;
+                buffer = 0;
+                System.out.println("Human Collide Counter: " + collideCounter);
             }
-            else if(collideCounter >= 450){
-                gp.ui.showMessage("...");
-            }
-            else{
-                gp.ui.showMessage("Dude, stop.");
+        }
+
+        if (collideCounter <= 5) {
+            gp.ui.showMessage("Dude", worldX, worldY);
+        } else if (collideCounter <= 20) {
+            if (collideCounter >= 5 && collideCounter <= 10) {
+                gp.ui.showMessage("This is the last warning.", worldX, worldY);
+            } else if (collideCounter >= 15) {
+                gp.ui.showMessage("...", worldX, worldY);
+            } else {
+                gp.ui.showMessage("Dude, stop.", worldX, worldY);
             }
         } else {
-            collideCounter = 800;
-            gp.ui.showMessage("I'M GONNA TOUCH YOU!!");
+            collideCounter = 25;
+            gp.ui.showMessage("I'M GONNA TOUCH YOU!!", worldX, worldY);
         }
-        return collideCounter;
     }
 
     public void setDialogue(){
