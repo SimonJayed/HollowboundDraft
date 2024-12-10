@@ -8,7 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 
-public class shrik extends GameWindowForm {
+public class anim extends GameWindowForm {
     private JPanel panel;
     private JLabel animationLabel;
     private Timer timer;
@@ -16,16 +16,16 @@ public class shrik extends GameWindowForm {
     private String[] frames;
 
     public void generateFrames() {
-        frames = new String[108];
+        frames = new String[8];
 
-        for (int i = 0; i <= 107; i++) {
-            String frameNumber = String.format("%03d", i);
+        for (int i = 0; i <= 7; i++) {
+            String frameNumber = String.format("%02d", i);
 
-            frames[i] = "src/anim/shrik2anim/frame_" + frameNumber + "_delay-0.07s.png";
+            frames[i] = "src/anim/blackflash/frame_" + frameNumber + "_delay-0.1s.png";
         }
     }
 
-    public shrik() {
+    public anim() {
         generateFrames();
 
         setSize(800, 600);
@@ -53,9 +53,9 @@ public class shrik extends GameWindowForm {
                         );
                         animationLabel.setIcon(new ImageIcon(scaledImage));
                     }
-//                    else {
-//                        System.err.println("Warning: Image not found -> " + currentFrame);
-//                    }
+                    else {
+                        System.err.println("Warning: Image not found -> " + currentFrame);
+                    }
 
 
                     frameIndex++;

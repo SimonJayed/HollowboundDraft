@@ -6,7 +6,7 @@ import java.awt.event.KeyListener;
 public class KeyHandler implements KeyListener {
     GamePanel gp;
     public boolean upPressed, downPressed, leftPressed, rightPressed,
-            enterPressed, shiftPressed, ctrPressed;
+            enterPressed, shiftPressed, ctrPressed, tabPressed;
 
 
     boolean checkDrawTime = false;
@@ -51,9 +51,14 @@ public class KeyHandler implements KeyListener {
                 gp.gameState = gp.pauseState;
                 System.out.println("p pressed and " + gp.gameState);
             }
+            if (code == KeyEvent.VK_TAB){
+                tabPressed = true;
+            }
+
             if (code == KeyEvent.VK_ENTER){
                 enterPressed = true;
             }
+
             if (code == KeyEvent.VK_CONTROL){
                 ctrPressed = true;
             }

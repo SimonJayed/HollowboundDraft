@@ -12,14 +12,16 @@ import java.util.Random;
 public class Entity {
     public GamePanel gp;
 
+    public int level = 1;
     public String name;
     public String gender;
     public String race;
     public int worldX, worldY;
     public int speed;
+    public int strength;
 
-    public BufferedImage up1, up2, down1, down2, left1, left2, right1, right2;
-    public BufferedImage attackUp1, attackUp2, attackDown1, attackDown2, attackLeft1, attackLeft2, attackRight1, attackRight2;
+    public BufferedImage up1, up2, up3, down1, down2, down3, left1, left2, left3, right1, right2, right3;
+    public BufferedImage attackUp1, attackUp2, attackUp3, attackDown1, attackDown2, attackDown3, attackLeft1, attackLeft2, attackLeft3, attackRight1, attackRight2, attackRight3;
     public BufferedImage runUp1, runUp2, runUp3, runDown1, runDown2, runDown3, runLeft1, runLeft2, runLeft3, runRight1, runRight2, runRight3;
     public BufferedImage image, image2, image3;
 
@@ -39,6 +41,7 @@ public class Entity {
     public boolean invincible = false;
     public boolean collisionOn = false;
     public boolean attacking = false;
+    public boolean dashing = false;
     public boolean running = false;
     public boolean isAlive = true;
     public boolean isDying = false;
@@ -83,25 +86,50 @@ public class Entity {
                     direction = "left";
                     break;
                 }
+                default:{
+                    direction = "down";
+                }
             }
         }
     }
 
     public void collideEntity() {
+        if (gp.cChecker.checkEntity(this, gp.npc) != 999 || gp.cChecker.checkPlayer(this) == true || gp.cChecker.checkEntity(this, gp.monster) != 999){
+            buffer++;
 
+
+            if (buffer >= 60) {
+                collideCounter++;
+                buffer = 0;
+                System.out.println(name + " Collide Counter: " + collideCounter);
+            }
+        }
+
+        if (collideCounter <= 5) {
+//            gp.ui.showMessage("Dude");
+        } else if (collideCounter <= 20) {
+            if (collideCounter >= 5 && collideCounter <= 10) {
+//                gp.ui.showMessage("This is the last warning.");
+            } else if (collideCounter >= 15) {
+//                gp.ui.showMessage("...");
+            } else {
+//                gp.ui.showMessage("Dude, stop.");
+            }
+        } else {
+            collideCounter = 25;
+            gp.ui.showMessage("I'M GONNA TOUCH YOU!!");
+            type = 2;
+        }
     }
 
     public void setAction(){
 
     }
 
-    public void yap(Graphics2D g2){
-        g2.setFont(new Font("Arial", Font.PLAIN, 12));
-        g2.setColor(Color.white);
-        g2.drawString("X: " + worldX + ", Y: " + worldY, gp.player.screenX, gp.player.screenY - 10);
-    }
-
     public void update(){
+        if (attacking) {
+            attacking();
+        }
         setAction();
         if (gp.cChecker.checkEntity(this, gp.npc) != 999 || gp.player.collisionOn){
             collideEntity();
@@ -142,16 +170,6 @@ public class Entity {
                 }
             }
         }
-        spriteCounter++;
-        if (spriteCounter > 12){
-            if (spriteNum == 1){
-                spriteNum = 2;
-            }
-            else if (spriteNum == 2){
-                spriteNum = 1;
-            }
-            spriteCounter = 0;
-        }
 
         if (invincible == true){
             invincibleCounter++;
@@ -161,14 +179,135 @@ public class Entity {
             }
         }
     }
+    public void spriteAnim(int spriteQuantity){
+        spriteCounter++;
+
+        // Reset spriteCounter after completing a full cycle
+        if (spriteCounter > spriteQuantity * 13) {
+            spriteCounter = 1;
+        }
+
+        // Calculate the current sprite number
+        spriteNum = (spriteCounter - 1) / 13 + 1;
+    }
+
+    public void attacking(){
+        spriteCounter++;
+
+        spriteCounter++;
+        int i = 13;
+        if (spriteCounter <= i){
+            spriteNum = 1;
+        }
+        else if (spriteCounter <= i*2){
+            spriteNum = 2;
+        }
+
+        else if (spriteCounter <= i*3){
+            spriteNum = 3;
+
+            int currentWorldX = worldX;
+            int currentWorldY = worldY;
+            int solidAreaWidth = solidArea.width;
+            int solidAreaHeight = solidArea.height;
+
+            switch (direction){
+                case "up":{
+                    worldY -= attackArea.height;
+                    break;
+                }
+                case "down":{
+                    worldY += attackArea.height;
+                    break;
+                }
+                case "left":{
+                    worldY -= attackArea.width;
+                    break;
+                }
+                case "right":{
+                    worldX += attackArea.width;
+                    break;
+                }
+            }
+
+            solidArea.width = attackArea.width;
+            solidArea.height = attackArea.height;
+
+            int monsterIndex = gp.cChecker.checkEntity(this, gp.monster);
+            damageMonster(monsterIndex);
+
+            worldX = currentWorldX;
+            worldY = currentWorldY;
+            solidArea.width = solidAreaWidth;
+            solidArea.height = solidAreaHeight;
+        }
+        else{
+            spriteNum = 1;
+            spriteCounter = 0;
+            attacking = false;
+        }
+    }
+
+
+    public void interactNPC(int i){
+        if (gp.keyH.enterPressed == true || gp.mouseH.lmbPressed == true){
+            if (i != 999 ){
+                if(gp.npc[i].type != 2) {
+                    gp.gameState = gp.dialogueState;
+                    gp.npc[i].speak();
+                }
+                else{
+                    if (gp.npc[i].invincible == false){
+                        gp.npc[i].life -= 1;
+                        gp.npc[i].invincible = true;
+                        gp.npc[i].damageReaction();
+
+                        if (gp.npc[i].life <= 0){
+                            gp.npc[i].isDying = true;
+                        }
+                    }
+                }
+            }
+            else{
+                attacking = true;
+            }
+
+        }
+    }
+
+    public void contactMonster(int i){
+
+        if (i != 999){
+            gp.ui.showMessage("Yuck.");
+//            if (invincible == false){
+//                life -= 1;
+//                invincible = true;
+//            }
+        }
+    }
+
+    public void damageMonster(int i){
+        if (i != 999){
+            if (gp.monster[i].invincible == false){
+                gp.monster[i].life -= 1;
+                gp.monster[i].invincible = true;
+                gp.monster[i].damageReaction();
+
+                if (gp.monster[i].life <= 0){
+                    gp.monster[i].isDying = true;
+                }
+            }
+        }
+    }
+
 
     public void damageReaction(){
         actionLockCounter = 0;
         direction = gp.player.direction;
     }
 
-    public void draw(Graphics2D g2){
 
+    public void draw(Graphics2D g2){
         BufferedImage image = null;
 
         int screenX = worldX - gp.player.worldX + gp.player.screenX;

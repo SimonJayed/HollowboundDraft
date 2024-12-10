@@ -34,7 +34,7 @@ public class MouseHandler implements MouseListener {
         int code = e.getButton();
 
         if(code == MouseEvent.BUTTON1){
-            lmbPressed = true;
+            lmbPressed = false;
             gp.keyH.enterPressed = false;
         }
     }

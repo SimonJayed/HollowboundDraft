@@ -1,12 +1,10 @@
 package forms;
 
-import anim.shrik;
+import anim.anim;
 import entity.Entity;
-import main.GamePanel;
 import main.MainMenu;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -144,7 +142,7 @@ public class CharacterPICK extends GameWindowForm implements Forms{
                 try {
                     String name = tfNAME.getText(); // Get text from the text field
                     if (name != null && !name.trim().isEmpty() && bgGENDER.getSelection() != null && bgRACE.getSelection() != null) { // Check if the name is not null and not empty
-                        new shrik();
+                        new anim();
                         dispose();
                     } else {
                         throw new Exception("Enter the fields properly, dude."); // Throw an exception if the name is invalid

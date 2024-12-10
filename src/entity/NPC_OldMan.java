@@ -58,32 +58,7 @@ public class NPC_OldMan extends Entity {
     }
 
     public void collideEntity(){
-        if (collisionOn || gp.player.collisionOn){
-            buffer++;
-
-
-            if (buffer >= 60) {
-                collideCounter++;
-                buffer = 0;
-                System.out.println("Old Man Collide Counter: " + collideCounter);
-            }
-        }
-
-        if (collideCounter <= 5) {
-            gp.ui.showMessage("Wtf, man", worldX, worldY);
-        } else if (collideCounter <= 20) {
-            if (collideCounter >= 5 && collideCounter <= 10) {
-                gp.ui.showMessage("This is the last warning.", worldX, worldY);
-            } else if (collideCounter >= 15) {
-                gp.ui.showMessage("...", worldX, worldY);
-            } else {
-                gp.ui.showMessage("Dude, stop.", worldX, worldY);
-            }
-        } else {
-            collideCounter = 25;
-            gp.ui.showMessage("I'M GONNA TOUCH YOU!!", worldX, worldY);
-            type = 2;
-        }
+        super.collideEntity();
     }
 
     public void setDialogue(){

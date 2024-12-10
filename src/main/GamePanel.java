@@ -44,7 +44,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     public Player player = new Player(this, keyH);
     public Entity obj[] = new Entity[10];
-    public Entity npc[] = new Entity[10];
+    public Entity npc[] = new Entity[20];
     public Entity monster[] = new Entity[20];
     ArrayList <Entity> entityList = new ArrayList<>();
 
@@ -147,6 +147,7 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void paintComponent(Graphics g){
+
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
 
@@ -180,7 +181,7 @@ public class GamePanel extends JPanel implements Runnable {
         Collections.sort(entityList, new Comparator<Entity>() {
             @Override
             public int compare(Entity o1, Entity o2) {
-                int result = Integer.compare(o1.worldY, o2.worldY);
+                int result = Integer.compare(o1.worldX, o2.worldY);
                 return result;
             }
 
