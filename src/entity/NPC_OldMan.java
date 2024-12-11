@@ -2,6 +2,7 @@ package entity;
 
 import main.GamePanel;
 
+import javax.swing.*;
 import java.awt.*;
 
 
@@ -10,7 +11,7 @@ public class NPC_OldMan extends Entity {
     public NPC_OldMan(GamePanel gp) {
         super(gp);
 
-        name = "Gary";
+        name = "Oldie";
         speed = 1;
         maxLife = 10;
         life = maxLife;
@@ -42,8 +43,8 @@ public class NPC_OldMan extends Entity {
     public void setAction() {
         actionLockCounter++;
 
-        if (actionLockCounter >= 120) {
-            int i = gp.randomize(100);
+        if (actionLockCounter >= gp.randomize(120, 350)) {
+            int i = gp.randomize(1, 100);
 
             if (i <= 25) {
                 direction = "up";

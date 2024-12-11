@@ -6,6 +6,10 @@ import tile.TileManager;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -24,12 +28,12 @@ public class GamePanel extends JPanel implements Runnable {
     public final int screenHeight = tileSize * maxscreenRow;
 
     public final int maxWorldCol = 100;
-    public final int maxWorldRow = 200;
+    public final int maxWorldRow = 100;
     public final int worldWidth = tileSize * maxWorldCol;
     public final int worldHeight = tileSize * maxWorldRow;
 
 
-    int FPS = 80;
+    int FPS = 50;
 
     int failCTR = 0;
 
@@ -52,6 +56,7 @@ public class GamePanel extends JPanel implements Runnable {
     public final int pauseState = 2;
     public final int dialogueState = 3;
 
+    public Font customFont;
 
     public GamePanel(){
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -147,6 +152,17 @@ public class GamePanel extends JPanel implements Runnable {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
 
+
+        try {
+            InputStream fontStream = getClass().getResourceAsStream("/fonts/font1.ttf");
+            customFont = Font.createFont(Font.TRUETYPE_FONT, fontStream).deriveFont(20f);
+        } catch (Exception e) {
+            e.printStackTrace();
+            customFont = new Font("Arial", Font.PLAIN, 40); // Fallback font
+        }
+
+        g2.setFont(customFont);
+
         long drawStart = 0;
         if (keyH.showDebugTest){
             drawStart = System.nanoTime();
@@ -203,10 +219,35 @@ public class GamePanel extends JPanel implements Runnable {
         g2.dispose();
     }
 
-    public int randomize(int Range){
+    public int randomize(int min, int max) {
         Random num = new Random();
-        int i = num.nextInt(Range) + 1;
-        return i;
+        if (min > max) {
+            throw new IllegalArgumentException("min should be less than or equal to max");
+        }
+        return num.nextInt((max - min) + 1) + min;
+    }
+
+    public String randomName(String filePath) {
+        String[] names = new String[100];
+        int count = 0;
+        Random random = new Random();
+
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = br.readLine()) != null && count < names.length) {
+                names[count++] = line;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "File missing", "File Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+        if (count == 0) {
+            return "No names found in the file.";
+        }
+
+        int randomIndex = random.nextInt(count);
+        return names[randomIndex];
     }
 
 }

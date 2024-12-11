@@ -4,6 +4,7 @@ import main.GamePanel;
 import main.UtilityTool;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.*;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -19,7 +20,7 @@ public class TileManager {
     public TileManager(GamePanel gp){
         this.gp = gp;
 
-        tile = new Tile[10];
+        tile = new Tile[50];
         mapTileNum = new int[gp.maxWorldCol][gp.maxWorldRow];
 
         getTileImage();
@@ -27,21 +28,36 @@ public class TileManager {
     }
 
     public void getTileImage() {
-        setup(0, "blk", false);
-        setup(1, "wall", true);
-        setup(2, "blkwater", true);
-        setup(3, "blkdirt", false);
-        setup(4, "blktree", true);
-        setup(5, "blkdirt", false);
-        setup(6, "mtWall", true);
+        setup(0, "grassPlain", false);
+        setup(1, "grassTopLeft", true);
+        setup(2, "grassTopMid", true);
+        setup(3, "grassTopRight", true);
+        setup(4, "grassMidLeft", true);
+        setup(5, "waterPlain", true);
+        setup(6, "grassMidRight", true);
+        setup(7, "grassLowLeft", true);
+        setup(8, "grassMidLow", true);
+        setup(9, "grassLowRight", true);
+        setup(10, "grassULCorner", true);
+        setup(11, "grassURCorner", true);
+        setup(12, "grassLLCorner", true);
+        setup(13, "grassLRCorner", true);
 
-//
-//        setup(0, "blkgrass", false);
-//        setup(1, "wall", true);
-//        setup(2, "blkwater", true);
-//        setup(3, "blkdirt", false);
-//        setup(4, "blktree", true);
-//        setup(5, "blkdirt", false);
+        setup(14, "waterWow", true);
+        setup(15, "grassGrass", false);
+        setup(16, "Lipodendrus", true);
+
+        setup(17, "grassPlain", true);
+        setup(18, "mtgrassTopLeft", true);
+        setup(19, "mtgrassTopMid", true);
+        setup(20, "mtgrassTopRight", true);
+        setup(21, "mtgrassMidRight", true);
+        setup(22, "mtgrassMidLeft", true);
+        setup(23, "mtgrassLowLeft", true);
+        setup(24, "mtgrassLowMid", true);
+        setup(25, "mtgrassLowRight", true);
+        setup(30, "blk", true);
+
     }
 
     public void setup(int index, String imageName, boolean collision){
@@ -53,7 +69,11 @@ public class TileManager {
             tile[index].image = uTool.scaleImage(tile[index].image, gp.tileSize, gp.tileSize);
             tile[index].collision = collision;
         } catch (IOException e){
+            System.out.println(index + ": error.");
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Tile map missing", "Tile Error", JOptionPane.ERROR_MESSAGE);
+            System.exit(0);
+
         }
     }
 
@@ -69,12 +89,19 @@ public class TileManager {
                 String line = br.readLine();
 
                 while (col < gp.maxWorldCol){
-                    String numbers[] = line.split(" ");
+                    try{
+                        String numbers[] = line.split(" ");
 
-                    int num = Integer.parseInt(numbers[col]);
+                        int num = Integer.parseInt(numbers[col]);
 
-                    mapTileNum[col][row] = num;
-                    col++;
+                        mapTileNum[col][row] = num;
+                        col++;
+                    } catch (Exception e){
+                        e.printStackTrace();
+                        JOptionPane.showMessageDialog(null, "Tile map missing", "Tile Error", JOptionPane.ERROR_MESSAGE);
+                        System.exit(0);
+                    }
+
                 }
 
                 if (col == gp.maxWorldCol){
@@ -102,11 +129,17 @@ public class TileManager {
             int screenX = worldX - gp.player.worldX + gp.player.screenX;
             int screenY = worldY - gp.player.worldY + gp.player.screenY;
 
-            if (worldX + gp.tileSize > gp.player.worldX - gp.player.screenX &&
-                    worldX - gp.tileSize < gp.player.worldX + gp.player.screenX &&
-                    worldY + gp.tileSize > gp.player.worldY - gp.player.screenY &&
-                    worldY - gp.tileSize < gp.player.worldY + gp.player.screenY){
-                g2.drawImage(tile[tileNum].image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+            try {
+
+                if (worldX + gp.tileSize > gp.player.worldX - gp.player.screenX &&
+                        worldX - gp.tileSize < gp.player.worldX + gp.player.screenX &&
+                        worldY + gp.tileSize > gp.player.worldY - gp.player.screenY &&
+                        worldY - gp.tileSize < gp.player.worldY + gp.player.screenY) {
+                    g2.drawImage(tile[tileNum].image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+                }
+            } catch(Exception e){
+                e.printStackTrace();
+                System.exit(0);
             }
             worldCol++;
 

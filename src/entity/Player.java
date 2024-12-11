@@ -25,6 +25,7 @@ public class Player extends Entity{
         screenX = gp.screenWidth/2 - (gp.tileSize/2);
         screenY = gp.screenHeight/2 - (gp.tileSize/2);
 
+        level = 10;
         solidArea = new Rectangle();
         solidArea.x = 8;
         solidArea.y = 16;
@@ -43,13 +44,13 @@ public class Player extends Entity{
     }
 
     public void setDefaultValues(){
-        worldX = gp.tileSize * 12;
-        worldY = gp.tileSize * 18;
+        worldX = gp.tileSize * 22;
+        worldY = gp.tileSize * 17;
         speed = 2;
         tempSpeed = speed;
         direction = "down";
 
-        maxLife = 6;
+        maxLife = 10;
         life = maxLife;
     }
 
@@ -123,7 +124,7 @@ public class Player extends Entity{
                 direction = "left";
             }
             if (gp.keyH.shiftPressed == true) {
-                this.speed = tempSpeed + 2;
+                this.speed = tempSpeed + 5;
             } else {
                 this.speed = tempSpeed;
             }

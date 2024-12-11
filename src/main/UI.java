@@ -13,7 +13,6 @@ public class UI {
     GamePanel gp;
     Graphics2D g2;
     BufferedImage heart_full, heart_half, heart_blank;
-    private Font customFont;
     public boolean messageOn = false;
     public String message = "";
     int messageCounter = 0;
@@ -29,13 +28,6 @@ public class UI {
     public UI(GamePanel gp){
         this.gp = gp;
 
-        try {
-            InputStream fontStream = getClass().getResourceAsStream("/fonts/font1.ttf");
-            customFont = Font.createFont(Font.TRUETYPE_FONT, fontStream).deriveFont(20f);
-        } catch (Exception e) {
-            e.printStackTrace();
-            customFont = new Font("Arial", Font.PLAIN, 40); // Fallback font
-        }
 
         Entity heart = new OBJ_Heart(gp);
         heart_full = heart.image1;
@@ -51,7 +43,7 @@ public class UI {
     public void draw(Graphics2D g2){
         this.g2 = g2;
 
-        g2.setFont(customFont);
+        g2.setFont(gp.customFont);
         g2.setColor(Color.white);
 
         if (gameFinished && !messageOn){
@@ -75,7 +67,7 @@ public class UI {
             g2.setFont(g2.getFont().deriveFont(20f));
             g2.setColor(Color.yellow);
 
-            g2.drawString(message, getXforCenteredText(message),  gp.player.screenY - 15);
+            g2.drawString(message, getXforCenteredText(g2, message),  gp.player.screenY - 15);
 
             messageCounter++;
 
@@ -122,7 +114,7 @@ public class UI {
         g2.setColor(Color.white);
         String text = "||";
 
-        int x = getXforCenteredText(text);
+        int x = getXforCenteredText(g2, text);
         int y = gp.screenHeight/2 + 40;
 
         g2.drawString(text, x, y);
@@ -156,7 +148,7 @@ public class UI {
         g2.drawRoundRect(x+5, y+5, width-10, height-10, 25, 25);
     }
 
-    public int getXforCenteredText(String text){
+    public int getXforCenteredText(Graphics2D g2, String text){
         int length = (int)g2.getFontMetrics().getStringBounds(text, g2).getWidth();
         int x = gp.screenWidth/2 - length/2;
         return x;

@@ -51,6 +51,13 @@ public class EventHandler {
             if (hit(23, 12, "up") == true) {
                 healingPool(23, 12, gp.dialogueState);
             }
+            if (hit(13, 19, "any")) {
+                teleport(78, 84, gp.dialogueState);
+            } else if (hit(13, 10, "any")) {
+                teleport(50, 60, gp.dialogueState);
+            } else if (hit(14, 8, "any")) {
+                teleport(10, 20, gp.dialogueState);
+            }
         }
 
 
@@ -81,11 +88,14 @@ public class EventHandler {
         return hit;
     }
 
-    public void teleport(int gameState) {
+    public void teleport(int col, int row, int gameState) {
         gp.gameState = gameState;
-        gp.ui.currentDialogue = "Teleported!";
-        gp.player.worldX = gp.tileSize * 32;
-        gp.player.worldY = gp.tileSize * 32;
+        gp.ui.currentDialogue = "Entered cave.";
+        gp.player.worldX = gp.tileSize * 78;
+        gp.player.worldY = gp.tileSize * 84;
+        canTouchEvent = false;
+
+
     }
 
     public void damagePit(int col, int row, int gameState) {

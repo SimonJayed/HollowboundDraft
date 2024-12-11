@@ -358,10 +358,10 @@ public class Entity {
             double hpBarValue = oneScale * life;
 
             g2.setColor(new Color(35,35,35));
-            g2.fillRect(screenX - 1, screenY - 16, gp.tileSize+2, 12);
+            g2.fillRect(screenX - 1, screenY + 3, gp.tileSize+2, 16);
 
             g2.setColor(new Color(255,0,30));
-            g2.fillRect(screenX, screenY - 15, (int) hpBarValue, 10);
+            g2.fillRect(screenX, screenY + 3, (int) hpBarValue, 14);
 
             hpBarCounter++;
 
@@ -371,6 +371,38 @@ public class Entity {
             }
         }
 
+        FontMetrics metrics = g2.getFontMetrics();
+        int nameWidth = metrics.stringWidth(name);
+        int centeredX = screenX+21 - nameWidth / 2;
+
+
+        if (this != null) {
+            boolean isInstanceOfObj = false;
+
+            for (Entity objEntity : gp.obj) {
+                if (objEntity != null && this.getClass().isInstance(objEntity)) {
+                    isInstanceOfObj = true;
+                    break;
+                }
+            }
+
+
+
+            if (!isInstanceOfObj) {
+                g2.setColor(new Color(35,35,35));
+                g2.setFont(g2.getFont().deriveFont(23f));
+                g2.drawString(name, centeredX-2, screenY+1);
+
+                if (type == 2) {
+                    g2.setColor(Color.red);
+                } else if (type == 1){
+                    g2.setColor(Color.white);
+                }
+                g2.setFont(g2.getFont().deriveFont(22f));
+
+                g2.drawString(name, centeredX, screenY);
+            }
+        }
 
         if (invincible == true){
             hpBarOn = true;
@@ -431,12 +463,24 @@ public class Entity {
 
         try{
             image1 = ImageIO.read(getClass().getResourceAsStream(imagePath + ".png"));
-            image1 = uTool.scaleImage(image1, width, height);
+            image1 = uTool.scaleImage(image1, width+level/2, height+level/2);
         } catch (IOException e){
             e.printStackTrace();
         }
         return image1;
     }
+//    public BufferedImage setup(String imagePath, int width, int height){
+//        UtilityTool uTool = new UtilityTool();
+//        BufferedImage image1 = null;
+//
+//        try{
+//            image1 = ImageIO.read(getClass().getResourceAsStream(imagePath + ".png"));
+//            image1 = uTool.scaleImage(image1, width, height);
+//        } catch (IOException e){
+//            e.printStackTrace();
+//        }
+//        return image1;
+//    }
 
     public Entity(String name){
         this.name = name;

@@ -38,8 +38,8 @@ public class NPC_Stalker extends Entity {
     public void setAction() {
         actionLockCounter++;
 
-        if (actionLockCounter >= 120) {
-            int i = gp.randomize(100);
+        if (actionLockCounter >= gp.randomize(120, 350)) {
+            int i = gp.randomize(1, 100);
 
             if (i <= 25) {
                 direction = "up";

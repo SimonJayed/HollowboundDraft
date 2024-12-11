@@ -6,7 +6,8 @@ import java.awt.event.KeyListener;
 public class KeyHandler implements KeyListener {
     GamePanel gp;
     public boolean upPressed, downPressed, leftPressed, rightPressed,
-            enterPressed, shiftPressed, ctrPressed, tabPressed;
+            enterPressed, shiftPressed, ctrPressed, tabPressed, ePressed,
+            qPressed;
 
 
     boolean showDebugTest = false;
@@ -51,9 +52,9 @@ public class KeyHandler implements KeyListener {
                 gp.gameState = gp.pauseState;
                 System.out.println("p pressed and " + gp.gameState);
             }
-            if (code == KeyEvent.VK_R){
-                gp.tileM.loadMap("/maps/islandmap1.txt");
-            }
+//            if (code == KeyEvent.VK_R){
+//                gp.tileM.loadMap("/maps/islandmap1.txt");
+//            }
             if (code == KeyEvent.VK_TAB){
                 tabPressed = true;
             }
@@ -62,9 +63,9 @@ public class KeyHandler implements KeyListener {
                 enterPressed = true;
             }
 
-            if (code == KeyEvent.VK_CONTROL){
-                ctrPressed = true;
-            }
+//            if (code == KeyEvent.VK_CONTROL){
+//                ctrPressed = true;
+//            }
 
             if (code == KeyEvent.VK_T){
                 if (showDebugTest == false){
@@ -103,6 +104,12 @@ public class KeyHandler implements KeyListener {
         }
         if (code == KeyEvent.VK_D){
             rightPressed = false;
+        }
+        if (code == KeyEvent.VK_Q){
+            qPressed = false;
+        }
+        if (code == KeyEvent.VK_E){
+            ePressed = false;
         }
         if (code == KeyEvent.VK_CONTROL){
             ctrPressed = false;

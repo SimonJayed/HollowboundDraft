@@ -3,6 +3,8 @@ package entity.monster;
 import entity.Entity;
 import main.GamePanel;
 
+import javax.swing.*;
+
 public class MON_GreenSlime extends Entity {
 
     public MON_GreenSlime(GamePanel gp){
@@ -10,7 +12,8 @@ public class MON_GreenSlime extends Entity {
 
         this.gp = gp;
         type = 2;
-        name = "Gary";
+        name = gp.randomName("res/text/names/namesAll.txt");
+
         speed = 1;
         maxLife = 4;
         life = maxLife;
@@ -39,8 +42,8 @@ public class MON_GreenSlime extends Entity {
     public void setAction() {
         actionLockCounter++;
 
-        if (actionLockCounter >= 120) {
-            int i = gp.randomize(100);
+        if (actionLockCounter >= gp.randomize(120, 350)) {
+            int i = gp.randomize(1, 100);
 
             if (i <= 25) {
                 direction = "up";

@@ -2,11 +2,14 @@ package entity;
 
 import main.GamePanel;
 
+import javax.swing.*;
+
 public class NPC_Dino extends Entity {
 
     public NPC_Dino(GamePanel gp) {
         super(gp);
 
+        type = 1;
         name = "Baby Dino";
         speed = 3;
         maxLife = 5;
@@ -37,8 +40,8 @@ public class NPC_Dino extends Entity {
     public void setAction() {
         actionLockCounter++;
 
-        if (actionLockCounter >= 120) {
-            int i = gp.randomize(100);
+        if (actionLockCounter >= gp.randomize(120, 350)) {
+            int i = gp.randomize(1, 100);
 
             if (i <= 25) {
                 direction = "up";
