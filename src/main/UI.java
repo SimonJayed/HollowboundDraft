@@ -96,7 +96,7 @@ public class UI {
         int messageX = gp.tileSize;
         int messageY = gp.tileSize + 4;
 
-        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 32f));
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 22f));
 
         for (int i = 0; i < message.size(); i++){
 

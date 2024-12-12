@@ -70,6 +70,7 @@ public class Entity {
         level = gp.randomize(1, 20);
         direction = gp.randomName("res/text/names/directions/directions");
         name = gp.randomName("res/text/names/namesAll.txt");
+        strength = strength + level;
     }
 
     public String getName() {return name;}
@@ -311,7 +312,12 @@ public class Entity {
             if (i != 999 ){
 
                 if (!gp.npc[i].invincible){
-                    gp.npc[i].life -= 1;
+                    int damage = strength - gp.npc[i].defense;
+                    if (damage < 0){
+                        damage = 0;
+                    }
+                    gp.npc[i].life -= damage;
+                    gp.ui.addMessage(damage + " damage!");
                     gp.npc[i].invincible = true;
                     gp.npc[i].damageReaction();
 
@@ -333,7 +339,7 @@ public class Entity {
         if (i != 999){
             gp.ui.addMessage("Yuck.");
             if (invincible == false){
-                int damage = strength - defense;
+                int damage = strength - gp.monster[i].defense;
 
                 life -= 1;
                 invincible = true;

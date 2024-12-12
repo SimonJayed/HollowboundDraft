@@ -324,34 +324,25 @@ public class Player extends Entity{
                     }
                     case "down": {
                         worldY += speed;
-                        if (keyH.ctrPressed && actionLockCounter >= 300) {
-                            worldY += gp.tileSize;
-                            actionLockCounter = 0;
-                        }
                         break;
                     }
                     case "left": {
                         worldX -= speed;
-                        if (keyH.ctrPressed && actionLockCounter >= 300) {
-                            worldX -= gp.tileSize;
-                            actionLockCounter = 0;
-                        }
                         break;
                     }
                     case "right": {
                         worldX += speed;
-                        if (keyH.ctrPressed && actionLockCounter >= 300) {
-                            worldX += gp.tileSize;
-                            actionLockCounter = 0;
                         }
                         break;
                     }
                 }
             }
 
-
+            gp.keyH.mPressed = false;
+            gp.keyH.qPressed = false;
             gp.keyH.enterPressed = false;
             keyH.ctrPressed = false;
+            isAttacking = false;
 
             if (race.equals("human")){
                 spriteAnim(3);
@@ -369,7 +360,7 @@ public class Player extends Entity{
             }
         }
 
-    }
+
 
     public void running(){
         if ( keyH.upPressed || keyH.downPressed || keyH.rightPressed || keyH.leftPressed || keyH.enterPressed

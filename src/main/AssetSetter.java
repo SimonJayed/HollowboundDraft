@@ -30,42 +30,14 @@ public class AssetSetter {
     }
 
     public void setNPC(){
-        gp.npc[0] = new human(gp);
-        gp.npc[0].worldX = gp.randomize(24, 39) * gp.tileSize;
-        gp.npc[0].worldY = gp.randomize(21, 25) * gp.tileSize;
 
-        gp.npc[1] = new human(gp);
-        gp.npc[1].worldX = gp.randomize(24, 39) * gp.tileSize;
-        gp.npc[1].worldY = gp.randomize(21, 25) * gp.tileSize;
-
-        gp.npc[2] = new human(gp);
-        gp.npc[2].worldX = gp.randomize(24, 39) * gp.tileSize;
-        gp.npc[2].worldY = gp.randomize(21, 25) * gp.tileSize;
-
-        gp.npc[3] = new human(gp);
-        gp.npc[3].worldX = gp.randomize(24, 39) * gp.tileSize;
-        gp.npc[3].worldY = gp.randomize(21, 25) * gp.tileSize;
-
-        gp.npc[4] = new human(gp);
-        gp.npc[4].worldX = gp.randomize(21, 31) * gp.tileSize;
-        gp.npc[4].worldY = gp.randomize(10, 16) * gp.tileSize;
-
-        gp.npc[5] = new human(gp);
-        gp.npc[5].worldX = gp.randomize(21, 31) * gp.tileSize;
-        gp.npc[5].worldY = gp.randomize(10, 16) * gp.tileSize;
-
-
-        if ( buffer >= 1200){
-            for(int i = 0; i < 4; i++){
-                if (gp.npc[i] == null){
-                    if(buffer>=16000){
-                        gp.npc[i] = new human(gp);
-                        gp.npc[i].level = gp.randomize(1,10);
-                        gp.npc[i].worldX = gp.randomize(15, 18) * gp.tileSize;
-                        gp.npc[i].worldY = gp.randomize(46, 50) * gp.tileSize;
-                        System.out.println("Human spawned.");
-                    }
-                }
+        for(int i = 0; i < 4; i++){
+            if (gp.npc[i] == null){
+                    gp.npc[i] = new human(gp);
+                    gp.npc[i].level = gp.randomize(1,10);
+                    gp.npc[i].worldX = gp.randomize(43, 49) * gp.tileSize;
+                    gp.npc[i].worldY = gp.randomize(29, 34) * gp.tileSize;
+                    System.out.println("Human spawned.");
             }
         }
 
