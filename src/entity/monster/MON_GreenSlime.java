@@ -12,18 +12,27 @@ public class MON_GreenSlime extends Entity {
 
         this.gp = gp;
         type = 2;
-        name = gp.randomName("res/text/names/namesAll.txt");
+        canInsult = 2;
 
+        try{
+            setName(gp.randomName("res/text/names/namesAll.txt"));
+        }catch (Exception e){
+            JOptionPane.showMessageDialog(null, "File Missing.", "File Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+        setGender("It");
         speed = 1;
         maxLife = 4;
         life = maxLife;
+        exp = 2;
 
-        this.solidArea.x = 3;
-        this.solidArea.y = 8;
-        this.solidArea.width = 42;
-        this.solidArea.height = 30;
-        this.solidAreaDefaultX = this.solidArea.x;
-        this.solidAreaDefaultY = this.solidArea.y;
+
+        solidArea.x = 3;
+        solidArea.y = 18;
+        solidArea.width = 42;
+        solidArea.height = 30;
+        solidAreaDefaultX = solidArea.x;
+        solidAreaDefaultY = solidArea.y;
 
         getImage();
     }

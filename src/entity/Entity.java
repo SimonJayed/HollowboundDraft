@@ -7,18 +7,21 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.Random;
+import java.util.Objects;
 
 public class Entity {
     public GamePanel gp;
 
     public int level = 1;
-    public String name;
-    public String gender;
-    public String race;
+    private String name;
+    private String gender;
+    private String race;
     public int worldX, worldY;
     public int speed;
     public int strength;
+    public int defense;
+    public int stamina = 100;
+    public int exp = 1;
 
     public BufferedImage up1, up2, up3, down1, down2, down3, left1, left2, left3, right1, right2, right3;
     public BufferedImage attackUp1, attackUp2, attackUp3, attackDown1, attackDown2, attackDown3, attackLeft1, attackLeft2, attackLeft3, attackRight1, attackRight2, attackRight3;
@@ -29,7 +32,7 @@ public class Entity {
     public Rectangle attackArea = new Rectangle(0, 0, 48, 48);
     public String direction = "down";
     public int spriteCounter = 0;
-    public int spriteNum = 1;
+    public int spriteNum = 2;
     public int solidAreaDefaultX, solidAreaDefaultY;
     public int type;
 
@@ -40,9 +43,9 @@ public class Entity {
     public boolean collision = false;
     public boolean invincible = false;
     public boolean collisionOn = false;
-    public boolean attacking = false;
-    public boolean dashing = false;
-    public boolean running = false;
+    public boolean isAttacking = false;
+//    public boolean isDashing = false;
+    public boolean isRunning = false;
     public boolean isAlive = true;
     public boolean isDying = false;
     public boolean hpBarOn = true;
@@ -51,15 +54,32 @@ public class Entity {
     public int actionLockCounter = 0;
     public int invincibleCounter = 0;
     public int collideCounter = 0;
-    int dyingCounter = 0;
-    int hpBarCounter = 0;
+    public int dyingCounter = 0;
+    public int hpBarCounter = 0;
+    public int insultBuffer = 0;
+    public String currentInsult = "Tch";
+    public int insultDuration = -1;
+    public int canInsult = 0;
+    public int calmCounter = 0;
 
     public int maxLife;
     public int life;
 
     public Entity(GamePanel gp){
         this.gp = gp;
+        level = gp.randomize(1, 20);
+        direction = gp.randomName("res/text/names/directions/directions");
+        name = gp.randomName("res/text/names/namesAll.txt");
     }
+
+    public String getName() {return name;}
+    public String getRace() {return race;}
+    public String getGender() {return gender;}
+
+    public void setName(String name) {this.name =  name;}
+    public void setRace(String race) {this.race =  race;}
+    public void setGender(String gender) {this.gender =  gender;}
+
 
     public void speak(){
         if (type != 2){
@@ -93,47 +113,37 @@ public class Entity {
         }
     }
 
+
+
     public void collideEntity() {
-        if (gp.cChecker.checkEntity(this, gp.npc) != 999 || gp.cChecker.checkPlayer(this) == true || gp.cChecker.checkEntity(this, gp.monster) != 999){
+        if (gp.cChecker.checkEntity(this, gp.npc) != 999 ||
+                gp.cChecker.checkPlayer(this) ||
+                gp.cChecker.checkEntity(this, gp.monster) != 999) {
             buffer++;
 
 
-            if (buffer >= 60) {
+            if (buffer >= gp.randomize(300, 1200) / level) {
                 collideCounter++;
                 buffer = 0;
                 System.out.println(name + " Collide Counter: " + collideCounter);
             }
         }
 
-        if (collideCounter <= 5) {
-//            gp.ui.showMessage("Dude");
-        } else if (collideCounter <= 20) {
-            if (collideCounter >= 5 && collideCounter <= 10) {
-//                gp.ui.showMessage("This is the last warning.");
-            } else if (collideCounter >= 15) {
-//                gp.ui.showMessage("...");
-            } else {
-//                gp.ui.showMessage("Dude, stop.");
-            }
-        } else {
-            collideCounter = 25;
-            gp.ui.showMessage("I'M GONNA TOUCH YOU!!");
+
+        if (collideCounter >= 5) {
             type = 2;
+            System.out.println(name + " gets mad.");
+            collideCounter = 0;
         }
     }
 
-    public void setAction(){
-
-    }
+    public void setAction(){}
 
     public void update(){
-        if (attacking) {
+        if (isAttacking) {
             attacking();
         }
         setAction();
-        if (gp.cChecker.checkEntity(this, gp.npc) != 999 || gp.player.collisionOn){
-            collideEntity();
-        }
 
 
         collisionOn = false;
@@ -143,14 +153,14 @@ public class Entity {
         gp.cChecker.checkEntity(this, gp.monster);
         boolean contactPlayer = gp.cChecker.checkPlayer(this);
 
-        if (this.type == 2 && contactPlayer == true) {
-            if (gp.player.invincible == false){
+        if (this.type == 2 && contactPlayer) {
+            if (!gp.player.invincible){
                 gp.player.life -= 1;
                 gp.player.invincible = true;
             }
         }
 
-        if (collisionOn == false) {
+        if (!collisionOn) {
             switch (direction) {
                 case "up": {
                     worldY -= speed;
@@ -171,7 +181,7 @@ public class Entity {
             }
         }
 
-        if (invincible == true){
+        if (invincible){
             invincibleCounter++;
             if (invincibleCounter > 40){
                 invincible = false;
@@ -179,6 +189,7 @@ public class Entity {
             }
         }
     }
+
     public void spriteAnim(int spriteQuantity){
         spriteCounter++;
         if (spriteCounter > spriteQuantity * 13) {
@@ -188,6 +199,7 @@ public class Entity {
     }
 
     public void attacking(){
+        System.out.println(name + " attacks.");
         spriteCounter++;
 
         spriteCounter++;
@@ -229,6 +241,9 @@ public class Entity {
             solidArea.width = attackArea.width;
             solidArea.height = attackArea.height;
 
+            int npcIndex = gp.cChecker.checkEntity(this, gp.npc);
+            interactNPC(npcIndex);
+
             int monsterIndex = gp.cChecker.checkEntity(this, gp.monster);
             damageMonster(monsterIndex);
 
@@ -240,32 +255,74 @@ public class Entity {
         else{
             spriteNum = 1;
             spriteCounter = 0;
-            attacking = false;
+            isAttacking = false;
         }
+    }
+
+    public void running(){
+        if (isRunning) {
+            spriteCounter++;
+            stamina--;
+            int i = 13;
+            if (spriteCounter <= i){
+                spriteNum = 1;
+            }
+            else if (spriteCounter <= i*2){
+                spriteNum = 2;
+            }
+            else if (spriteCounter <= i*3){
+                spriteNum = 3;
+            }
+            else if (spriteCounter <= i*4){
+                spriteNum = 2;
+            }
+            else{
+                spriteNum = 1;
+                spriteCounter = 0;
+            }
+
+        }
+    }
+//
+//    public void displayStamina(Graphics2D g2){
+//
+//        int screenX = worldX - gp.player.worldX + gp.player.screenX;
+//        int screenY = worldY - gp.player.worldY + gp.player.screenY;
+//
+//        double oneScale = (double) gp.tileSize/stamina;
+//        double staminaBarValue = oneScale * stamina;
+//
+//        if (isRunning){
+//            g2.setColor(new Color(35,35,35));
+//            g2.fillRect(screenX - 1, screenY + solidArea.y*2, gp.tileSize+2, 16);
+//
+//            g2.setColor(new Color(34, 123, 219, 180));
+//            g2.fillRect(screenX, screenY + solidArea.y*2, (int) staminaBarValue, 14);
+//        }
+//
+//    }
+
+    public void getAttackImage() {
     }
 
 
     public void interactNPC(int i){
-        if (gp.keyH.enterPressed == true ){
+        if (isAttacking){
             if (i != 999 ){
-                if(gp.npc[i].type != 2) {
-                    gp.gameState = gp.dialogueState;
-                    gp.npc[i].speak();
-                }
-                else{
-                    if (gp.npc[i].invincible == false){
-                        gp.npc[i].life -= 1;
-                        gp.npc[i].invincible = true;
-                        gp.npc[i].damageReaction();
 
-                        if (gp.npc[i].life <= 0){
-                            gp.npc[i].isDying = true;
-                        }
+                if (!gp.npc[i].invincible){
+                    gp.npc[i].life -= 1;
+                    gp.npc[i].invincible = true;
+                    gp.npc[i].damageReaction();
+
+                    if (gp.npc[i].life <= 0){
+                        gp.npc[i].isDying = true;
+                        exp += gp.npc[i].exp;
                     }
                 }
             }
             else{
-                attacking = true;
+                isAttacking = true;
             }
 
         }
@@ -274,23 +331,33 @@ public class Entity {
     public void contactMonster(int i){
 
         if (i != 999){
-            gp.ui.showMessage("Yuck.");
-//            if (invincible == false){
-//                life -= 1;
-//                invincible = true;
-//            }
+            gp.ui.addMessage("Yuck.");
+            if (invincible == false){
+                int damage = strength - defense;
+
+                life -= 1;
+                invincible = true;
+            }
         }
     }
 
     public void damageMonster(int i){
         if (i != 999){
-            if (gp.monster[i].invincible == false){
-                gp.monster[i].life -= 1;
+            if (!gp.monster[i].invincible){
+
+                int damage = strength - gp.monster[i].defense;
+                if (damage < 0){
+                    damage = 0;
+                }
+                gp.monster[i].life -= damage;
+                gp.ui.addMessage(damage + " damage!");
                 gp.monster[i].invincible = true;
                 gp.monster[i].damageReaction();
 
                 if (gp.monster[i].life <= 0){
                     gp.monster[i].isDying = true;
+                    exp += gp.monster[i].exp;
+                    gp.ui.addMessage(getName() + "killed the " + gp.monster[i].name + "!");
                 }
             }
         }
@@ -302,6 +369,158 @@ public class Entity {
         direction = gp.player.direction;
     }
 
+    public void displayInsults(Graphics2D g2){
+        if(canInsult > 4){
+            insultBuffer++;
+
+            int screenX = worldX - gp.player.worldX + gp.player.screenX;
+            int screenY = worldY - gp.player.worldY + gp.player.screenY;
+
+            FontMetrics metrics = g2.getFontMetrics();
+            int nameWidth = metrics.stringWidth(currentInsult);
+            int centeredX = screenX+21 - nameWidth / 2;
+
+            if (type == 2) {
+                if (insultDuration == -1) {
+                    insultDuration = gp.randomize(120, 450);
+                }
+
+                if (insultBuffer >= insultDuration) {
+                    if (currentInsult.equals("Tch")) {
+                        currentInsult = gp.randomName("res/text/names/insults/insults");
+                    }
+
+                    g2.setFont(g2.getFont().deriveFont(22f));
+                    g2.setColor(new Color(255, 36, 36));
+                    g2.drawString(currentInsult, centeredX, screenY - (solidArea.y *2) - 15);
+
+
+                    if (insultBuffer >= insultDuration + gp.randomize(450, 750)) {
+                        insultBuffer = 0;
+                        currentInsult = "Tch";
+                        insultDuration = -1;
+                    }
+                }
+            }
+        }
+
+    }
+
+
+    public void displayEntityStats(Graphics2D g2){
+
+        int screenX = worldX - gp.player.worldX + gp.player.screenX;
+        int screenY = worldY - gp.player.worldY + gp.player.screenY;
+//
+//        g2.setColor(new Color(157, 128, 0));
+//        g2.fillRect(screenX, screenY , solidArea.width, solidArea.height);
+//
+//        g2.setColor(new Color(172, 69, 69));
+//        g2.fillRect(screenX, screenY , attackArea.width, attackArea.height);
+
+        if (type == 2 && hpBarOn){
+
+
+            double oneScale = (double) gp.tileSize/maxLife;
+            double hpBarValue = oneScale * life;
+
+            g2.setColor(new Color(0, 0,0));
+            g2.fillRect(screenX - 1, screenY - solidArea.y, gp.tileSize+2, 12);
+
+            g2.setColor(new Color(255,0,30));
+            g2.fillRect(screenX, screenY - solidArea.y, (int) hpBarValue, 11);
+
+            hpBarCounter++;
+
+            if (hpBarCounter > 600){
+                hpBarCounter = 0;
+                hpBarOn = false;
+            }
+        }
+
+        FontMetrics metrics = g2.getFontMetrics();
+        int nameWidth = metrics.stringWidth(name);
+        int centeredX = screenX+21 - nameWidth / 2;
+
+
+        boolean isInstanceOfObj = false;
+
+        for (Entity objEntity : gp.obj) {
+            if (this.getClass().isInstance(objEntity)) {
+                isInstanceOfObj = true;
+                break;
+            }
+        }
+
+        if (!isInstanceOfObj) {
+            g2.setColor(new Color(35,35,35));
+            g2.setFont(g2.getFont().deriveFont(23f));
+            g2.drawString(name, centeredX-2, screenY - (solidArea.y +16));
+
+            if (type == 2) {
+                g2.setColor(Color.red);
+            } else if (type == 1){
+                g2.setColor(Color.white);
+            }
+            g2.setFont(g2.getFont().deriveFont(22f));
+
+            g2.drawString(name, centeredX, screenY - (solidArea.y +15));
+        }
+
+    }
+
+    public void dyingAnimation(Graphics2D g2){
+
+        dyingCounter++;
+
+        int i = 120;
+
+        if (dyingCounter <= i){
+            changeAlpha(g2, 0f);
+        }
+        if (dyingCounter <= i){
+            changeAlpha(g2, 1f);
+        }
+        if (dyingCounter <= i*2){
+            changeAlpha(g2, 0f);
+        }
+        if (dyingCounter <= i*3){
+            changeAlpha(g2, 1f);
+        }
+        if (dyingCounter <= i*4){
+            changeAlpha(g2, 0f);
+        }
+        if (dyingCounter <= i*5){
+            changeAlpha(g2, 1f);
+        }
+        if (dyingCounter <= i*6){
+            changeAlpha(g2, 0f);
+        }
+        if (dyingCounter <= i*7){
+            changeAlpha(g2, 1f);
+        }
+        if (dyingCounter > i){
+            isDying = false;
+            isAlive = false;
+        }
+    }
+
+    public void changeAlpha(Graphics2D g2, float alphaValue){
+        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alphaValue));
+    }
+
+    public BufferedImage setup(String imagePath, int width, int height){
+        UtilityTool uTool = new UtilityTool();
+        BufferedImage image1 = null;
+
+        try{
+            image1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream(imagePath + ".png")));
+            image1 = uTool.scaleImage(image1, width+level/2, height+level/2);
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+        return image1;
+    }
 
     public void draw(Graphics2D g2){
         BufferedImage image1 = null;
@@ -352,187 +571,28 @@ public class Entity {
                 }
             }
         }
-        if (type == 2 && hpBarOn == true){
+        displayEntityStats(g2);
+        collideEntity();
+        displayInsults(g2);
 
-            double oneScale = (double) gp.tileSize/maxLife;
-            double hpBarValue = oneScale * life;
-
-            g2.setColor(new Color(35,35,35));
-            g2.fillRect(screenX - 1, screenY + 3, gp.tileSize+2, 16);
-
-            g2.setColor(new Color(255,0,30));
-            g2.fillRect(screenX, screenY + 3, (int) hpBarValue, 14);
-
-            hpBarCounter++;
-
-            if (hpBarCounter > 600){
-                hpBarCounter = 0;
-                hpBarOn = false;
-            }
-        }
-
-        FontMetrics metrics = g2.getFontMetrics();
-        int nameWidth = metrics.stringWidth(name);
-        int centeredX = screenX+21 - nameWidth / 2;
-
-
-        if (this != null) {
-            boolean isInstanceOfObj = false;
-
-            for (Entity objEntity : gp.obj) {
-                if (objEntity != null && this.getClass().isInstance(objEntity)) {
-                    isInstanceOfObj = true;
-                    break;
-                }
-            }
-
-
-
-            if (!isInstanceOfObj) {
-                g2.setColor(new Color(35,35,35));
-                g2.setFont(g2.getFont().deriveFont(23f));
-                g2.drawString(name, centeredX-2, screenY+1);
-
-                if (type == 2) {
-                    g2.setColor(Color.red);
-                } else if (type == 1){
-                    g2.setColor(Color.white);
-                }
-                g2.setFont(g2.getFont().deriveFont(22f));
-
-                g2.drawString(name, centeredX, screenY);
-            }
-        }
-
-        if (invincible == true){
+        if (invincible){
             hpBarOn = true;
             hpBarCounter = 0;
             changeAlpha(g2, 0.4f);
         }
-        if (isDying == true){
+        if (isDying){
             dyingAnimation(g2);
         }
+
+//        if (isRunning){
+//            displayStamina(g2);
+//        }
         g2.drawImage(image1, screenX, screenY, gp.tileSize, gp.tileSize,  null);
 
         changeAlpha(g2,1f);
     }
 
-    public void dyingAnimation(Graphics2D g2){
-
-        dyingCounter++;
-
-        int i = 40;
-
-        if (dyingCounter <= i){
-            changeAlpha(g2, 0f);
-        }
-        if (dyingCounter <= i && dyingCounter <= i*2){
-            changeAlpha(g2, 1f);
-        }
-        if (dyingCounter <= i*2 && dyingCounter <= i*3){
-            changeAlpha(g2, 0f);
-        }
-        if (dyingCounter <= i*3 && dyingCounter <= i*4){
-            changeAlpha(g2, 1f);
-        }
-        if (dyingCounter <= i*4 && dyingCounter <= i*5){
-            changeAlpha(g2, 0f);
-        }
-        if (dyingCounter <= i*5 && dyingCounter <= i*6){
-            changeAlpha(g2, 1f);
-        }
-        if (dyingCounter <= i*6 && dyingCounter <= i*7){
-            changeAlpha(g2, 0f);
-        }
-        if (dyingCounter <= i*7 && dyingCounter <= i*8){
-            changeAlpha(g2, 1f);
-        }
-        if (dyingCounter > i){
-            isDying = false;
-            isAlive = false;
-
-        }
-    }
-    public void changeAlpha(Graphics2D g2, float alphaValue){
-        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alphaValue));
-    }
-
-    public BufferedImage setup(String imagePath, int width, int height){
-        UtilityTool uTool = new UtilityTool();
-        BufferedImage image1 = null;
-
-        try{
-            image1 = ImageIO.read(getClass().getResourceAsStream(imagePath + ".png"));
-            image1 = uTool.scaleImage(image1, width+level/2, height+level/2);
-        } catch (IOException e){
-            e.printStackTrace();
-        }
-        return image1;
-    }
-//    public BufferedImage setup(String imagePath, int width, int height){
-//        UtilityTool uTool = new UtilityTool();
-//        BufferedImage image1 = null;
-//
-//        try{
-//            image1 = ImageIO.read(getClass().getResourceAsStream(imagePath + ".png"));
-//            image1 = uTool.scaleImage(image1, width, height);
-//        } catch (IOException e){
-//            e.printStackTrace();
-//        }
-//        return image1;
-//    }
-
-    public Entity(String name){
-        this.name = name;
-    }
-
     public String toString() {
         return null;
-    }
-
-    public static class Human extends Entity{
-        public Human(String name, String gender, String race){
-            super(name);
-            this.gender = gender;
-            this.race = race;
-        }
-
-        public String toString(){
-            return "CHAEWON NUMBER ONE!!";
-        }
-    }
-
-    public static class Compy extends Entity{
-        public Compy(String name, String gender, String race){
-            super(name);
-            this.gender = gender;
-            this.race = race;
-        }
-
-        public String toString(){
-            return "Compy mwew mwew krek krek!!";
-        }
-    }
-    public static class Coelacanth extends Entity{
-        public Coelacanth(String name, String gender, String race){
-            super(name);
-            this.gender = gender;
-            this.race = race;
-        }
-
-        public String toString(){
-            return "Silikent blop blop chaewonxsimon!!";
-        }
-    }
-    public static class Pterosaur extends Entity{
-        public Pterosaur(String name, String gender, String race){
-            super(name);
-            this.gender = gender;
-            this.race = race;
-        }
-
-        public String toString(){
-            return "Ptero qwak qwak cak!! cok?";
-        }
     }
 }

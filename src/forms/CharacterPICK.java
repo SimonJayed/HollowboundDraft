@@ -2,15 +2,27 @@ package forms;
 
 import anim.anim;
 import entity.Entity;
+import entity.Player;
+import entity.race.coele;
+import entity.race.compy;
+import entity.race.human;
+import entity.race.ptero;
+import interfaces.Forms;
+import main.GamePanel;
+import main.KeyHandler;
 import main.MainMenu;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.awt.event.*;
 
-public class CharacterPICK extends GameWindowForm implements Forms{
+public class CharacterPICK extends GameWindowForm implements Forms {
+    GamePanel gp;
+    KeyHandler keyH = new KeyHandler(gp);
+
+    private String name;
+    private String gender;
+    private String race = "Human";
+
     private JLabel lblNAME;
     private JTextField tfNAME;
     private JLabel lblGENDER;
@@ -32,10 +44,15 @@ public class CharacterPICK extends GameWindowForm implements Forms{
     private ButtonGroup bgGENDER;
     private MainMenu mainMenu;
 
-    private Entity p1;
 
-    public CharacterPICK(){
-        this.mainMenu = mainMenu;
+    public String getName() {return name;}
+    public String getRace() {return race;}
+    public String getGender() {return gender;}
+
+
+
+    public CharacterPICK(GamePanel gp){
+        this.gp = gp;
         Forms.customizeButton(rbHUMAN, 12);
         Forms.customizeButton(rbCOMPY, 12);
         Forms.customizeButton(rbCOELE, 12);
@@ -54,9 +71,7 @@ public class CharacterPICK extends GameWindowForm implements Forms{
 
         setContentPane(charPanel);
 
-//        rbMALE.isSelected();
-//        rbHUMAN.isSelected();
-
+        Player p1 = new Player(gp, keyH);
 
         tfNAME.addKeyListener(new KeyListener() {
             @Override
@@ -71,7 +86,8 @@ public class CharacterPICK extends GameWindowForm implements Forms{
 
             @Override
             public void keyReleased(KeyEvent e) {
-                String name = tfNAME.getText();
+                name = tfNAME.getText();
+                gp.player.setName(name);
 
                 tfNAME.setToolTipText("15 character/letter limit");
                 if (name.length() > 15) {
@@ -88,13 +104,20 @@ public class CharacterPICK extends GameWindowForm implements Forms{
             }
         });
 
+        rbMALE.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                gp.player.setGender(rbMALE.getText());
+            }
+        });
+
         rbHUMAN.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 updateImage("./img/human.png");
-                String name = tfNAME.getText();
-                p1 = new Entity.Human(name, rbMALE.isSelected() ? "Male" : "Female", "Human");
-                lblCPHRASE.setText(p1.toString());
+                race = "Human";
+                gp.player.setRace(race);
+                lblCPHRASE.setText(p1.getRace() + " " + p1.getName() + " " + p1.getGender() );
                 charPanel.revalidate();
                 charPanel.repaint();
             }
@@ -104,9 +127,9 @@ public class CharacterPICK extends GameWindowForm implements Forms{
             @Override
             public void actionPerformed(ActionEvent e) {
                 updateImage("./img/compy.png");
-                String name = tfNAME.getText();
-                p1 = new Entity.Compy(name, rbMALE.isSelected() ? "Male" : "Female", "Compy");
-                lblCPHRASE.setText(p1.toString());
+                race = "Compy";
+                gp.player.setRace(race);
+                lblCPHRASE.setText(gp.player.getRace() + " " + gp.player.getName() + " " + gp.player.getGender() );
                 charPanel.revalidate();
                 charPanel.repaint();
             }
@@ -116,9 +139,9 @@ public class CharacterPICK extends GameWindowForm implements Forms{
             @Override
             public void actionPerformed(ActionEvent e) {
                 updateImage("./img/coele.png");
-                String name = tfNAME.getText();
-                p1 = new Entity.Coelacanth(name, rbMALE.isSelected() ? "Male" : "Female", "Coelecanth");
-                lblCPHRASE.setText(p1.toString());
+                race = "Coelecanth";
+                gp.player.setRace(race);
+                lblCPHRASE.setText(gp.player.getRace() + " " + gp.player.getName() + " " + gp.player.getGender() );
                 charPanel.revalidate();
                 charPanel.repaint();
             }
@@ -128,11 +151,38 @@ public class CharacterPICK extends GameWindowForm implements Forms{
             @Override
             public void actionPerformed(ActionEvent e) {
                 updateImage("./img/ptero.png");
-                String name = tfNAME.getText();
-                p1 = new Entity.Pterosaur(name, rbMALE.isSelected() ? "Male" : "Female", "Pterosaur");
-                lblCPHRASE.setText(p1.toString());
+                race = "Pterosaur";
+                gp.player.setRace(race);
+                lblCPHRASE.setText(gp.player.getRace() + " " + gp.player.getName() + " " + gp.player.getGender() );
                 charPanel.revalidate();
                 charPanel.repaint();
+            }
+        });
+
+        bSUBMIT.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                lblCPHRASE.setText(gp.player.getRace() + " " + gp.player.getName() + " " + gp.player.getGender() );
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
             }
         });
 
@@ -140,16 +190,27 @@ public class CharacterPICK extends GameWindowForm implements Forms{
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    String name = tfNAME.getText(); // Get text from the text field
-                    if (name != null && !name.trim().isEmpty() && bgGENDER.getSelection() != null && bgRACE.getSelection() != null) { // Check if the name is not null and not empty
+                    name = tfNAME.getText();
+                    if (rbMALE.isSelected()) {
+                        gender = "Male";
+                        gp.player.setGender(gender);
+                    } else if (rbFEMALE.isSelected()) {
+                        gender = "Female";
+                        gp.player.setGender(gender);
+                    }
+
+                    if (name != null && !name.trim().isEmpty() && gender != null && race != null) {
+
+//                        gp.player.setRace(race);
+
                         new anim();
                         dispose();
                     } else {
-                        throw new Exception("Enter the fields properly, dude."); // Throw an exception if the name is invalid
+                        throw new Exception("Enter the fields properly, dude.");
                     }
                 } catch (Exception ex) {
-                    System.out.println(ex.getMessage()); // Print error message to console
-                    JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE); // Show an error dialog
+                    System.out.println(ex.getMessage());
+                    JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
@@ -163,5 +224,13 @@ public class CharacterPICK extends GameWindowForm implements Forms{
     private void createUIComponents() {
         // TODO: place custom component creation code here
         imgRACE = new JLabel(new ImageIcon("./img/def.png"));
+    }
+
+    public Player getConfiguredPlayer() {
+        Player player = new Player(gp, gp.keyH);
+        player.setName(name);
+        player.setGender(gender);
+        player.setRace(race);
+        return player;
     }
 }

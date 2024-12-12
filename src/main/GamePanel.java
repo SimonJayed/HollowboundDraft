@@ -2,6 +2,7 @@ package main;
 
 import entity.Entity;
 import entity.Player;
+import forms.CharacterPICK;
 import tile.TileManager;
 
 import javax.swing.*;
@@ -11,7 +12,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.Random;
 
@@ -29,17 +29,18 @@ public class GamePanel extends JPanel implements Runnable {
 
     public final int maxWorldCol = 100;
     public final int maxWorldRow = 100;
-    public final int worldWidth = tileSize * maxWorldCol;
-    public final int worldHeight = tileSize * maxWorldRow;
 
 
-    int FPS = 50;
+
+
+    int FPS = 60;
 
     int failCTR = 0;
 
     TileManager tileM = new TileManager(this);
     public KeyHandler keyH = new KeyHandler(this);
     Thread gameThread;
+    public StatWindow statWindow = null;
     public CollisionChecker cChecker = new CollisionChecker(this);
     public AssetSetter aSetter = new AssetSetter(this);
     public UI ui = new UI(this);
@@ -49,7 +50,7 @@ public class GamePanel extends JPanel implements Runnable {
     public Entity obj[] = new Entity[10];
     public Entity npc[] = new Entity[20];
     public Entity monster[] = new Entity[20];
-    ArrayList <Entity> entityList = new ArrayList<>();
+    public ArrayList <Entity> entityList = new ArrayList<>();
 
     public int gameState;
     public final int playState = 1;
@@ -121,6 +122,42 @@ public class GamePanel extends JPanel implements Runnable {
         }
     }
 
+    public void toggleStatWindow() {
+        if (statWindow == null) {
+            statWindow = new StatWindow(this);
+            statWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            statWindow.addWindowListener(new java.awt.event.WindowAdapter() {
+                @Override
+                public void windowClosing(java.awt.event.WindowEvent e) {
+                    statWindow = null;
+                }
+            });
+            statWindow.setVisible(true);
+        } else {
+            statWindow.dispose();
+            statWindow = null;
+        }
+    }
+
+    public void toggleStatWindow(Entity entity) {
+        if (statWindow == null) {
+            statWindow = new StatWindow(this, entity);
+            statWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            statWindow.addWindowListener(new java.awt.event.WindowAdapter() {
+                @Override
+                public void windowClosing(java.awt.event.WindowEvent e) {
+                    statWindow = null;
+                }
+            });
+            statWindow.setVisible(true);
+        } else {
+            statWindow.dispose();
+            statWindow = null;
+        }
+    }
+
+
+
     public void update(){
         if (gameState == playState){
             player.update();
@@ -128,7 +165,7 @@ public class GamePanel extends JPanel implements Runnable {
             for (int i = 0; i < npc.length; i++){
                 if (npc[i] != null){
                         npc[i].update();
-                    if (npc[i].isAlive == false){
+                    if (!npc[i].isAlive){
                         npc[i] = null;
                     }
                 }
@@ -136,10 +173,10 @@ public class GamePanel extends JPanel implements Runnable {
 
             for (int i = 0; i < monster.length; i++){
                 if (monster[i] != null){
-                    if (monster[i].isAlive == true && monster[i].isDying == false) {
+                    if (monster[i].isAlive && !monster[i].isDying) {
                         monster[i].update();
                     }
-                    if (monster[i].isAlive == false){
+                    if (!monster[i].isAlive){
                         monster[i] = null;
                     }
                 }
@@ -155,6 +192,7 @@ public class GamePanel extends JPanel implements Runnable {
 
         try {
             InputStream fontStream = getClass().getResourceAsStream("/fonts/font1.ttf");
+            assert fontStream != null;
             customFont = Font.createFont(Font.TRUETYPE_FONT, fontStream).deriveFont(20f);
         } catch (Exception e) {
             e.printStackTrace();
@@ -181,11 +219,10 @@ public class GamePanel extends JPanel implements Runnable {
         }
 
 
-        Collections.sort(entityList, new Comparator<Entity>() {
+        entityList.sort(new Comparator<>() {
             @Override
             public int compare(Entity e1, Entity e2) {
-                int result = Integer.compare(e1.worldY, e2.worldY);
-                return result;
+                return Integer.compare(e1.worldY, e2.worldY);
             }
         });
 
@@ -196,6 +233,7 @@ public class GamePanel extends JPanel implements Runnable {
         entityList.clear();
 
         ui.draw(g2);
+
 
         if (keyH.showDebugTest){
             long drawEnd = System.nanoTime();
@@ -239,11 +277,12 @@ public class GamePanel extends JPanel implements Runnable {
             }
         } catch (IOException e) {
             e.printStackTrace();
-            JOptionPane.showMessageDialog(null, "File missing", "File Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, filePath + " missing", "File Error", JOptionPane.ERROR_MESSAGE);
         }
 
         if (count == 0) {
-            return "No names found in the file.";
+            System.out.println("No names found in " + filePath);
+            return "Bob";
         }
 
         int randomIndex = random.nextInt(count);

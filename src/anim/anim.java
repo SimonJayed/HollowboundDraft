@@ -1,5 +1,6 @@
 package anim;
 
+import forms.CharacterPICK;
 import forms.GameWindowForm;
 import main.GamePanel;
 import javax.swing.*;
@@ -62,6 +63,7 @@ public class anim extends GameWindowForm {
                 } else {
                     timer.stop();
 
+
                     JFrame window = new JFrame();
                     window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
                     window.setResizable(false);
@@ -77,7 +79,6 @@ public class anim extends GameWindowForm {
                     window.pack();
                     window.setLocationRelativeTo(null);
                     window.setVisible(true);
-
                     gamePanel.setupGame();
                     gamePanel.startGameThread();
 

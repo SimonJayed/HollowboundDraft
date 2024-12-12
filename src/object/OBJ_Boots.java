@@ -5,11 +5,12 @@ import main.GamePanel;
 
 public class OBJ_Boots extends Entity {
 
-
     public OBJ_Boots(GamePanel gp){
         super(gp);
+        canInsult = 0;
 
-        name = "Boots";
+        setName("Boots");
         down1 = setup("/objects/boots", gp.tileSize, gp.tileSize);
+
     }
 }

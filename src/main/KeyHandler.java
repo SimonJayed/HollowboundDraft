@@ -7,7 +7,7 @@ public class KeyHandler implements KeyListener {
     GamePanel gp;
     public boolean upPressed, downPressed, leftPressed, rightPressed,
             enterPressed, shiftPressed, ctrPressed, tabPressed, ePressed,
-            qPressed;
+            qPressed, mPressed;
 
 
     boolean showDebugTest = false;
@@ -37,42 +37,35 @@ public class KeyHandler implements KeyListener {
             if (code == KeyEvent.VK_D){
                 rightPressed = true;
             }
-            if (code == KeyEvent.VK_SHIFT){
-                if(shiftPressed == false){
-                    shiftPressed = true;
-                    gp.player.running = true;
-                }
-                else{
-                    shiftPressed = false;
-                    gp.player.running = false;
-                }
-
+            if (code == KeyEvent.VK_SHIFT) {
+                shiftPressed = true;
             }
-            if (code == KeyEvent.VK_P){
+            if (code == KeyEvent.VK_M) {
+                mPressed = !true;
+            }
+            if (code == KeyEvent.VK_P) {
                 gp.gameState = gp.pauseState;
                 System.out.println("p pressed and " + gp.gameState);
             }
 //            if (code == KeyEvent.VK_R){
 //                gp.tileM.loadMap("/maps/islandmap1.txt");
 //            }
-            if (code == KeyEvent.VK_TAB){
+            if (code == KeyEvent.VK_TAB) {
                 tabPressed = true;
             }
 
-            if (code == KeyEvent.VK_ENTER){
-                enterPressed = true;
+            if (code == KeyEvent.VK_ENTER) {
+                enterPressed = !enterPressed;
             }
 
-//            if (code == KeyEvent.VK_CONTROL){
-//                ctrPressed = true;
-//            }
+            if (code == KeyEvent.VK_Q) {
+                qPressed = !qPressed;
+            }
 
-            if (code == KeyEvent.VK_T){
-                if (showDebugTest == false){
+            if (code == KeyEvent.VK_T) {
+                if (!showDebugTest) {
                     showDebugTest = true;
-                }
-
-                else if(showDebugTest == true){
+                } else {
                     showDebugTest = false;
                 }
             }
@@ -111,8 +104,11 @@ public class KeyHandler implements KeyListener {
         if (code == KeyEvent.VK_E){
             ePressed = false;
         }
-        if (code == KeyEvent.VK_CONTROL){
-            ctrPressed = false;
+        if (code == KeyEvent.VK_SHIFT){
+            shiftPressed = false;
         }
+//        if (code == KeyEvent.VK_M) {
+//            mPressed = false;
+//        }
     }
 }

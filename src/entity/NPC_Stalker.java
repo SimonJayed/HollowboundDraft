@@ -2,23 +2,23 @@ package entity;
 
 import main.GamePanel;
 
+import java.awt.*;
+
 public class NPC_Stalker extends Entity {
 
     public NPC_Stalker(GamePanel gp) {
         super(gp);
 
-        name = "??";
+        setName("???");
         speed = 5;
         maxLife = 10;
         life = maxLife;
 
-
-        this.solidArea.x = 8;
-        this.solidArea.y = 16;
-        this.solidArea.width = 32;
-        this.solidArea.height = 32;
-        this.solidAreaDefaultX = this.solidArea.x;
-        this.solidAreaDefaultY = this.solidArea.y;
+        solidArea.y = 18;
+        solidArea.width = 42;
+        solidArea.height = 30;
+        solidAreaDefaultX = solidArea.x;
+        solidAreaDefaultY = solidArea.y;
 
         getImage();
         setDialogue();
@@ -43,20 +43,16 @@ public class NPC_Stalker extends Entity {
 
             if (i <= 25) {
                 direction = "up";
-            } else if (i > 25 && i <= 50) {
+            } else if (i <= 50) {
                 direction = "down";
-            } else if (i > 50 && i <= 75) {
+            } else if (i <= 75) {
                 direction = "left";
-            } else if (i > 75 && i <= 100) {
+            } else if (i <= 100) {
                 direction = "right";
             }
             actionLockCounter = 0;
         }
         spriteAnim(2);
-    }
-
-    public void collideEntity(){
-        super.collideEntity();
     }
 
     public void setDialogue(){

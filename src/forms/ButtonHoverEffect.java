@@ -32,8 +32,7 @@ public class ButtonHoverEffect implements MouseListener {
     @Override
     public void mouseEntered(MouseEvent e) {
         // Change the button's background color when hovered
-        if (e.getSource() instanceof JButton) {
-            JButton button = (JButton) e.getSource();
+        if (e.getSource() instanceof JButton button) {
             button.setForeground(hoverColor);
         }
     }
@@ -41,8 +40,7 @@ public class ButtonHoverEffect implements MouseListener {
     @Override
     public void mouseExited(MouseEvent e) {
         // Reset the button's background color when the mouse exits
-        if (e.getSource() instanceof JButton) {
-            JButton button = (JButton) e.getSource();
+        if (e.getSource() instanceof JButton button) {
             button.setForeground(defaultColor);
         }
     }

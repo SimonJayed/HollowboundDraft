@@ -2,7 +2,7 @@ package main;
 
 import forms.ButtonHoverEffect;
 import forms.CharacterPICK;
-import forms.Forms;
+import interfaces.Forms;
 import forms.GameWindowForm;
 
 import javax.swing.*;
@@ -34,9 +34,9 @@ public class MainMenu extends GameWindowForm implements Forms {
             btnSTART.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    CharacterPICK charPICK = new CharacterPICK();
-
-                    charPICK.setVisible(true);
+                    GamePanel gamePanel = new GamePanel();
+                    CharacterPICK charPick = new CharacterPICK(gamePanel);
+                    charPick.setVisible(true);
                     dispose();
                 }
             });

@@ -10,6 +10,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Objects;
 
 public class TileManager {
 
@@ -47,7 +48,7 @@ public class TileManager {
         setup(15, "grassGrass", false);
         setup(16, "Lipodendrus", true);
 
-        setup(17, "grassPlain", true);
+        setup(17, "grassPlain", false);
         setup(18, "mtgrassTopLeft", true);
         setup(19, "mtgrassTopMid", true);
         setup(20, "mtgrassTopRight", true);
@@ -65,7 +66,7 @@ public class TileManager {
 
         try{
             tile[index] = new Tile();
-            tile[index].image = ImageIO.read(getClass().getResourceAsStream("/tiles/" + imageName + ".png"));
+            tile[index].image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/tiles/" + imageName + ".png")));
             tile[index].image = uTool.scaleImage(tile[index].image, gp.tileSize, gp.tileSize);
             tile[index].collision = collision;
         } catch (IOException e){

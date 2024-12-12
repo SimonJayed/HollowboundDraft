@@ -1,15 +1,16 @@
 package main;
 
-import entity.NPC_Dino;
-import entity.NPC_Human;
 import entity.NPC_OldMan;
-import entity.NPC_Stalker;
+import entity.race.coele;
+import entity.race.compy;
+import entity.race.human;
 import entity.monster.MON_GreenSlime;
 import object.*;
 
 public class AssetSetter {
     GamePanel gp;
 
+    int buffer = 0;
     public AssetSetter(GamePanel gp){
         this.gp = gp;
     }
@@ -29,48 +30,79 @@ public class AssetSetter {
     }
 
     public void setNPC(){
-        gp.npc[0] = new NPC_Human(gp);
+        gp.npc[0] = new human(gp);
         gp.npc[0].worldX = gp.randomize(24, 39) * gp.tileSize;
         gp.npc[0].worldY = gp.randomize(21, 25) * gp.tileSize;
 
-        gp.npc[1] = new NPC_Human(gp);
+        gp.npc[1] = new human(gp);
         gp.npc[1].worldX = gp.randomize(24, 39) * gp.tileSize;
         gp.npc[1].worldY = gp.randomize(21, 25) * gp.tileSize;
 
-        gp.npc[2] = new NPC_Human(gp);
+        gp.npc[2] = new human(gp);
         gp.npc[2].worldX = gp.randomize(24, 39) * gp.tileSize;
         gp.npc[2].worldY = gp.randomize(21, 25) * gp.tileSize;
 
-        gp.npc[3] = new NPC_Human(gp);
+        gp.npc[3] = new human(gp);
         gp.npc[3].worldX = gp.randomize(24, 39) * gp.tileSize;
         gp.npc[3].worldY = gp.randomize(21, 25) * gp.tileSize;
 
-        gp.npc[4] = new NPC_Human(gp);
+        gp.npc[4] = new human(gp);
         gp.npc[4].worldX = gp.randomize(21, 31) * gp.tileSize;
         gp.npc[4].worldY = gp.randomize(10, 16) * gp.tileSize;
 
-        gp.npc[5] = new NPC_Human(gp);
+        gp.npc[5] = new human(gp);
         gp.npc[5].worldX = gp.randomize(21, 31) * gp.tileSize;
         gp.npc[5].worldY = gp.randomize(10, 16) * gp.tileSize;
 
 
-//        gp.npc[3] = new NPC_Dino(gp);
+        if ( buffer >= 1200){
+            for(int i = 0; i < 4; i++){
+                if (gp.npc[i] == null){
+                    if(buffer>=16000){
+                        gp.npc[i] = new human(gp);
+                        gp.npc[i].level = gp.randomize(1,10);
+                        gp.npc[i].worldX = gp.randomize(15, 18) * gp.tileSize;
+                        gp.npc[i].worldY = gp.randomize(46, 50) * gp.tileSize;
+                        System.out.println("Human spawned.");
+                    }
+                }
+            }
+        }
+
+        gp.npc[6] = new NPC_OldMan(gp);
+        gp.npc[6].worldX = 54 * gp.tileSize;
+        gp.npc[6].worldY = 56 * gp.tileSize;
+
+
+//        gp.npc[7] = new coele(gp);
+//        gp.npc[7].worldX = 24 * gp.tileSize;
+//        gp.npc[7].worldY = 18 * gp.tileSize;
+//
+//        gp.npc[8] = new coele(gp);
+//        gp.npc[8].worldX = 25 * gp.tileSize;
+//        gp.npc[8].worldY = 18 * gp.tileSize;
+
+
+//        gp.npc[3] = new compy(gp);
 //        gp.npc[3].worldX = 12 * gp.tileSize;
 //        gp.npc[3].worldY = 25 * gp.tileSize;
     }
 
     public void setMonster(){
-        gp.monster[0] = new MON_GreenSlime(gp);
-        gp.monster[0].worldX = 24 * gp.tileSize;
-        gp.monster[0].worldY = 21 * gp.tileSize;
+        buffer++;
 
-        gp.monster[1] = new MON_GreenSlime(gp);
-        gp.monster[1].worldX = 21 * gp.tileSize;
-        gp.monster[1].worldY = 22 * gp.tileSize;
-
-        gp.monster[2] = new MON_GreenSlime(gp);
-        gp.monster[2].worldX = 20 * gp.tileSize;
-        gp.monster[2].worldY = 11 * gp.tileSize;
-
+        if ( buffer >= 1200){
+            for(int i = 0; i < 10; i++){
+                if (gp.monster[i] == null){
+                    if(buffer>=16000){
+                        gp.monster[i] = new compy(gp);
+                        gp.monster[i].level = gp.randomize(1,10);
+                        gp.monster[i].worldX = gp.randomize(15, 18) * gp.tileSize;
+                        gp.monster[i].worldY = gp.randomize(46, 50) * gp.tileSize;
+                        System.out.println("Dino spawned.");
+                    }
+                }
+            }
+        }
     }
 }

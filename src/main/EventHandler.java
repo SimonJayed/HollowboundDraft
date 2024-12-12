@@ -44,19 +44,19 @@ public class EventHandler {
             canTouchEvent = true;
         }
 
-        if (canTouchEvent == true){
-            if (hit(23, 24, "down") == true) {
-                damagePit(23, 24, gp.dialogueState);
+        if (canTouchEvent){
+            if (hit(23, 24, "down")) {
+                damagePit(gp.dialogueState);
             }
-            if (hit(23, 12, "up") == true) {
-                healingPool(23, 12, gp.dialogueState);
+            if (hit(23, 12, "up")) {
+                healingPool(gp.dialogueState);
             }
             if (hit(13, 19, "any")) {
-                teleport(78, 84, gp.dialogueState);
+                teleport(gp.dialogueState);
             } else if (hit(13, 10, "any")) {
-                teleport(50, 60, gp.dialogueState);
+                teleport(gp.dialogueState);
             } else if (hit(14, 8, "any")) {
-                teleport(10, 20, gp.dialogueState);
+                teleport(gp.dialogueState);
             }
         }
 
@@ -71,7 +71,7 @@ public class EventHandler {
         eventRect[col][row].x = col * gp.tileSize + eventRect[col][row].x;
         eventRect[col][row].y = row * gp.tileSize + eventRect[col][row].y;
 
-        if (gp.player.solidArea.intersects(eventRect[col][row]) && eventRect[col][row].eventDone == false) {
+        if (gp.player.solidArea.intersects(eventRect[col][row]) && !eventRect[col][row].eventDone) {
             if (gp.player.direction.contentEquals(reqDirection) || reqDirection.contentEquals("any")) {
                 hit = true;
 
@@ -88,7 +88,7 @@ public class EventHandler {
         return hit;
     }
 
-    public void teleport(int col, int row, int gameState) {
+    public void teleport(int gameState) {
         gp.gameState = gameState;
         gp.ui.currentDialogue = "Entered cave.";
         gp.player.worldX = gp.tileSize * 78;
@@ -98,7 +98,7 @@ public class EventHandler {
 
     }
 
-    public void damagePit(int col, int row, int gameState) {
+    public void damagePit(int gameState) {
         gp.gameState = gameState;
         gp.ui.currentDialogue = "You fell into a pit!";
         gp.player.life -= 1;
@@ -118,7 +118,7 @@ public class EventHandler {
         canTouchEvent = false;
     }
 
-    public void healingPool(int col, int row, int gameState) {
+    public void healingPool(int gameState) {
         if (gp.keyH.enterPressed) {
             gp.gameState = gameState;
             gp.ui.currentDialogue = "You drink the water. \nYour life has been recovered.";

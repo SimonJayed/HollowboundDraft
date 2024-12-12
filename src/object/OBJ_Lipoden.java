@@ -8,7 +8,7 @@ public class OBJ_Lipoden extends Entity {
     public OBJ_Lipoden(GamePanel gp){
         super(gp);
 
-        name = "Lipoden";
+        setName("Lipodendron");
         down1 = setup("/objects/Lipoden", gp.tileSize, gp.tileSize+8);
         collision = true;
 
