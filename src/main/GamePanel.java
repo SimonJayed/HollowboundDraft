@@ -31,14 +31,15 @@ public class GamePanel extends JPanel implements Runnable {
     public final int maxWorldRow = 100;
 
 
-
-
-    int FPS = 60;
+    public double FPS = 60;
 
     int failCTR = 0;
 
     TileManager tileM = new TileManager(this);
+    CharacterPICK charSelection = new CharacterPICK(this);
+    MainMenu mainMenu = new MainMenu(this);
     public KeyHandler keyH = new KeyHandler(this);
+    public MouseHandler mouseH = new MouseHandler(this);
     Thread gameThread;
     public StatWindow statWindow = null;
     public CollisionChecker cChecker = new CollisionChecker(this);
@@ -46,7 +47,7 @@ public class GamePanel extends JPanel implements Runnable {
     public UI ui = new UI(this);
     public EventHandler eHandler = new EventHandler(this);
 
-    public Player player = new Player(this, keyH);
+    public Player player = new Player(this, keyH, mouseH);
     public Entity obj[] = new Entity[10];
     public Entity npc[] = new Entity[20];
     public Entity monster[] = new Entity[20];
@@ -56,6 +57,7 @@ public class GamePanel extends JPanel implements Runnable {
     public final int playState = 1;
     public final int pauseState = 2;
     public final int dialogueState = 3;
+    public final int flowState = 4;
 
     public Font customFont;
 
@@ -64,10 +66,14 @@ public class GamePanel extends JPanel implements Runnable {
         this.setBackground(Color.black);
         this.setDoubleBuffered(true);
         this.addKeyListener(keyH);
+        this.addMouseListener(mouseH);
         this.setFocusable(true);
     }
 
     public void setupGame(){
+        System.out.println("Player Name: " + player.getName());
+        System.out.println("Player Gender: " + player.getGender());
+        System.out.println("Player Race: " + player.getRace());
         aSetter.setObject();
         aSetter.setNPC();
         aSetter.setMonster();
@@ -81,7 +87,7 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void run(){
-        final double drawInterval = 1_000_000_000.0 / FPS;
+        double drawInterval;
         double delta = 0;
         long lastTime = System.nanoTime();
         long currentTime;
@@ -89,6 +95,7 @@ public class GamePanel extends JPanel implements Runnable {
         int drawCount = 0;
 
         while (gameThread != null){
+            drawInterval = 1_000_000_000.0 / FPS;
             currentTime = System.nanoTime();
 
             delta += (currentTime - lastTime) / drawInterval;
@@ -104,8 +111,6 @@ public class GamePanel extends JPanel implements Runnable {
                 } catch (ArrayIndexOutOfBoundsException e){
                     failCTR++;
                     JOptionPane.showMessageDialog(null, "Someone got erased from existence", "Dead Lol", JOptionPane.ERROR_MESSAGE);
-                    player.worldX = tileSize * 23;
-                    player.worldY = tileSize * 21;
                     if (failCTR == 3){
                         JOptionPane.showMessageDialog(null, "Game doesn't want you, bro. Peace Out.", "Death Loop", JOptionPane.INFORMATION_MESSAGE);
                         System.exit(0);
@@ -122,21 +127,8 @@ public class GamePanel extends JPanel implements Runnable {
         }
     }
 
-    public void toggleStatWindow() {
-        if (statWindow == null) {
-            statWindow = new StatWindow(this);
-            statWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-            statWindow.addWindowListener(new java.awt.event.WindowAdapter() {
-                @Override
-                public void windowClosing(java.awt.event.WindowEvent e) {
-                    statWindow = null;
-                }
-            });
-            statWindow.setVisible(true);
-        } else {
-            statWindow.dispose();
-            statWindow = null;
-        }
+    public void setFPS(double FPS){
+        this.FPS = FPS;
     }
 
     public void toggleStatWindow(Entity entity) {
@@ -156,12 +148,19 @@ public class GamePanel extends JPanel implements Runnable {
         }
     }
 
+    public void initializePlayer(String name, String gender, String race) {
+        player.setName(name);
+        player.setGender(gender);
+        player.setRace(race);
+        player.getPlayerImage();
+    }
 
 
     public void update(){
-        if (gameState == playState){
+        if (gameState == playState || gameState == flowState) {
             player.update();
-
+        }
+        if (gameState == playState){
             for (int i = 0; i < npc.length; i++){
                 if (npc[i] != null){
                         npc[i].update();

@@ -2,6 +2,8 @@ package entity;
 
 import main.GamePanel;
 import main.KeyHandler;
+import main.MouseHandler;
+
 
 import java.awt.*;
 
@@ -10,6 +12,7 @@ import java.awt.image.BufferedImage;
 
 public class Player extends Entity{
     KeyHandler keyH;
+    MouseHandler mouseH;
 
 //    private String name = gp.randomName("res/text/names/namesAll.txt");
 //    private String gender = gp.randomName("res/text/names/genders/genders");
@@ -19,6 +22,7 @@ public class Player extends Entity{
     private String gender = "Male";
     private String race = "Human";
 
+
     public final int screenX;
     public final int screenY;
 
@@ -26,15 +30,14 @@ public class Player extends Entity{
 
     int tempSpeed = 0;
 
-    public Player(GamePanel gp, KeyHandler keyH){
+    public Player(GamePanel gp, KeyHandler keyH, MouseHandler mouseH){
         super(gp);
         this.keyH = keyH;
+        this.mouseH = mouseH;
 
-
+        level = 1;
         screenX = gp.screenWidth/2 - (gp.tileSize/2);
         screenY = gp.screenHeight/2 - (gp.tileSize/2);
-
-        solidArea = new Rectangle();
 
         attackArea.width = 36;
         attackArea.height = 36;
@@ -62,7 +65,7 @@ public class Player extends Entity{
         tempSpeed = speed;
         direction = "down";
 
-        maxLife = 10;
+        maxLife = 2;
         life = maxLife;
     }
 
@@ -82,11 +85,25 @@ public class Player extends Entity{
         this.race = race;
     }
     public String getRace() {
-        return this.race;
+        return race;
     }
 
     public void getPlayerImage(){
-        if (getRace().equals("Human")){
+        if (race.equals("Human")){
+            if (gender.equals("Female")) {
+                up1 = setup("/player/human/woman/up1", gp.tileSize, gp.tileSize);
+                up2 = setup("/player/human/woman/up2", gp.tileSize, gp.tileSize);
+                up3 = setup("/player/human/woman/up1", gp.tileSize, gp.tileSize);
+                down1 = setup("/player/human/woman/down1", gp.tileSize, gp.tileSize);
+                down2 = setup("/player/human/woman/down2", gp.tileSize, gp.tileSize);
+                down3 = setup("/player/human/woman/down1", gp.tileSize, gp.tileSize);
+                left1 = setup("/player/human/woman/left1", gp.tileSize, gp.tileSize);
+                left2 = setup("/player/human/woman/left2", gp.tileSize, gp.tileSize);
+                left3 = setup("/player/human/woman/left3", gp.tileSize, gp.tileSize);
+                right1 = setup("/player/human/woman/right1", gp.tileSize, gp.tileSize);
+                right2 = setup("/player/human/woman/right2", gp.tileSize, gp.tileSize);
+                right3 = setup("/player/human/woman/right3", gp.tileSize, gp.tileSize);
+            } else {
                 up1 = setup("/player/human/up1", gp.tileSize, gp.tileSize);
                 up2 = setup("/player/human/up2", gp.tileSize, gp.tileSize);
                 up3 = setup("/player/human/up1", gp.tileSize, gp.tileSize);
@@ -99,8 +116,9 @@ public class Player extends Entity{
                 right1 = setup("/player/human/right1", gp.tileSize, gp.tileSize);
                 right2 = setup("/player/human/right2", gp.tileSize, gp.tileSize);
                 right3 = setup("/player/human/right3", gp.tileSize, gp.tileSize);
+            }
         }
-        else if (getRace().equals("Compy")){
+        else if (race.equals("Compy")){
             up1 = setup("/player/compy/up1", gp.tileSize, gp.tileSize);
             up2 = setup("/player/compy/up2", gp.tileSize, gp.tileSize);
             down1 = setup("/player/compy/down1", gp.tileSize, gp.tileSize);
@@ -110,7 +128,7 @@ public class Player extends Entity{
             right1 = setup("/player/compy/right1", gp.tileSize, gp.tileSize);
             right2 = setup("/player/compy/right2", gp.tileSize, gp.tileSize);
         }
-        else if (getRace().equals("Coelacanth")){
+        else if (race.equals("Coelacanth")){
             up1 = setup("/player/coelacanth/up1", gp.tileSize, gp.tileSize);
             up2 = setup("/player/coelacanth/up2", gp.tileSize, gp.tileSize);
             down1 = setup("/player/coelacanth/down1", gp.tileSize, gp.tileSize);
@@ -237,25 +255,43 @@ public class Player extends Entity{
     }
 
 
-    public void update(){
+    public void update() {
 //        System.out.println(tempSpeed + " and " + this.speed + " and " + gp.gameState + " and " + getName() + " and " + getRace() + " and " + getGender() );
-        if (isAttacking) {
+        if (keyH.enterPressed || mouseH.lmbPressed) {
+            isAttacking = true;
             attacking();
         }
-        if (keyH.tabPressed){
+        else{
+            isAttacking = false;
+        }
+        if (!keyH.upPressed && !keyH.downPressed && !keyH.rightPressed && !keyH.leftPressed){
+            isIdling = true;
+            idling();
+        }
+
+        if (keyH.zeroPressed){
+            gp.setFPS(5);
+            System.out.println("Bullet time");
+        }
+        else{
+            gp.setFPS(60);
+        }
+
+        if (keyH.tabPressed) {
             System.out.println("Tab is pressed...");
         }
-        if (keyH.shiftPressed){
+        if (keyH.shiftPressed) {
             System.out.println("Shift is pressed...");
         }
-        if (keyH.enterPressed){
+        if (keyH.enterPressed) {
             System.out.println("Enter is pressed...");
         }
-        if (keyH.mPressed){
+        if (keyH.mPressed) {
+            stopAll();
             System.out.println("M is pressed...");
             if (gp.statWindow == null) {
                 System.out.println("Creating StatWindow...");
-                gp.toggleStatWindow();
+                gp.toggleStatWindow(this);
                 gp.statWindow.setVisible(true);
                 gp.setFocusable(true);
             }
@@ -270,9 +306,7 @@ public class Player extends Entity{
             System.out.println("Tab is pressed...");
         }
 
-
-        actionLockCounter++;
-        if (keyH.upPressed || keyH.downPressed || keyH.rightPressed || keyH.leftPressed ) {
+        if (keyH.upPressed || keyH.downPressed || keyH.rightPressed || keyH.leftPressed) {
             if (gp.keyH.upPressed) {
                 direction = "up";
             }
@@ -288,8 +322,8 @@ public class Player extends Entity{
             if (gp.keyH.shiftPressed) {
                 isRunning = true;
                 running();
-                speed ++;
-                if(speed >= tempSpeed + 4){
+                speed++;
+                if (speed >= tempSpeed + 4) {
                     speed = tempSpeed + 4;
                 }
             } else {
@@ -316,10 +350,6 @@ public class Player extends Entity{
                 switch (direction) {
                     case "up": {
                         worldY -= speed;
-                        if (keyH.ctrPressed && actionLockCounter >= 300) {
-                            worldY -= gp.tileSize;
-                            actionLockCounter = 0;
-                        }
                         break;
                     }
                     case "down": {
@@ -332,22 +362,19 @@ public class Player extends Entity{
                     }
                     case "right": {
                         worldX += speed;
-                        }
                         break;
                     }
                 }
             }
 
-            gp.keyH.mPressed = false;
-            gp.keyH.qPressed = false;
-            gp.keyH.enterPressed = false;
-            keyH.ctrPressed = false;
-            isAttacking = false;
+//            gp.keyH.mPressed = false;
+//            gp.keyH.qPressed = false;
+//            gp.keyH.enterPressed = false;
+//            keyH.ctrPressed = false;
 
-            if (race.equals("human")){
+            if (race.equals("human")) {
                 spriteAnim(3);
-            }
-            else{
+            } else {
                 spriteAnim(2);
             }
 
@@ -359,54 +386,61 @@ public class Player extends Entity{
                 }
             }
         }
+    }
 
+    public void stopAll () {
+        isAttacking = false;
+        isRunning = false;
+        if (gp.statWindow != null) {
+            gp.statWindow.dispose();
+            gp.statWindow = null;
+        }
+        keyH.upPressed = false;
+        keyH.downPressed = false;
+        keyH.leftPressed = false;
+        keyH.rightPressed = false;
+    }
 
 
     public void running(){
-        if ( keyH.upPressed || keyH.downPressed || keyH.rightPressed || keyH.leftPressed || keyH.enterPressed
-            || gp.keyH.upPressed) {
+        if ( keyH.upPressed || keyH.downPressed || keyH.rightPressed || keyH.leftPressed) {
             super.running();
         }
     }
 
+    public void idling(){
+        isAttacking = false;
+        isRunning = false;
+        isIdling = false;
+    }
+
     public void interactNPC(int i){
-        if (gp.keyH.enterPressed || keyH.qPressed){
-            if (i != 999 ){
-                if(gp.npc[i].type != 2 && keyH.enterPressed) {
-                    gp.gameState = gp.dialogueState;
-                    gp.npc[i].speak();
-                }
-                else if (keyH.qPressed){
-                    System.out.println("M is pressed...");
-                    if (gp.statWindow == null) {
+            if (i != 999){
+
+//                else if (gp.mouseH.lmbPressed){
+//                    isAttacking = true;
+//                }
+                if (keyH.qPressed) {
+                    stopAll();
+                    System.out.println("q is pressed...");
+
                         System.out.println("Creating StatWindow...");
                         gp.toggleStatWindow(gp.npc[i]);
                         gp.statWindow.setVisible(true);
                         gp.setFocusable(true);
-                    }
-                    else{
-                        gp.statWindow.dispose();
-                        gp.statWindow = null;
-                    }
-                    keyH.qPressed = false;
                 }
-                else{
-                    if (!gp.npc[i].invincible){
-                        gp.npc[i].life -= 1;
-                        gp.npc[i].invincible = true;
-                        gp.npc[i].damageReaction();
 
-                        if (gp.npc[i].life <= 0){
-                            gp.npc[i].isDying = true;
-                            exp += gp.npc[i].exp;
-                        }
+                if (keyH.spacePressed){
+                    if(gp.npc[i].type != 2) {
+                        stopAll();
+                        gp.gameState = gp.dialogueState;
+                        gp.npc[i].speak();
                     }
                 }
-            }
-            else{
-                isAttacking = true;
-            }
-
+//            if (gp.statWindow == null){
+//                stopAll();
+//            }
+                keyH.qPressed = false;
         }
     }
 
@@ -450,6 +484,7 @@ public class Player extends Entity{
 
     }
 
+
     public void draw(Graphics2D g2){
 //      super.draw(g2);
         BufferedImage image = null;
@@ -459,7 +494,8 @@ public class Player extends Entity{
 
         switch (direction) {
             case "up": {
-                    if (spriteNum == 1){
+                if (!isAttacking && !isRunning) {
+                    if (spriteNum == 1) {
                         image = up1;
                     }
                     if (spriteNum == 2) {
@@ -468,6 +504,7 @@ public class Player extends Entity{
                     if (spriteNum == 3) {
                         image = up3;
                     }
+                }
                 if (isAttacking){
                     tempScreenY = screenY - gp.tileSize;
                     if (spriteNum == 1){
@@ -522,7 +559,7 @@ public class Player extends Entity{
                         image = down2;
                     }
                     if (spriteNum == 3) {
-                        image = down1;
+                        image = down3;
                     }
                 }
                 break;
@@ -603,9 +640,6 @@ public class Player extends Entity{
         g2.drawImage(image, tempScreenX, tempScreenY, null);
 
         changeAlpha(g2,1f);
-    }
 
-//    public void setRace(Entity race) {
-//        this.set = (Player) race;
-//    }
+    }
 }

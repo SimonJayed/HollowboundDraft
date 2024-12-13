@@ -11,17 +11,16 @@ import interfaces.Forms;
 import main.GamePanel;
 import main.KeyHandler;
 import main.MainMenu;
+import main.MouseHandler;
 
 import javax.swing.*;
 import java.awt.event.*;
 
 public class CharacterPICK extends GameWindowForm implements Forms {
-    GamePanel gp;
-    KeyHandler keyH = new KeyHandler(gp);
 
-    private String name;
-    private String gender;
-    private String race = "Human";
+    public String name;
+    public String gender;
+    public String race = "Human";
 
     private JLabel lblNAME;
     private JTextField tfNAME;
@@ -45,14 +44,7 @@ public class CharacterPICK extends GameWindowForm implements Forms {
     private MainMenu mainMenu;
 
 
-    public String getName() {return name;}
-    public String getRace() {return race;}
-    public String getGender() {return gender;}
-
-
-
     public CharacterPICK(GamePanel gp){
-        this.gp = gp;
         Forms.customizeButton(rbHUMAN, 12);
         Forms.customizeButton(rbCOMPY, 12);
         Forms.customizeButton(rbCOELE, 12);
@@ -70,8 +62,6 @@ public class CharacterPICK extends GameWindowForm implements Forms {
         Forms.customizeButton(lblCPHRASE, 12);
 
         setContentPane(charPanel);
-
-        Player p1 = new Player(gp, keyH);
 
         tfNAME.addKeyListener(new KeyListener() {
             @Override
@@ -117,7 +107,7 @@ public class CharacterPICK extends GameWindowForm implements Forms {
                 updateImage("./img/human.png");
                 race = "Human";
                 gp.player.setRace(race);
-                lblCPHRASE.setText(p1.getRace() + " " + p1.getName() + " " + p1.getGender() );
+                lblCPHRASE.setText( gp.player.getRace() + " " + gp.player.getName() + " " + gp.player.getGender() );
                 charPanel.revalidate();
                 charPanel.repaint();
             }
@@ -129,7 +119,7 @@ public class CharacterPICK extends GameWindowForm implements Forms {
                 updateImage("./img/compy.png");
                 race = "Compy";
                 gp.player.setRace(race);
-                lblCPHRASE.setText(gp.player.getRace() + " " + gp.player.getName() + " " + gp.player.getGender() );
+                lblCPHRASE.setText( gp.player.getRace() + " " + gp.player.getName() + " " + gp.player.getGender() );
                 charPanel.revalidate();
                 charPanel.repaint();
             }
@@ -139,9 +129,9 @@ public class CharacterPICK extends GameWindowForm implements Forms {
             @Override
             public void actionPerformed(ActionEvent e) {
                 updateImage("./img/coele.png");
-                race = "Coelecanth";
+                race = "Coelacanth";
                 gp.player.setRace(race);
-                lblCPHRASE.setText(gp.player.getRace() + " " + gp.player.getName() + " " + gp.player.getGender() );
+                lblCPHRASE.setText( gp.player.getRace() + " " + gp.player.getName() + " " + gp.player.getGender() );
                 charPanel.revalidate();
                 charPanel.repaint();
             }
@@ -153,7 +143,7 @@ public class CharacterPICK extends GameWindowForm implements Forms {
                 updateImage("./img/ptero.png");
                 race = "Pterosaur";
                 gp.player.setRace(race);
-                lblCPHRASE.setText(gp.player.getRace() + " " + gp.player.getName() + " " + gp.player.getGender() );
+                lblCPHRASE.setText( gp.player.getRace() + " " + gp.player.getName() + " " + gp.player.getGender() );
                 charPanel.revalidate();
                 charPanel.repaint();
             }
@@ -177,7 +167,7 @@ public class CharacterPICK extends GameWindowForm implements Forms {
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                lblCPHRASE.setText(gp.player.getRace() + " " + gp.player.getName() + " " + gp.player.getGender() );
+                lblCPHRASE.setText( gp.player.getRace() + " " + gp.player.getName() + " " + gp.player.getGender() );
             }
 
             @Override
@@ -200,10 +190,12 @@ public class CharacterPICK extends GameWindowForm implements Forms {
                     }
 
                     if (name != null && !name.trim().isEmpty() && gender != null && race != null) {
+                        gp.initializePlayer(name, gender, race);
+                        System.out.println("Name: " + name);
+                        System.out.println("Gender: " + gender);
+                        System.out.println("Race: " + race);
 
-//                        gp.player.setRace(race);
-
-                        new anim();
+                        new anim(gp);
                         dispose();
                     } else {
                         throw new Exception("Enter the fields properly, dude.");
@@ -226,11 +218,4 @@ public class CharacterPICK extends GameWindowForm implements Forms {
         imgRACE = new JLabel(new ImageIcon("./img/def.png"));
     }
 
-    public Player getConfiguredPlayer() {
-        Player player = new Player(gp, gp.keyH);
-        player.setName(name);
-        player.setGender(gender);
-        player.setRace(race);
-        return player;
-    }
 }

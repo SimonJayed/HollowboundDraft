@@ -44,6 +44,7 @@ public class Entity {
     public boolean invincible = false;
     public boolean collisionOn = false;
     public boolean isAttacking = false;
+    public boolean isIdling = false;
 //    public boolean isDashing = false;
     public boolean isRunning = false;
     public boolean isAlive = true;
@@ -116,25 +117,27 @@ public class Entity {
 
 
 
-    public void collideEntity() {
-        if (gp.cChecker.checkEntity(this, gp.npc) != 999 ||
-                gp.cChecker.checkPlayer(this) ||
-                gp.cChecker.checkEntity(this, gp.monster) != 999) {
-            buffer++;
+    public void angerEntity() {
+        if (gp.gameState == gp.playState){
+            if (gp.cChecker.checkEntity(this, gp.npc) != 999 ||
+                    gp.cChecker.checkPlayer(this) ||
+                    gp.cChecker.checkEntity(this, gp.monster) != 999) {
+                buffer++;
 
 
-            if (buffer >= gp.randomize(300, 1200) / level) {
-                collideCounter++;
-                buffer = 0;
-                System.out.println(name + " Collide Counter: " + collideCounter);
+                if (buffer >= gp.randomize(300, 1200)/level) {
+                    collideCounter++;
+                    buffer = 0;
+                    System.out.println(name + " Collide Counter: " + collideCounter);
+                }
             }
-        }
 
 
-        if (collideCounter >= 5) {
-            type = 2;
-            System.out.println(name + " gets mad.");
-            collideCounter = 0;
+            if (collideCounter >= 50) {
+                type = 2;
+                System.out.println(name + " gets mad.");
+                collideCounter = 0;
+            }
         }
     }
 
@@ -201,7 +204,6 @@ public class Entity {
 
     public void attacking(){
         System.out.println(name + " attacks.");
-        spriteCounter++;
 
         spriteCounter++;
         int i = 13;
@@ -243,10 +245,10 @@ public class Entity {
             solidArea.height = attackArea.height;
 
             int npcIndex = gp.cChecker.checkEntity(this, gp.npc);
-            interactNPC(npcIndex);
+            damageEntity(npcIndex);
 
             int monsterIndex = gp.cChecker.checkEntity(this, gp.monster);
-            damageMonster(monsterIndex);
+            damageEntity(monsterIndex);
 
             worldX = currentWorldX;
             worldY = currentWorldY;
@@ -257,6 +259,9 @@ public class Entity {
             spriteNum = 1;
             spriteCounter = 0;
             isAttacking = false;
+            gp.keyH.enterPressed = false;
+            gp.mouseH.lmbPressed = false;
+            isIdling = true;
         }
     }
 
@@ -284,6 +289,10 @@ public class Entity {
 
         }
     }
+
+    public void idling(){
+        isIdling = false;
+    }
 //
 //    public void displayStamina(Graphics2D g2){
 //
@@ -306,34 +315,6 @@ public class Entity {
     public void getAttackImage() {
     }
 
-
-    public void interactNPC(int i){
-        if (isAttacking){
-            if (i != 999 ){
-
-                if (!gp.npc[i].invincible){
-                    int damage = strength - gp.npc[i].defense;
-                    if (damage < 0){
-                        damage = 0;
-                    }
-                    gp.npc[i].life -= damage;
-                    gp.ui.addMessage(damage + " damage!");
-                    gp.npc[i].invincible = true;
-                    gp.npc[i].damageReaction();
-
-                    if (gp.npc[i].life <= 0){
-                        gp.npc[i].isDying = true;
-                        exp += gp.npc[i].exp;
-                    }
-                }
-            }
-            else{
-                isAttacking = true;
-            }
-
-        }
-    }
-
     public void contactMonster(int i){
 
         if (i != 999){
@@ -347,10 +328,9 @@ public class Entity {
         }
     }
 
-    public void damageMonster(int i){
+    public void damageEntity(int i){
         if (i != 999){
-            if (!gp.monster[i].invincible){
-
+            if (gp.monster[i] != null  && !gp.monster[i].invincible){
                 int damage = strength - gp.monster[i].defense;
                 if (damage < 0){
                     damage = 0;
@@ -358,7 +338,8 @@ public class Entity {
                 gp.monster[i].life -= damage;
                 gp.ui.addMessage(damage + " damage!");
                 gp.monster[i].invincible = true;
-                gp.monster[i].damageReaction();
+                actionLockCounter = 0;
+                direction = gp.monster[i].direction;
 
                 if (gp.monster[i].life <= 0){
                     gp.monster[i].isDying = true;
@@ -366,13 +347,23 @@ public class Entity {
                     gp.ui.addMessage(getName() + "killed the " + gp.monster[i].name + "!");
                 }
             }
+            else if (gp.npc[i] != null  && !gp.npc[i].invincible){
+                int damage = strength - gp.npc[i].defense;
+                if (damage < 0){
+                    damage = 0;
+                }
+                gp.npc[i].life -= damage;
+                gp.ui.addMessage(damage + " damage!");
+                gp.npc[i].invincible = true;
+                actionLockCounter = 0;
+                direction = gp.npc[i].direction;
+
+                if (gp.npc[i].life <= 0){
+                    gp.npc[i].isDying = true;
+                    exp += gp.npc[i].exp;
+                }
+            }
         }
-    }
-
-
-    public void damageReaction(){
-        actionLockCounter = 0;
-        direction = gp.player.direction;
     }
 
     public void displayInsults(Graphics2D g2){
@@ -414,15 +405,14 @@ public class Entity {
 
 
     public void displayEntityStats(Graphics2D g2){
-
         int screenX = worldX - gp.player.worldX + gp.player.screenX;
         int screenY = worldY - gp.player.worldY + gp.player.screenY;
-//
-//        g2.setColor(new Color(157, 128, 0));
-//        g2.fillRect(screenX, screenY , solidArea.width, solidArea.height);
-//
-//        g2.setColor(new Color(172, 69, 69));
-//        g2.fillRect(screenX, screenY , attackArea.width, attackArea.height);
+
+        g2.setColor(new Color(157, 128, 0));
+        g2.fillRect(screenX, screenY , solidArea.width, solidArea.height);
+
+        g2.setColor(new Color(172, 69, 69));
+        g2.fillRect(screenX, screenY , attackArea.width, attackArea.height);
 
         if (type == 2 && hpBarOn){
 
@@ -473,6 +463,31 @@ public class Entity {
             g2.drawString(name, centeredX, screenY - (solidArea.y +15));
         }
 
+    }
+
+    public void drawPlayerMessage(Graphics2D g2){
+        int messageX = gp.tileSize;
+        int messageY = gp.tileSize + 4;
+
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 22f));
+
+        for (int i = 0; i < gp.ui.message.size(); i++){
+
+            if (message.get(i) != null){
+
+                g2.setColor(Color.white);
+                g2.drawString(message.get(i), messageX, messageY);
+
+                int counter = messageCounter.get(i) + 1;
+                messageCounter.set(i, counter);
+                messageY += 50;
+
+                if (messageCounter.get(i) > 180){
+                    message.remove(i);
+                    messageCounter.remove(i);
+                }
+            }
+        }
     }
 
     public void dyingAnimation(Graphics2D g2){
@@ -578,7 +593,7 @@ public class Entity {
             }
         }
         displayEntityStats(g2);
-        collideEntity();
+        angerEntity();
         displayInsults(g2);
 
         if (invincible){

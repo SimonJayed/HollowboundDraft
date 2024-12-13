@@ -17,7 +17,7 @@ public class MainMenu extends GameWindowForm implements Forms {
     private JButton btnGALLERY;
     private JButton btnEXIT;
 
-    public MainMenu(){
+    public MainMenu(GamePanel gp){
         Forms.customizeButton(btnSTART, 20);
         Forms.customizeButton(btnGALLERY, 20);
         Forms.customizeButton(btnEXIT, 20);
@@ -34,8 +34,7 @@ public class MainMenu extends GameWindowForm implements Forms {
             btnSTART.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    GamePanel gamePanel = new GamePanel();
-                    CharacterPICK charPick = new CharacterPICK(gamePanel);
+                    CharacterPICK charPick = new CharacterPICK(gp);
                     charPick.setVisible(true);
                     dispose();
                 }
@@ -61,7 +60,9 @@ public class MainMenu extends GameWindowForm implements Forms {
         }
 
         public static void main(String[] args) {
-            MainMenu app = new MainMenu();
+            GamePanel gp = new GamePanel();
+
+            MainMenu app = new MainMenu(gp);
 
             app.setContentPane(app.pnlMAIN);
             app.setVisible(true);

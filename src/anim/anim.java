@@ -26,7 +26,7 @@ public class anim extends GameWindowForm {
         }
     }
 
-    public anim() {
+    public anim(GamePanel gp) {
         generateFrames();
 
         setSize(800, 600);
@@ -73,14 +73,13 @@ public class anim extends GameWindowForm {
                     ImageIcon logo = new ImageIcon("./img/dino1.png");
                     window.setIconImage(logo.getImage());
 
-                    GamePanel gamePanel = new GamePanel();
-                    window.add(gamePanel);
+                    window.add(gp);
 
                     window.pack();
                     window.setLocationRelativeTo(null);
                     window.setVisible(true);
-                    gamePanel.setupGame();
-                    gamePanel.startGameThread();
+                    gp.setupGame();
+                    gp.startGameThread();
 
                     dispose();
                 }

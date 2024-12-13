@@ -92,7 +92,7 @@ public class UI {
         }
     }
 
-    public void drawMessage(){
+    public void drawMessage(int x, int y){
         int messageX = gp.tileSize;
         int messageY = gp.tileSize + 4;
 

@@ -7,7 +7,7 @@ public class KeyHandler implements KeyListener {
     GamePanel gp;
     public boolean upPressed, downPressed, leftPressed, rightPressed,
             enterPressed, shiftPressed, ctrPressed, tabPressed, ePressed,
-            qPressed, mPressed;
+            qPressed, mPressed, spacePressed, zeroPressed, minusPressed;
 
 
     boolean showDebugTest = false;
@@ -24,44 +24,57 @@ public class KeyHandler implements KeyListener {
     public void keyPressed(KeyEvent e) {
         int code = e.getKeyCode();
 
-        if (gp.gameState == gp.playState){
-            if (code == KeyEvent.VK_W){
+        if (gp.gameState == gp.playState || gp.gameState == gp.flowState) {
+            if (code == KeyEvent.VK_W) {
                 upPressed = true;
             }
-            if (code == KeyEvent.VK_A){
+            if (code == KeyEvent.VK_A) {
                 leftPressed = true;
             }
-            if (code == KeyEvent.VK_S){
+            if (code == KeyEvent.VK_S) {
                 downPressed = true;
             }
-            if (code == KeyEvent.VK_D){
+            if (code == KeyEvent.VK_D) {
                 rightPressed = true;
             }
+
             if (code == KeyEvent.VK_SHIFT) {
                 shiftPressed = true;
             }
             if (code == KeyEvent.VK_M) {
-                mPressed = !true;
+                mPressed = !mPressed;
             }
-            if (code == KeyEvent.VK_P) {
-                gp.gameState = gp.pauseState;
-                System.out.println("p pressed and " + gp.gameState);
+            if (code == KeyEvent.VK_Q) {
+                qPressed = true;
             }
+        }
+
+        if (gp.gameState == gp.playState) {
 //            if (code == KeyEvent.VK_R){
 //                gp.tileM.loadMap("/maps/islandmap1.txt");
 //            }
             if (code == KeyEvent.VK_TAB) {
-                tabPressed = true;
+                tabPressed = !tabPressed;
             }
-
             if (code == KeyEvent.VK_ENTER) {
                 enterPressed = !enterPressed;
             }
-
-            if (code == KeyEvent.VK_Q) {
-                qPressed = !qPressed;
+            if (code == KeyEvent.VK_SPACE) {
+                spacePressed = true;
             }
+            if (code == KeyEvent.VK_0) {
+                zeroPressed = !zeroPressed;
+            }
+        }
 
+
+            if (code == KeyEvent.VK_P) {
+                gp.gameState = gp.pauseState;
+                System.out.println("P pressed and " + gp.gameState);
+            }
+            if(code == KeyEvent.VK_MINUS){
+                gp.gameState = gp.flowState;
+            }
             if (code == KeyEvent.VK_T) {
                 if (!showDebugTest) {
                     showDebugTest = true;
@@ -69,14 +82,15 @@ public class KeyHandler implements KeyListener {
                     showDebugTest = false;
                 }
             }
-        }
+
+
         else if (gp.gameState == gp.pauseState) {
             if (code == KeyEvent.VK_P){
                 gp.gameState = gp.playState;
             }
         }
         else if (gp.gameState == gp.dialogueState){
-            if (code == KeyEvent.VK_ENTER){
+            if (code == KeyEvent.VK_SPACE){
                 gp.gameState = gp.playState;
             }
         }
@@ -106,6 +120,10 @@ public class KeyHandler implements KeyListener {
         }
         if (code == KeyEvent.VK_SHIFT){
             shiftPressed = false;
+        }
+
+        if (code == KeyEvent.VK_SPACE) {
+            spacePressed = false;
         }
 //        if (code == KeyEvent.VK_M) {
 //            mPressed = false;

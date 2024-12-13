@@ -5,6 +5,7 @@ import entity.race.coele;
 import entity.race.compy;
 import entity.race.human;
 import entity.monster.MON_GreenSlime;
+import forms.CharacterPICK;
 import object.*;
 
 public class AssetSetter {
@@ -13,6 +14,9 @@ public class AssetSetter {
     int buffer = 0;
     public AssetSetter(GamePanel gp){
         this.gp = gp;
+    }
+
+    public void setPlayer(){
     }
 
     public void setObject(){
@@ -61,17 +65,17 @@ public class AssetSetter {
     }
 
     public void setMonster(){
-        buffer++;
-
-        if ( buffer >= 1200){
-            for(int i = 0; i < 10; i++){
-                if (gp.monster[i] == null){
-                    if(buffer>=16000){
-                        gp.monster[i] = new compy(gp);
-                        gp.monster[i].level = gp.randomize(1,10);
-                        gp.monster[i].worldX = gp.randomize(15, 18) * gp.tileSize;
-                        gp.monster[i].worldY = gp.randomize(46, 50) * gp.tileSize;
-                        System.out.println("Dino spawned.");
+        while (gp.gameState == gp.playState){
+            buffer++;
+            if (buffer >= 600){
+                for(int i = 0; i < 10; i++){
+                    if (gp.monster[i] == null){
+                            gp.monster[i] = new compy(gp);
+                            gp.monster[i].level = gp.randomize(1, 10);
+                            gp.monster[i].worldX = gp.randomize(15, 18) * gp.tileSize;
+                            gp.monster[i].worldY = gp.randomize(46, 50) * gp.tileSize;
+                            System.out.println("Dino spawned.");
+                            buffer = 0;
                     }
                 }
             }

@@ -36,7 +36,6 @@ public class StatWindow extends JFrame implements Forms {
 
     public StatWindow(GamePanel gp) {
         this.gp = gp;
-        this.entity = entity;
         Forms.customizeButton(lblNAME, 22);
         Forms.customizeButton(lblLEVEL, 22);
         Forms.customizeButton(lblRACE, 22);
@@ -127,6 +126,7 @@ public class StatWindow extends JFrame implements Forms {
         pnlSTAT.setBackground(new Color(34, 123, 219, 130));
         sep1.setBackground(new Color(217, 255, 254, 255));
 
+
         lblNAME.setText(entity.getName());
         lblLEVEL.setText(String.valueOf(entity.level));
         lblGENDER.setText(entity.getGender());
@@ -137,7 +137,6 @@ public class StatWindow extends JFrame implements Forms {
         setShape(new RoundRectangle2D.Double(0, 0, getWidth(), getHeight(), 50, 50));
         pnlSTAT.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
 
-
         pnlSTAT.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -145,6 +144,15 @@ public class StatWindow extends JFrame implements Forms {
                 yOffset = e.getY();
             }
         });
+        new Timer(100, e -> updateLabels()).start();
+    }
+
+    private void updateLabels() {
+        lblNAME.setText(entity.getName());
+        lblLEVEL.setText(String.valueOf(entity.level));
+        lblGENDER.setText(entity.getGender());
+        lblRACE.setText(entity.getRace());
+        lblPXP.setText(String.valueOf(entity.exp));
     }
 
     @Override
