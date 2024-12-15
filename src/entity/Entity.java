@@ -17,11 +17,12 @@ public class Entity {
     private String gender;
     private String race;
     public int worldX, worldY;
-    public int speed;
-    public int strength;
-    public int defense;
+    public int speed = 1;
+    public int strength = 2;
+    public int defense = 1;
     public int stamina = 100;
-    public int exp = 1;
+    public double exp = 1;
+    public double nextLevelExp = level*2;
 
     public BufferedImage up1, up2, up3, down1, down2, down3, left1, left2, left3, right1, right2, right3;
     public BufferedImage attackUp1, attackUp2, attackUp3, attackDown1, attackDown2, attackDown3, attackLeft1, attackLeft2, attackLeft3, attackRight1, attackRight2, attackRight3;
@@ -71,7 +72,6 @@ public class Entity {
         level = gp.randomize(1, 20);
         direction = gp.randomName("res/text/names/directions/directions");
         name = gp.randomName("res/text/names/namesAll.txt");
-        strength = strength + level;
     }
 
     public String getName() {return name;}
@@ -128,7 +128,7 @@ public class Entity {
                 if (buffer >= gp.randomize(300, 1200)/level) {
                     collideCounter++;
                     buffer = 0;
-                    System.out.println(name + " Collide Counter: " + collideCounter);
+//                    System.out.println(name + " Collide Counter: " + collideCounter);
                 }
             }
 
@@ -331,36 +331,42 @@ public class Entity {
     public void damageEntity(int i){
         if (i != 999){
             if (gp.monster[i] != null  && !gp.monster[i].invincible){
-                int damage = strength - gp.monster[i].defense;
+                type = 2;
+                int damage = this.strength - gp.monster[i].defense;
                 if (damage < 0){
                     damage = 0;
                 }
                 gp.monster[i].life -= damage;
                 gp.ui.addMessage(damage + " damage!");
                 gp.monster[i].invincible = true;
-                actionLockCounter = 0;
+                gp.monster[i].actionLockCounter = 0;
                 direction = gp.monster[i].direction;
 
                 if (gp.monster[i].life <= 0){
                     gp.monster[i].isDying = true;
-                    exp += gp.monster[i].exp;
-                    gp.ui.addMessage(getName() + "killed the " + gp.monster[i].name + "!");
+                    exp += gp.monster[i].exp * ((double) gp.monster[i].level/2);
+                    gp.ui.addMessage(getName() + " killed the " + gp.monster[i].name + "!");
+                    checkLevelUp();
                 }
             }
             else if (gp.npc[i] != null  && !gp.npc[i].invincible){
-                int damage = strength - gp.npc[i].defense;
+                gp.npc[i].type = 2;
+                System.out.println(name + " gets mad.");
+                int damage = this.strength - gp.npc[i].defense;
                 if (damage < 0){
                     damage = 0;
                 }
                 gp.npc[i].life -= damage;
                 gp.ui.addMessage(damage + " damage!");
                 gp.npc[i].invincible = true;
-                actionLockCounter = 0;
+                gp.npc[i].actionLockCounter = 0;
                 direction = gp.npc[i].direction;
 
                 if (gp.npc[i].life <= 0){
                     gp.npc[i].isDying = true;
-                    exp += gp.npc[i].exp;
+                    exp += gp.npc[i].exp * ((double) gp.npc[i].level /2);
+                    gp.ui.addMessage(getName() + " killed the " + gp.npc[i].name + "!");
+                    checkLevelUp();
                 }
             }
         }
@@ -465,28 +471,46 @@ public class Entity {
 
     }
 
-    public void drawPlayerMessage(Graphics2D g2){
-        int messageX = gp.tileSize;
-        int messageY = gp.tileSize + 4;
+//    public void drawPlayerMessage(Graphics2D g2){
+//        int messageX = gp.tileSize;
+//        int messageY = gp.tileSize + 4;
+//
+//        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 22f));
+//
+//        for (int i = 0; i < gp.ui.message.size(); i++){
+//
+//            if (message.get(i) != null){
+//
+//                g2.setColor(Color.white);
+//                g2.drawString(message.get(i), messageX, messageY);
+//
+//                int counter = messageCounter.get(i) + 1;
+//                messageCounter.set(i, counter);
+//                messageY += 50;
+//
+//                if (messageCounter.get(i) > 180){
+//                    message.remove(i);
+//                    messageCounter.remove(i);
+//                }
+//            }
+//        }
+//    }
 
-        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 22f));
+    public void checkLevelUp(){
 
-        for (int i = 0; i < gp.ui.message.size(); i++){
 
-            if (message.get(i) != null){
-
-                g2.setColor(Color.white);
-                g2.drawString(message.get(i), messageX, messageY);
-
-                int counter = messageCounter.get(i) + 1;
-                messageCounter.set(i, counter);
-                messageY += 50;
-
-                if (messageCounter.get(i) > 180){
-                    message.remove(i);
-                    messageCounter.remove(i);
-                }
+        while (exp >= nextLevelExp){
+            level++;
+            nextLevelExp *= 2;
+            maxLife += 2;
+            strength++;
+            defense++;
+            if (this.level % 3 == 0){
+                this.speed++;
+                gp.ui.addMessage(this.name + " speed increased!");
             }
+
+            gp.ui.addMessage(name + " has levelled up! (Lvl " + level + ")");
         }
     }
 

@@ -19,6 +19,8 @@ public class NPC_OldMan extends Entity {
         speed = 1;
         maxLife = 10;
         life = maxLife;
+        exp = 58*2;
+        checkLevelUp();
 
         solidArea.y = 18;
         solidArea.width = 42;

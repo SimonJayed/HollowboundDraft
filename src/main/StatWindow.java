@@ -32,6 +32,14 @@ public class StatWindow extends JFrame implements Forms {
     private JSeparator sep1;
     private JLabel lblEXP;
     private JLabel lblPXP;
+    private JLabel lblATK;
+    private JLabel lblDEF;
+    private JLabel lblSPD;
+    private JLabel lblATKVal;
+    private JLabel lblDEFVal;
+    private JLabel lblSPDVal;
+    private JLabel lblHP;
+    private JLabel lblHPVal;
     private JSlider slider1;
 
     public StatWindow(GamePanel gp) {
@@ -48,6 +56,14 @@ public class StatWindow extends JFrame implements Forms {
         Forms.customizeButton(lblGNDR, 26);
         Forms.customizeButton(lblEXP, 26);
         Forms.customizeButton(lblPXP, 22);
+        Forms.customizeButton(lblHP, 22);
+        Forms.customizeButton(lblATK, 22);
+        Forms.customizeButton(lblDEF, 22);
+        Forms.customizeButton(lblSPD, 22);
+        Forms.customizeButton(lblATKVal, 22);
+        Forms.customizeButton(lblHPVal, 22);
+        Forms.customizeButton(lblDEFVal, 22);
+        Forms.customizeButton(lblSPDVal, 22);
 
         setUndecorated(true);
         setBackground(new Color(0,0,10, 20));
@@ -61,15 +77,20 @@ public class StatWindow extends JFrame implements Forms {
         setSize(500, 700);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-        pnlSTAT.setBackground(new Color(34, 123, 219, 130));
+        pnlSTAT.setBackground(new Color(34, 123, 219, 255));
         sep1.setBackground(new Color(217, 255, 254, 255));
 
         lblNAME.setText(gp.player.getName());
         lblLEVEL.setText(String.valueOf(gp.player.level));
         lblGENDER.setText(gp.player.getGender());
         lblRACE.setText(gp.player.getRace());
-        lblPXP.setText(String.valueOf(gp.player.exp));
+        lblPXP.setText(gp.player.exp + "/" + gp.player.nextLevelExp);
 
+
+        lblHPVal.setText(gp.player.life + "/" + gp.player.maxLife);
+        lblATKVal.setText(String.valueOf(gp.player.strength));
+        lblDEFVal.setText(String.valueOf(gp.player.defense));
+        lblSPDVal.setText(String.valueOf(gp.player.speed));
 
 
         setShape(new RoundRectangle2D.Double(0, 0, getWidth(), getHeight(), 50, 50));
@@ -110,6 +131,14 @@ public class StatWindow extends JFrame implements Forms {
         Forms.customizeButton(lblGNDR, 26);
         Forms.customizeButton(lblEXP, 26);
         Forms.customizeButton(lblPXP, 22);
+        Forms.customizeButton(lblHP, 22);
+        Forms.customizeButton(lblATK, 22);
+        Forms.customizeButton(lblDEF, 22);
+        Forms.customizeButton(lblSPD, 22);
+        Forms.customizeButton(lblATKVal, 22);
+        Forms.customizeButton(lblHPVal, 22);
+        Forms.customizeButton(lblDEFVal, 22);
+        Forms.customizeButton(lblSPDVal, 22);
 
         setUndecorated(true);
         setBackground(new Color(0, 0, 10, 20));
@@ -123,7 +152,7 @@ public class StatWindow extends JFrame implements Forms {
         setSize(500, 700);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-        pnlSTAT.setBackground(new Color(34, 123, 219, 130));
+        pnlSTAT.setBackground(new Color(34, 123, 219, 255));
         sep1.setBackground(new Color(217, 255, 254, 255));
 
 
@@ -131,7 +160,12 @@ public class StatWindow extends JFrame implements Forms {
         lblLEVEL.setText(String.valueOf(entity.level));
         lblGENDER.setText(entity.getGender());
         lblRACE.setText(entity.getRace());
-        lblPXP.setText(String.valueOf(entity.exp));
+        lblPXP.setText(entity.exp + "/" + entity.nextLevelExp);
+
+        lblHPVal.setText(entity.life + "/" + entity.maxLife);
+        lblATKVal.setText(String.valueOf(entity.strength));
+        lblDEFVal.setText(String.valueOf(entity.defense));
+        lblSPDVal.setText(String.valueOf(entity.speed));
 
 
         setShape(new RoundRectangle2D.Double(0, 0, getWidth(), getHeight(), 50, 50));
@@ -152,7 +186,12 @@ public class StatWindow extends JFrame implements Forms {
         lblLEVEL.setText(String.valueOf(entity.level));
         lblGENDER.setText(entity.getGender());
         lblRACE.setText(entity.getRace());
-        lblPXP.setText(String.valueOf(entity.exp));
+        lblPXP.setText(entity.exp + "/" + entity.nextLevelExp);
+
+        lblHPVal.setText(entity.life + "/" + entity.maxLife);
+        lblATKVal.setText(String.valueOf(entity.strength));
+        lblDEFVal.setText(String.valueOf(entity.defense));
+        lblSPDVal.setText(String.valueOf(entity.speed));
     }
 
     @Override

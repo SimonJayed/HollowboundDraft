@@ -57,7 +57,7 @@ public class TileManager {
         setup(23, "mtgrassLowLeft", true);
         setup(24, "mtgrassLowMid", true);
         setup(25, "mtgrassLowRight", true);
-        setup(30, "blk", true);
+        setup(30, "blk", false);
 
     }
 

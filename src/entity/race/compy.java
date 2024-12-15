@@ -38,14 +38,14 @@ public class compy extends Entity {
     }
 
     public void getImage() {
-        up1 = setup("/player/compy/up1", gp.tileSize, gp.tileSize/2);
-        up2 = setup("/player/compy/up2", gp.tileSize, gp.tileSize/2);
-        down1 = setup("/player/compy/down1", gp.tileSize, gp.tileSize/2);
-        down2 = setup("/player/compy/down2", gp.tileSize, gp.tileSize/2);
-        left1 = setup("/player/compy/left1", gp.tileSize, gp.tileSize/2);
-        left2 = setup("/player/compy/left2", gp.tileSize, gp.tileSize/2);
-        right1 = setup("/player/compy/right1", gp.tileSize, gp.tileSize/2);
-        right2 = setup("/player/compy/right2", gp.tileSize, gp.tileSize/2);
+        up1 = setup("/player/compy/up1", gp.tileSize/2, gp.tileSize/2);
+        up2 = setup("/player/compy/up2", gp.tileSize/2, gp.tileSize/2);
+        down1 = setup("/player/compy/down1", gp.tileSize/2, gp.tileSize/2);
+        down2 = setup("/player/compy/down2", gp.tileSize/2, gp.tileSize/2);
+        left1 = setup("/player/compy/left1", gp.tileSize/2, gp.tileSize/2);
+        left2 = setup("/player/compy/left2", gp.tileSize/2, gp.tileSize/2);
+        right1 = setup("/player/compy/right1", gp.tileSize/2, gp.tileSize/2);
+        right2 = setup("/player/compy/right2", gp.tileSize/2, gp.tileSize/2);
     }
 
     public void setAction() {

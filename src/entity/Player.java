@@ -276,16 +276,16 @@ public class Player extends Entity{
         else{
             gp.setFPS(60);
         }
-
-        if (keyH.tabPressed) {
-            System.out.println("Tab is pressed...");
-        }
-        if (keyH.shiftPressed) {
-            System.out.println("Shift is pressed...");
-        }
-        if (keyH.enterPressed) {
-            System.out.println("Enter is pressed...");
-        }
+//
+//        if (keyH.tabPressed) {
+//            System.out.println("Tab is pressed...");
+//        }
+//        if (keyH.shiftPressed) {
+//            System.out.println("Shift is pressed...");
+//        }
+//        if (keyH.enterPressed) {
+//            System.out.println("Enter is pressed...");
+//        }
         if (keyH.mPressed) {
             stopAll();
             System.out.println("M is pressed...");
@@ -338,7 +338,7 @@ public class Player extends Entity{
             pickUpObject(objIndex);
 
             int npcIndex = gp.cChecker.checkEntity(this, gp.npc);
-            interactNPC(npcIndex);
+            interactEntity(npcIndex);
 
             int monsterIndex = gp.cChecker.checkEntity(this, gp.monster);
             contactMonster(monsterIndex);
@@ -414,20 +414,27 @@ public class Player extends Entity{
         isIdling = false;
     }
 
-    public void interactNPC(int i){
+    public void interactEntity(int i){
             if (i != 999){
-
-//                else if (gp.mouseH.lmbPressed){
-//                    isAttacking = true;
-//                }
                 if (keyH.qPressed) {
-                    stopAll();
-                    System.out.println("q is pressed...");
+                    if (gp.npc[i] != null) {
+                        stopAll();
+                        System.out.println("q is pressed...");
 
                         System.out.println("Creating StatWindow...");
                         gp.toggleStatWindow(gp.npc[i]);
                         gp.statWindow.setVisible(true);
                         gp.setFocusable(true);
+                    }
+                    else if (gp.monster[i] != null){
+                        stopAll();
+                        System.out.println("q is pressed...");
+
+                        System.out.println("Creating StatWindow...");
+                        gp.toggleStatWindow(gp.monster[i]);
+                        gp.statWindow.setVisible(true);
+                        gp.setFocusable(true);
+                    }
                 }
 
                 if (keyH.spacePressed){
@@ -437,9 +444,6 @@ public class Player extends Entity{
                         gp.npc[i].speak();
                     }
                 }
-//            if (gp.statWindow == null){
-//                stopAll();
-//            }
                 keyH.qPressed = false;
         }
     }
@@ -467,7 +471,7 @@ public class Player extends Entity{
                     break;
                 }
                 case "Boots":{
-                    speed += 1;
+                    this.speed += 1;
                     gp.obj[i] = null;
                     gp.ui.addMessage("Speed increased!");
                     break;
