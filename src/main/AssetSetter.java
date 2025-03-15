@@ -2,11 +2,6 @@ package main;
 
 import entity.NPC_OldMan;
 import entity.characters.Rex;
-import entity.race.coele;
-import entity.race.compy;
-import entity.race.human;
-import entity.monster.MON_GreenSlime;
-import forms.CharacterPICK;
 import object.*;
 
 public class AssetSetter {

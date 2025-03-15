@@ -1,17 +1,9 @@
 package forms;
 
 import anim.anim;
-import entity.Entity;
-import entity.Player;
-import entity.race.coele;
-import entity.race.compy;
-import entity.race.human;
-import entity.race.ptero;
 import interfaces.Forms;
 import main.GamePanel;
-import main.KeyHandler;
 import main.MainMenu;
-import main.MouseHandler;
 
 import javax.swing.*;
 import java.awt.event.*;
