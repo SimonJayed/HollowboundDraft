@@ -15,7 +15,7 @@ public class Game {
 
         window.pack();
         window.setLocationRelativeTo(null);
-        window.setVisible(true); // Make the window visible
+        window.setVisible(true);
 
         gamePanel.setupGame();
         gamePanel.startGameThread();

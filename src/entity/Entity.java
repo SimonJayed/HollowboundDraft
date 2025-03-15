@@ -84,33 +84,31 @@ public class Entity {
 
 
     public void speak(){
-        if (type != 2){
-            if (dialogues[dialogueIndex] == null){
-                dialogueIndex = 0;
-            }
-            gp.ui.currentDialogue = dialogues[dialogueIndex];
-            dialogueIndex++;
+        if (dialogues[dialogueIndex] == null){
+            dialogueIndex = 0;
+        }
+        gp.ui.currentDialogue = dialogues[dialogueIndex];
+        dialogueIndex++;
 
-            switch (gp.player.direction){
-                case "up": {
-                    direction = "down";
-                    break;
-                }
-                case "down": {
-                    direction = "up";
-                    break;
-                }
-                case "left": {
-                    direction = "right";
-                    break;
-                }
-                case "right": {
-                    direction = "left";
-                    break;
-                }
-                default:{
-                    direction = "down";
-                }
+        switch (gp.player.direction){
+            case "up": {
+                direction = "down";
+                break;
+            }
+            case "down": {
+                direction = "up";
+                break;
+            }
+            case "left": {
+                direction = "right";
+                break;
+            }
+            case "right": {
+                direction = "left";
+                break;
+            }
+            default:{
+                direction = "down";
             }
         }
     }

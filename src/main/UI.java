@@ -3,8 +3,10 @@ package main;
 import entity.Entity;
 import object.OBJ_Heart;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
@@ -131,21 +133,55 @@ public class UI {
 
         g2.drawString(text, x, y);
     }
+//
+//    public void drawDialogueScreen(){
+//        int x = gp.tileSize*2;
+//        int y = gp.tileSize/2;
+//        int width = gp.screenWidth - (gp.tileSize*4);
+//        int height = gp.tileSize*5;
+//
+//        drawSubWindow(x, y, width, height);
+//
+//        x+= gp.tileSize;
+//        y+= gp.tileSize;
+//
+//        for(String line: currentDialogue.split("\n")) {
+//            g2.drawString(line, x, y);
+//            y+=40;
+//        }
+//    }
 
-    public void drawDialogueScreen(){
-        int x = gp.tileSize*2;
-        int y = gp.tileSize/2;
-        int width = gp.screenWidth - (gp.tileSize*4);
-        int height = gp.tileSize*5;
+    public void drawDialogueScreen() {
+        int width = gp.screenWidth - (gp.tileSize * 2);
+        int height = gp.tileSize * 3;
+        int x = gp.tileSize;
+        int y = gp.tileSize * 9;
 
         drawSubWindow(x, y, width, height);
 
-        x+= gp.tileSize;
-        y+= gp.tileSize;
+        // Load and draw the image
+        BufferedImage portrait = null;
+        try {
+            portrait = ImageIO.read(getClass().getResourceAsStream("/graphics/fort1.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-        for(String line: currentDialogue.split("\n")) {
+        if (portrait != null) {
+            int imgX = gp.tileSize * 10 + 20; // Adjust position as needed
+            int imgY = gp.tileSize * 5;
+            int imgHeight = gp.tileSize * 7;
+            int imgWidth = gp.tileSize * 5;
+            g2.drawImage(portrait, imgX, imgY, imgWidth, imgHeight, null);
+        }
+
+        // Adjust text position to be next to the image
+        x += gp.tileSize;
+        y += gp.tileSize;
+
+        for (String line : currentDialogue.split("\n")) {
             g2.drawString(line, x, y);
-            y+=40;
+            y += 40;
         }
     }
 
