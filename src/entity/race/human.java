@@ -87,20 +87,6 @@ public class human extends Entity {
         attackRight3 = setup("/player/human/punchRight3", gp.tileSize*2, gp.tileSize);
     }
 
-    public void angerEntity(){
-        if (gp.gameState == gp.playState){
-            if (type == 2) {
-                calmCounter++;
-                if (calmCounter >= gp.randomize(300, 700) * level) {
-                    type = 1;
-                    calmCounter = 0;
-                    System.out.println(getName() + " calms down.");
-                }
-            }
-            super.angerEntity();
-        }
-    }
-
     public void setAction() {
         actionLockCounter++;
 
@@ -313,7 +299,6 @@ public class human extends Entity {
                     break;
                 }
             }
-            angerEntity();
 
             if (invincible) {
                 changeAlpha(g2, 0.4f);

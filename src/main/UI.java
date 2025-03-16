@@ -162,13 +162,13 @@ public class UI {
         // Load and draw the image
         BufferedImage portrait = null;
         try {
-            portrait = ImageIO.read(getClass().getResourceAsStream("/graphics/fort1.png"));
+            portrait = ImageIO.read(getClass().getResourceAsStream("/graphics/NPC_OldMan.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         if (portrait != null) {
-            int imgX = gp.tileSize * 10 + 20; // Adjust position as needed
+            int imgX = gp.tileSize * 10 + 50; // Adjust position as needed
             int imgY = gp.tileSize * 5;
             int imgHeight = gp.tileSize * 7;
             int imgWidth = gp.tileSize * 5;

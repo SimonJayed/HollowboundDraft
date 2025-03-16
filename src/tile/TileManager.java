@@ -25,39 +25,13 @@ public class TileManager {
         mapTileNum = new int[gp.maxWorldCol][gp.maxWorldRow];
 
         getTileImage();
-        loadMap("/maps/islandmap1.txt");
+        loadMap("/maps/forestintromap.txt");
     }
 
     public void getTileImage() {
-        setup(0, "grassPlain", false);
-        setup(1, "grassTopLeft", true);
-        setup(2, "grassTopMid", true);
-        setup(3, "grassTopRight", true);
-        setup(4, "grassMidLeft", true);
-        setup(5, "waterPlain", true);
-        setup(6, "grassMidRight", true);
-        setup(7, "grassLowLeft", true);
-        setup(8, "grassMidLow", true);
-        setup(9, "grassLowRight", true);
-        setup(10, "grassULCorner", true);
-        setup(11, "grassURCorner", true);
-        setup(12, "grassLLCorner", true);
-        setup(13, "grassLRCorner", true);
-
-        setup(14, "waterWow", true);
-        setup(15, "grassGrass", false);
-        setup(16, "Lipodendrus", true);
-
-        setup(17, "grassPlain", false);
-        setup(18, "mtgrassTopLeft", true);
-        setup(19, "mtgrassTopMid", true);
-        setup(20, "mtgrassTopRight", true);
-        setup(21, "mtgrassMidRight", true);
-        setup(22, "mtgrassMidLeft", true);
-        setup(23, "mtgrassLowLeft", true);
-        setup(24, "mtgrassLowMid", true);
-        setup(25, "mtgrassLowRight", true);
-        setup(30, "blk", false);
+        setup(0, "grass1", false);
+        setup(5, "waterWow", false);
+        setup(30, "tree", true);
 
     }
 

@@ -2,7 +2,6 @@ package main;
 
 import entity.Entity;
 import entity.Player;
-import forms.CharacterPICK;
 import tile.TileManager;
 
 import javax.swing.*;
@@ -27,8 +26,8 @@ public class GamePanel extends JPanel implements Runnable {
     public final int screenWidth = tileSize * maxscreenCol;
     public final int screenHeight = tileSize * maxscreenRow;
 
-    public final int maxWorldCol = 100;
-    public final int maxWorldRow = 100;
+    public final int maxWorldCol = 50;
+    public final int maxWorldRow = 50;
 
 
     public double FPS = 60;
@@ -36,16 +35,16 @@ public class GamePanel extends JPanel implements Runnable {
     int failCTR = 0;
 
     TileManager tileM = new TileManager(this);
-    CharacterPICK charSelection = new CharacterPICK(this);
-    MainMenu mainMenu = new MainMenu(this);
+
     public KeyHandler keyH = new KeyHandler(this);
     public MouseHandler mouseH = new MouseHandler(this);
-    Thread gameThread;
+    Sound sound = new Sound();
     public StatWindow statWindow = null;
     public CollisionChecker cChecker = new CollisionChecker(this);
     public AssetSetter aSetter = new AssetSetter(this);
     public UI ui = new UI(this);
     public EventHandler eHandler = new EventHandler(this);
+    Thread gameThread;
 
     public Player player = new Player(this, keyH, mouseH);
     public Entity obj[] = new Entity[10];
@@ -78,6 +77,8 @@ public class GamePanel extends JPanel implements Runnable {
         aSetter.setNPC();
         aSetter.setMonster();
         gameState = playState;
+        playMusic(0);
+        sound.setVolume(-15.0f);
     }
 
     public void startGameThread(){
@@ -286,6 +287,19 @@ public class GamePanel extends JPanel implements Runnable {
 
         int randomIndex = random.nextInt(count);
         return names[randomIndex];
+    }
+
+    public void playMusic(int i){
+        sound.setFile(i);
+        sound.play();
+        sound.loop(i);
+    }
+    public void stopMusic(){
+        sound.stop();
+    }
+    public void playSoundEffect(int i){
+        sound.setFile(i);
+        sound.play();
     }
 
 }

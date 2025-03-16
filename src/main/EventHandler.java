@@ -51,13 +51,6 @@ public class EventHandler {
             if (hit(23, 12, "up")) {
                 healingPool(gp.dialogueState);
             }
-            if (hit(13, 19, "any")) {
-                teleport(gp.dialogueState);
-            } else if (hit(13, 10, "any")) {
-                teleport(gp.dialogueState);
-            } else if (hit(14, 8, "any")) {
-                teleport(gp.dialogueState);
-            }
         }
 
 

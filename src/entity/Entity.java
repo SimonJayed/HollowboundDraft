@@ -20,7 +20,6 @@ public class Entity {
     public int speed = 1;
     public int strength = 2;
     public int defense = 1;
-    public int stamina = 100;
     public double exp = 1;
     public double nextLevelExp = level*2;
 
@@ -70,8 +69,6 @@ public class Entity {
     public Entity(GamePanel gp){
         this.gp = gp;
         level = gp.randomize(1, 20);
-        direction = gp.randomName("res/text/names/directions/directions");
-        name = gp.randomName("res/text/names/namesAll.txt");
     }
 
     public String getName() {return name;}
@@ -109,32 +106,6 @@ public class Entity {
             }
             default:{
                 direction = "down";
-            }
-        }
-    }
-
-
-
-    public void angerEntity() {
-        if (gp.gameState == gp.playState){
-            if (gp.cChecker.checkEntity(this, gp.npc) != 999 ||
-                    gp.cChecker.checkPlayer(this) ||
-                    gp.cChecker.checkEntity(this, gp.monster) != 999) {
-                buffer++;
-
-
-                if (buffer >= gp.randomize(300, 1200)/level) {
-                    collideCounter++;
-                    buffer = 0;
-//                    System.out.println(name + " Collide Counter: " + collideCounter);
-                }
-            }
-
-
-            if (collideCounter >= 50) {
-                type = 2;
-                System.out.println(name + " gets mad.");
-                collideCounter = 0;
             }
         }
     }
@@ -263,30 +234,6 @@ public class Entity {
         }
     }
 
-    public void running(){
-        if (isRunning) {
-            spriteCounter++;
-            stamina--;
-            int i = 13;
-            if (spriteCounter <= i){
-                spriteNum = 1;
-            }
-            else if (spriteCounter <= i*2){
-                spriteNum = 2;
-            }
-            else if (spriteCounter <= i*3){
-                spriteNum = 3;
-            }
-            else if (spriteCounter <= i*4){
-                spriteNum = 2;
-            }
-            else{
-                spriteNum = 1;
-                spriteCounter = 0;
-            }
-
-        }
-    }
 
     public void idling(){
         isIdling = false;
@@ -369,44 +316,6 @@ public class Entity {
             }
         }
     }
-
-    public void displayInsults(Graphics2D g2){
-        if(canInsult > 4){
-            insultBuffer++;
-
-            int screenX = worldX - gp.player.worldX + gp.player.screenX;
-            int screenY = worldY - gp.player.worldY + gp.player.screenY;
-
-            FontMetrics metrics = g2.getFontMetrics();
-            int nameWidth = metrics.stringWidth(currentInsult);
-            int centeredX = screenX+21 - nameWidth / 2;
-
-            if (type == 2) {
-                if (insultDuration == -1) {
-                    insultDuration = gp.randomize(120, 450);
-                }
-
-                if (insultBuffer >= insultDuration) {
-                    if (currentInsult.equals("Tch")) {
-                        currentInsult = gp.randomName("res/text/names/insults/insults");
-                    }
-
-                    g2.setFont(g2.getFont().deriveFont(22f));
-                    g2.setColor(new Color(255, 36, 36));
-                    g2.drawString(currentInsult, centeredX, screenY - (solidArea.y *2) - 15);
-
-
-                    if (insultBuffer >= insultDuration + gp.randomize(450, 750)) {
-                        insultBuffer = 0;
-                        currentInsult = "Tch";
-                        insultDuration = -1;
-                    }
-                }
-            }
-        }
-
-    }
-
 
     public void displayEntityStats(Graphics2D g2){
         int screenX = worldX - gp.player.worldX + gp.player.screenX;
@@ -558,7 +467,7 @@ public class Entity {
 
         try{
             image1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream(imagePath + ".png")));
-            image1 = uTool.scaleImage(image1, width+level/2, height+level/2);
+            image1 = uTool.scaleImage(image1, width, height);
         } catch (IOException e){
             e.printStackTrace();
         }
@@ -615,8 +524,6 @@ public class Entity {
             }
         }
         displayEntityStats(g2);
-        angerEntity();
-        displayInsults(g2);
 
         if (invincible){
             hpBarOn = true;
@@ -627,9 +534,6 @@ public class Entity {
             dyingAnimation(g2);
         }
 
-//        if (isRunning){
-//            displayStamina(g2);
-//        }
         g2.drawImage(image1, screenX, screenY, gp.tileSize, gp.tileSize,  null);
 
         changeAlpha(g2,1f);

@@ -1,7 +1,6 @@
 package main;
 
 import entity.NPC_OldMan;
-import entity.characters.Rex;
 import object.*;
 
 public class AssetSetter {
@@ -32,19 +31,12 @@ public class AssetSetter {
     public void setNPC(){
 
         gp.npc[0] = new NPC_OldMan(gp);
-        gp.npc[0].worldX = 54 * gp.tileSize;
-        gp.npc[0].worldY = 56 * gp.tileSize;
+        gp.npc[0].worldX = 31 * gp.tileSize;
+        gp.npc[0].worldY = 15 * gp.tileSize;
 
 
     }
 
     public void setMonster(){
-
-        gp.monster[0] = new Rex(gp);
-        gp.monster[0].type = 2;
-        gp.monster[0].level = gp.randomize(1, 10);
-        gp.monster[0].worldX = 53 * gp.tileSize;
-        gp.monster[0].worldY = 55 * gp.tileSize;
-
     }
 }

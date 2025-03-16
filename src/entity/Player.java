@@ -59,8 +59,8 @@ public class Player extends Entity{
 
 
     public void setDefaultValues(){
-        worldX = gp.tileSize * 54;
-        worldY = gp.tileSize * 54;
+        worldX = gp.tileSize * 30;
+        worldY = gp.tileSize * 15;
         speed = 1;
         tempSpeed = speed;
         direction = "down";
@@ -89,169 +89,46 @@ public class Player extends Entity{
     }
 
     public void getPlayerImage(){
-        if (race.equals("Human")){
-            if (gender.equals("Female")) {
-                up1 = setup("/player/human/woman/up1", gp.tileSize, gp.tileSize);
-                up2 = setup("/player/human/woman/up2", gp.tileSize, gp.tileSize);
-                up3 = setup("/player/human/woman/up1", gp.tileSize, gp.tileSize);
-                down1 = setup("/player/human/woman/down1", gp.tileSize, gp.tileSize);
-                down2 = setup("/player/human/woman/down2", gp.tileSize, gp.tileSize);
-                down3 = setup("/player/human/woman/down1", gp.tileSize, gp.tileSize);
-                left1 = setup("/player/human/woman/left1", gp.tileSize, gp.tileSize);
-                left2 = setup("/player/human/woman/left2", gp.tileSize, gp.tileSize);
-                left3 = setup("/player/human/woman/left3", gp.tileSize, gp.tileSize);
-                right1 = setup("/player/human/woman/right1", gp.tileSize, gp.tileSize);
-                right2 = setup("/player/human/woman/right2", gp.tileSize, gp.tileSize);
-                right3 = setup("/player/human/woman/right3", gp.tileSize, gp.tileSize);
-            } else {
-                up1 = setup("/player/human/up1", gp.tileSize, gp.tileSize);
-                up2 = setup("/player/human/up2", gp.tileSize, gp.tileSize);
-                up3 = setup("/player/human/up1", gp.tileSize, gp.tileSize);
-                down1 = setup("/player/human/down1", gp.tileSize, gp.tileSize);
-                down2 = setup("/player/human/down2", gp.tileSize, gp.tileSize);
-                down3 = setup("/player/human/down1", gp.tileSize, gp.tileSize);
-                left1 = setup("/player/human/left1", gp.tileSize, gp.tileSize);
-                left2 = setup("/player/human/left2", gp.tileSize, gp.tileSize);
-                left3 = setup("/player/human/left3", gp.tileSize, gp.tileSize);
-                right1 = setup("/player/human/right1", gp.tileSize, gp.tileSize);
-                right2 = setup("/player/human/right2", gp.tileSize, gp.tileSize);
-                right3 = setup("/player/human/right3", gp.tileSize, gp.tileSize);
-            }
-        }
-        else if (race.equals("Compy")){
-            up1 = setup("/player/compy/up1", gp.tileSize, gp.tileSize);
-            up2 = setup("/player/compy/up2", gp.tileSize, gp.tileSize);
-            down1 = setup("/player/compy/down1", gp.tileSize, gp.tileSize);
-            down2 = setup("/player/compy/down2", gp.tileSize, gp.tileSize);
-            left1 = setup("/player/compy/left1", gp.tileSize, gp.tileSize);
-            left2 = setup("/player/compy/left2", gp.tileSize, gp.tileSize);
-            right1 = setup("/player/compy/right1", gp.tileSize, gp.tileSize);
-            right2 = setup("/player/compy/right2", gp.tileSize, gp.tileSize);
-        }
-        else if (race.equals("Coelacanth")){
-            up1 = setup("/player/coelacanth/up1", gp.tileSize, gp.tileSize);
-            up2 = setup("/player/coelacanth/up2", gp.tileSize, gp.tileSize);
-            down1 = setup("/player/coelacanth/down1", gp.tileSize, gp.tileSize);
-            down2 = setup("/player/coelacanth/down2", gp.tileSize, gp.tileSize);
-            left1 = setup("/player/coelacanth/left1", gp.tileSize, gp.tileSize);
-            left2 = setup("/player/coelacanth/left2", gp.tileSize, gp.tileSize);
-            right1 = setup("/player/coelacanth/right1", gp.tileSize, gp.tileSize);
-            right2 = setup("/player/coelacanth/right2", gp.tileSize, gp.tileSize);
-        }
-        else{
-            up1 = setup("/player/pterosaur/up1", gp.tileSize, gp.tileSize);
-            up2 = setup("/player/pterosaur/up2", gp.tileSize, gp.tileSize);
-            down1 = setup("/player/pterosaur/down1", gp.tileSize, gp.tileSize);
-            down2 = setup("/player/pterosaur/down2", gp.tileSize, gp.tileSize);
-            left1 = setup("/player/pterosaur/left1", gp.tileSize, gp.tileSize);
-            left2 = setup("/player/pterosaur/left2", gp.tileSize, gp.tileSize);
-            right1 = setup("/player/pterosaur/right1", gp.tileSize, gp.tileSize);
-            right2 = setup("/player/pterosaur/right2", gp.tileSize, gp.tileSize);
-        }
+        up1 = setup("/player/human/up1", gp.tileSize, gp.tileSize);
+        up2 = setup("/player/human/up2", gp.tileSize, gp.tileSize);
+        up3 = setup("/player/human/up1", gp.tileSize, gp.tileSize);
+        down1 = setup("/player/human/down1", gp.tileSize, gp.tileSize);
+        down2 = setup("/player/human/down2", gp.tileSize, gp.tileSize);
+        down3 = setup("/player/human/down1", gp.tileSize, gp.tileSize);
+        left1 = setup("/player/human/left1", gp.tileSize, gp.tileSize);
+        left2 = setup("/player/human/left2", gp.tileSize, gp.tileSize);
+        left3 = setup("/player/human/left3", gp.tileSize, gp.tileSize);
+        right1 = setup("/player/human/right1", gp.tileSize, gp.tileSize);
+        right2 = setup("/player/human/right2", gp.tileSize, gp.tileSize);
+        right3 = setup("/player/human/right3", gp.tileSize, gp.tileSize);
     }
     public void getPlayerAttackImage() {
-        if (getRace().equals("Human")) {
-            attackUp1 = setup("/player/human/punchUp1", gp.tileSize, gp.tileSize * 2);
-            attackUp2 = setup("/player/human/punchUp2", gp.tileSize, gp.tileSize * 2);
-            attackUp3 = setup("/player/human/punchUp3", gp.tileSize, gp.tileSize * 2);
-            attackDown1 = setup("/player/human/punchDown1", gp.tileSize, gp.tileSize * 2);
-            attackDown2 = setup("/player/human/punchDown2", gp.tileSize, gp.tileSize * 2);
-            attackDown3 = setup("/player/human/punchDown1", gp.tileSize, gp.tileSize * 2);
-            attackLeft1 = setup("/player/human/punchLeft1", gp.tileSize * 2, gp.tileSize);
-            attackLeft2 = setup("/player/human/punchLeft2", gp.tileSize * 2, gp.tileSize);
-            attackLeft3 = setup("/player/human/punchLeft3", gp.tileSize * 2, gp.tileSize);
-            attackRight1 = setup("/player/human/punchRight1", gp.tileSize * 2, gp.tileSize);
-            attackRight2 = setup("/player/human/punchRight2", gp.tileSize * 2, gp.tileSize);
-            attackRight3 = setup("/player/human/punchRight3", gp.tileSize * 2, gp.tileSize);
-        }
-        else if (getRace().equals("Compy")){
-            up1 = setup("/player/compy/up1", gp.tileSize, gp.tileSize);
-            up2 = setup("/player/compy/up2", gp.tileSize, gp.tileSize);
-            up3 = setup("/player/compy/up1", gp.tileSize, gp.tileSize);
-            down1 = setup("/player/compy/down1", gp.tileSize, gp.tileSize);
-            down2 = setup("/player/compy/down2", gp.tileSize, gp.tileSize);
-            down3 = setup("/player/compy/down1", gp.tileSize, gp.tileSize);
-            left1 = setup("/player/compy/left1", gp.tileSize, gp.tileSize);
-            left2 = setup("/player/compy/left2", gp.tileSize, gp.tileSize);
-            left3 = setup("/player/compy/left1", gp.tileSize, gp.tileSize);
-            right1 = setup("/player/compy/right1", gp.tileSize, gp.tileSize);
-            right2 = setup("/player/compy/right2", gp.tileSize, gp.tileSize);
-            right3 = setup("/player/compy/right1", gp.tileSize, gp.tileSize);
-        }
-        else if (getRace().equals("Coelacanth")){
-            up1 = setup("/player/coelacanth/up1", gp.tileSize, gp.tileSize);
-            up2 = setup("/player/coelacanth/up2", gp.tileSize, gp.tileSize);
-            up3 = setup("/player/coelacanth/up1", gp.tileSize, gp.tileSize);
-            down1 = setup("/player/coelacanth/down1", gp.tileSize, gp.tileSize);
-            down2 = setup("/player/coelacanth/down2", gp.tileSize, gp.tileSize);
-            down3 = setup("/player/coelacanth/down1", gp.tileSize, gp.tileSize);
-            left1 = setup("/player/coelacanth/left1", gp.tileSize, gp.tileSize);
-            left2 = setup("/player/coelacanth/left2", gp.tileSize, gp.tileSize);
-            left3 = setup("/player/coelacanth/left1", gp.tileSize, gp.tileSize);
-            right1 = setup("/player/coelacanth/right1", gp.tileSize, gp.tileSize);
-            right2 = setup("/player/coelacanth/right2", gp.tileSize, gp.tileSize);
-            right3 = setup("/player/coelacanth/right1", gp.tileSize, gp.tileSize);
-        }
-        else{
-            up1 = setup("/player/pterosaur/up1", gp.tileSize, gp.tileSize);
-            up2 = setup("/player/pterosaur/up2", gp.tileSize, gp.tileSize);
-            up3 = setup("/player/pterosaur/up1", gp.tileSize, gp.tileSize);
-            down1 = setup("/player/pterosaur/down1", gp.tileSize, gp.tileSize);
-            down2 = setup("/player/pterosaur/down2", gp.tileSize, gp.tileSize);
-            down3 = setup("/player/pterosaur/down1", gp.tileSize, gp.tileSize);
-            left1 = setup("/player/pterosaur/left1", gp.tileSize, gp.tileSize);
-            left2 = setup("/player/pterosaur/left2", gp.tileSize, gp.tileSize);
-            left3 = setup("/player/pterosaur/left1", gp.tileSize, gp.tileSize);
-            right1 = setup("/player/pterosaur/right1", gp.tileSize, gp.tileSize);
-            right2 = setup("/player/pterosaur/right2", gp.tileSize, gp.tileSize);
-            right3 = setup("/player/pterosaur/right1", gp.tileSize, gp.tileSize);
-        }
+        up1 = setup("/player/human/up1", gp.tileSize, gp.tileSize);
+        up2 = setup("/player/human/up2", gp.tileSize, gp.tileSize);
+        up3 = setup("/player/human/up1", gp.tileSize, gp.tileSize);
+        down1 = setup("/player/human/down1", gp.tileSize, gp.tileSize);
+        down2 = setup("/player/human/down2", gp.tileSize, gp.tileSize);
+        down3 = setup("/player/human/down1", gp.tileSize, gp.tileSize);
+        left1 = setup("/player/human/left1", gp.tileSize, gp.tileSize);
+        left2 = setup("/player/human/left2", gp.tileSize, gp.tileSize);
+        left3 = setup("/player/human/left3", gp.tileSize, gp.tileSize);
+        right1 = setup("/player/human/right1", gp.tileSize, gp.tileSize);
+        right2 = setup("/player/human/right2", gp.tileSize, gp.tileSize);
+        right3 = setup("/player/human/right3", gp.tileSize, gp.tileSize);
     }
     public void getPlayerRunImage(){
-        if (getRace().equals("Human")){
-        runUp1 = setup("/player/human/up1", gp.tileSize, gp.tileSize);
-        runUp2 = setup("/player/human/up2", gp.tileSize, gp.tileSize);
-        runUp3 = setup("/player/human/up1", gp.tileSize, gp.tileSize);
-        runDown1 = setup("/player/human/down1", gp.tileSize, gp.tileSize);
-        runDown2 = setup("/player/human/down2", gp.tileSize, gp.tileSize);
-        runDown3 = setup("/player/human/down2", gp.tileSize, gp.tileSize);
-        runLeft1 = setup("/player/human/runLeft1", gp.tileSize, gp.tileSize);
-        runLeft2 = setup("/player/human/runLeft2", gp.tileSize, gp.tileSize);
-        runLeft3 = setup("/player/human/runLeft3", gp.tileSize, gp.tileSize);
-        runRight1 = setup("/player/human/runRight1", gp.tileSize, gp.tileSize);
-        runRight2 = setup("/player/human/runRight2", gp.tileSize, gp.tileSize);
-        runRight3 = setup("/player/human/runRight3", gp.tileSize, gp.tileSize);
-    }
-        else if (getRace().equals("Compy")){
-        up1 = setup("/player/compy/up1", gp.tileSize, gp.tileSize);
-        up2 = setup("/player/compy/up2", gp.tileSize, gp.tileSize);
-        down1 = setup("/player/compy/down1", gp.tileSize, gp.tileSize);
-        down2 = setup("/player/compy/down2", gp.tileSize, gp.tileSize);
-        left1 = setup("/player/compy/left1", gp.tileSize, gp.tileSize);
-        left2 = setup("/player/compy/left2", gp.tileSize, gp.tileSize);
-        right1 = setup("/player/compy/right1", gp.tileSize, gp.tileSize);
-        right2 = setup("/player/compy/right2", gp.tileSize, gp.tileSize);
-    }
-        else if (getRace().equals("Coelacanth")){
-        up1 = setup("/player/coelacanth/up1", gp.tileSize, gp.tileSize);
-        up2 = setup("/player/coelacanth/up2", gp.tileSize, gp.tileSize);
-        down1 = setup("/player/coelacanth/down1", gp.tileSize, gp.tileSize);
-        down2 = setup("/player/coelacanth/down2", gp.tileSize, gp.tileSize);
-        left1 = setup("/player/coelacanth/left1", gp.tileSize, gp.tileSize);
-        left2 = setup("/player/coelacanth/left2", gp.tileSize, gp.tileSize);
-        right1 = setup("/player/coelacanth/right1", gp.tileSize, gp.tileSize);
-        right2 = setup("/player/coelacanth/right2", gp.tileSize, gp.tileSize);
-    }
-        else{
-        up1 = setup("/player/pterosaur/up1", gp.tileSize, gp.tileSize);
-        up2 = setup("/player/pterosaur/up2", gp.tileSize, gp.tileSize);
-        down1 = setup("/player/pterosaur/down1", gp.tileSize, gp.tileSize);
-        down2 = setup("/player/pterosaur/down2", gp.tileSize, gp.tileSize);
-        left1 = setup("/player/pterosaur/left1", gp.tileSize, gp.tileSize);
-        left2 = setup("/player/pterosaur/left2", gp.tileSize, gp.tileSize);
-        right1 = setup("/player/pterosaur/right1", gp.tileSize, gp.tileSize);
-        right2 = setup("/player/pterosaur/right2", gp.tileSize, gp.tileSize);
-    }
+        up1 = setup("/player/human/up1", gp.tileSize, gp.tileSize);
+        up2 = setup("/player/human/up2", gp.tileSize, gp.tileSize);
+        up3 = setup("/player/human/up1", gp.tileSize, gp.tileSize);
+        down1 = setup("/player/human/down1", gp.tileSize, gp.tileSize);
+        down2 = setup("/player/human/down2", gp.tileSize, gp.tileSize);
+        down3 = setup("/player/human/down1", gp.tileSize, gp.tileSize);
+        left1 = setup("/player/human/left1", gp.tileSize, gp.tileSize);
+        left2 = setup("/player/human/left2", gp.tileSize, gp.tileSize);
+        left3 = setup("/player/human/left3", gp.tileSize, gp.tileSize);
+        right1 = setup("/player/human/right1", gp.tileSize, gp.tileSize);
+        right2 = setup("/player/human/right2", gp.tileSize, gp.tileSize);
+        right3 = setup("/player/human/right3", gp.tileSize, gp.tileSize);
     }
 
 
@@ -321,7 +198,7 @@ public class Player extends Entity{
             }
             if (gp.keyH.shiftPressed) {
                 isRunning = true;
-                running();
+//                running();
                 speed++;
                 if (speed >= tempSpeed + 4) {
                     speed = tempSpeed + 4;
@@ -402,11 +279,11 @@ public class Player extends Entity{
     }
 
 
-    public void running(){
-        if ( keyH.upPressed || keyH.downPressed || keyH.rightPressed || keyH.leftPressed) {
-            super.running();
-        }
-    }
+//    public void running(){
+//        if ( keyH.upPressed || keyH.downPressed || keyH.rightPressed || keyH.leftPressed) {
+//            super.running();
+//        }
+//    }
 
     public void idling(){
         isAttacking = false;

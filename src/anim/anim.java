@@ -1,6 +1,5 @@
 package anim;
 
-import forms.CharacterPICK;
 import forms.GameWindowForm;
 import main.GamePanel;
 import javax.swing.*;

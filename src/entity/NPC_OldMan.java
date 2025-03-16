@@ -10,12 +10,7 @@ public class NPC_OldMan extends Entity {
     public NPC_OldMan(GamePanel gp) {
         super(gp);
 
-        try{
-            setName(gp.randomName("res/text/names/namesMale.txt"));
-        }catch (Exception e){
-            JOptionPane.showMessageDialog(null, "File Missing.", "File Error", JOptionPane.ERROR_MESSAGE);
-        }
-
+        setName("Lars");
         speed = 1;
         maxLife = 10;
         life = maxLife;
@@ -65,14 +60,13 @@ public class NPC_OldMan extends Entity {
     }
 
     public void setDialogue(){
-        dialogues[0] = "Hello, lad.";
-        dialogues[1] = "You seem lost.";
-        dialogues[2] = "I can fix that.";
-        dialogues[3] = "No. Seriously, dude... \nI can.";
-        dialogues[4] = "Why tf does no one believe what I \nsay?";
+        dialogues[0] = "You think it favors you? Ha... \nIt only watches.";
+        dialogues[1] = "I had everything once... Then \nit yawned.";
+        dialogues[2] = "Don't bore it... Or do. Maybe it'll \nbe kinder to you.";
     }
 
     public void speak(){
         super.speak();
+        gp.playSoundEffect(1);
     }
 }
