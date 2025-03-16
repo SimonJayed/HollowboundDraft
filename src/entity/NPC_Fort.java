@@ -4,24 +4,23 @@ import main.GamePanel;
 
 import java.awt.*;
 
-public class NPC_Sylvie extends Entity {
+public class NPC_Fort extends Entity {
 
-    public NPC_Sylvie(GamePanel gp) {
+    public NPC_Fort(GamePanel gp) {
         super(gp);
 
-        setName("Sylvie");
+        setName("Fort");
         speed = 1;
         maxLife = 10;
         life = maxLife;
 
-        solidArea.x = 18;
         solidArea.y = 18;
-        solidArea.width = 5;
-        solidArea.height = 5;
+        solidArea.width = 42;
+        solidArea.height = 30;
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
 
-        getImage("sylvie");
+        getImage("fort");
         setDialogue();
     }
 

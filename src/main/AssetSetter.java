@@ -38,6 +38,13 @@ public class AssetSetter {
         gp.npc[1].worldX = 30 * gp.tileSize;
         gp.npc[1].worldY = 14 * gp.tileSize;
 
+        gp.npc[2] = new NPC_Fort(gp);
+        gp.npc[2].worldX = 29 * gp.tileSize;
+        gp.npc[2].worldY = 13 * gp.tileSize;
+
+        gp.npc[3] = new NPC_Amaryllis(gp);
+        gp.npc[3].worldX = 28 * gp.tileSize;
+        gp.npc[3].worldY = 12 * gp.tileSize;
 
     }
 
