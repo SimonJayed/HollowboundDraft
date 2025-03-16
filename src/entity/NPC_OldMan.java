@@ -2,7 +2,10 @@ package entity;
 
 import main.GamePanel;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 
 public class NPC_OldMan extends Entity {
@@ -26,6 +29,11 @@ public class NPC_OldMan extends Entity {
         getImage();
         setDialogue();
 
+        try {
+            portrait = ImageIO.read(getClass().getResourceAsStream("/graphics/NPC_OldMan.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void getImage() {

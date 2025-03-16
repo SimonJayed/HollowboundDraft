@@ -27,6 +27,7 @@ public class Entity {
     public BufferedImage attackUp1, attackUp2, attackUp3, attackDown1, attackDown2, attackDown3, attackLeft1, attackLeft2, attackLeft3, attackRight1, attackRight2, attackRight3;
     public BufferedImage runUp1, runUp2, runUp3, runDown1, runDown2, runDown3, runLeft1, runLeft2, runLeft3, runRight1, runRight2, runRight3;
     public BufferedImage image1, image2, image3;
+    public BufferedImage portrait;
 
     public Rectangle solidArea = new Rectangle(0, 0, 48, 48);
     public Rectangle attackArea = new Rectangle(0, 0, 48, 48);
@@ -51,17 +52,10 @@ public class Entity {
     public boolean isDying = false;
     public boolean hpBarOn = true;
 
-    public int buffer = 0;
     public int actionLockCounter = 0;
     public int invincibleCounter = 0;
-    public int collideCounter = 0;
     public int dyingCounter = 0;
     public int hpBarCounter = 0;
-    public int insultBuffer = 0;
-    public String currentInsult = "Tch";
-    public int insultDuration = -1;
-    public int canInsult = 0;
-    public int calmCounter = 0;
 
     public int maxLife;
     public int life;

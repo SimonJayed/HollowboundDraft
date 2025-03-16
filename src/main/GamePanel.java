@@ -20,8 +20,8 @@ public class GamePanel extends JPanel implements Runnable {
     final int scale = 3;
 
     public final int tileSize = originalTileSize * scale;
-    public final int maxscreenCol = 16;
-    public final int maxscreenRow = 12;
+    public final int maxscreenCol = 20;
+    public final int maxscreenRow = 14;
 
     public final int screenWidth = tileSize * maxscreenCol;
     public final int screenHeight = tileSize * maxscreenRow;
@@ -53,6 +53,7 @@ public class GamePanel extends JPanel implements Runnable {
     public ArrayList <Entity> entityList = new ArrayList<>();
 
     public int gameState;
+    public final int titleState = 0;
     public final int playState = 1;
     public final int pauseState = 2;
     public final int dialogueState = 3;
@@ -78,7 +79,7 @@ public class GamePanel extends JPanel implements Runnable {
         aSetter.setMonster();
         gameState = playState;
         playMusic(0);
-        sound.setVolume(-15.0f);
+        sound.setVolume(-30.0f);
     }
 
     public void startGameThread(){

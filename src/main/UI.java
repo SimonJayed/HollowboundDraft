@@ -14,7 +14,7 @@ public class UI {
 
     GamePanel gp;
     Graphics2D g2;
-    BufferedImage heart_full, heart_half, heart_blank;
+    BufferedImage heart_full, heart_half, heart_blank, portrait;
     public boolean messageOn = false;
 //    public String message = "";
 //    int messageCounter = 0;
@@ -153,25 +153,24 @@ public class UI {
 
     public void drawDialogueScreen() {
         int width = gp.screenWidth - (gp.tileSize * 2);
-        int height = gp.tileSize * 3;
+        int height = gp.tileSize * 4;
         int x = gp.tileSize;
-        int y = gp.tileSize * 9;
+        int y = gp.tileSize * 10;
 
         drawSubWindow(x, y, width, height);
 
         // Load and draw the image
-        BufferedImage portrait = null;
         try {
-            portrait = ImageIO.read(getClass().getResourceAsStream("/graphics/NPC_OldMan.png"));
+            portrait = ImageIO.read(getClass().getResourceAsStream("/fort/portrait.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         if (portrait != null) {
-            int imgX = gp.tileSize * 10 + 50; // Adjust position as needed
-            int imgY = gp.tileSize * 5;
-            int imgHeight = gp.tileSize * 7;
-            int imgWidth = gp.tileSize * 5;
+            int imgX = gp.tileSize * 12; // Adjust position as needed
+            int imgY = gp.tileSize * 4;
+            int imgHeight = gp.tileSize * 11;
+            int imgWidth = gp.tileSize * 8;
             g2.drawImage(portrait, imgX, imgY, imgWidth, imgHeight, null);
         }
 

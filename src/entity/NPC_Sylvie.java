@@ -4,12 +4,12 @@ import main.GamePanel;
 
 import java.awt.*;
 
-public class NPC_Stalker extends Entity {
+public class NPC_Sylvie extends Entity {
 
-    public NPC_Stalker(GamePanel gp) {
+    public NPC_Sylvie(GamePanel gp) {
         super(gp);
 
-        setName("???");
+        setName("Sylvie");
         speed = 5;
         maxLife = 10;
         life = maxLife;
@@ -20,19 +20,19 @@ public class NPC_Stalker extends Entity {
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
 
-        getImage();
+        getImage("sylvie");
         setDialogue();
     }
 
-    public void getImage() {
-        up1 = setup("/npc/stk1", gp.tileSize, gp.tileSize);
-        up2 = setup("/npc/stk1", gp.tileSize, gp.tileSize);
-        down1 = setup("/npc/stk1", gp.tileSize, gp.tileSize);
-        down2 = setup("/npc/stk1", gp.tileSize, gp.tileSize);
-        left1 = setup("/npc/stk1", gp.tileSize, gp.tileSize);
-        left2 = setup("/npc/stk1", gp.tileSize, gp.tileSize);
-        right1 = setup("/npc/stk1", gp.tileSize, gp.tileSize);
-        right2 = setup("/npc/stk1", gp.tileSize, gp.tileSize);
+    public void getImage(String folder) {
+        up1 = setup("/" + folder + "/up1", gp.tileSize, gp.tileSize);
+        up2 = setup("/" + folder + "/up2", gp.tileSize, gp.tileSize);
+        down1 = setup("/" + folder + "/down1", gp.tileSize, gp.tileSize);
+        down2 = setup("/" + folder + "/down2", gp.tileSize, gp.tileSize);
+        left1 = setup("/" + folder + "/left1", gp.tileSize, gp.tileSize);
+        left2 = setup("/" + folder + "/left2", gp.tileSize, gp.tileSize);
+        right1 = setup("/" + folder + "/right1", gp.tileSize, gp.tileSize);
+        right2 = setup("/" + folder + "/right2", gp.tileSize, gp.tileSize);
     }
 
     public void setAction() {

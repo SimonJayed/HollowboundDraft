@@ -13,7 +13,6 @@ public class human extends Entity {
         super(gp);
 
         type = gp.randomize(1, 2);
-        canInsult = gp.randomize(0,5);
 
         setGender(gp.randomName("res/text/names/genders/genders"));
         setRace("Human");
