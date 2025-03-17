@@ -20,7 +20,7 @@ public class GamePanel extends JPanel implements Runnable {
     final int scale = 3;
 
     public final int tileSize = originalTileSize * scale;
-    public final int maxscreenCol = 20;
+    public final int maxscreenCol = 18;
     public final int maxscreenRow = 14;
 
     public final int screenWidth = tileSize * maxscreenCol;
@@ -57,7 +57,10 @@ public class GamePanel extends JPanel implements Runnable {
     public final int playState = 1;
     public final int pauseState = 2;
     public final int dialogueState = 3;
-    public final int flowState = 4;
+    public final int newGameState = 4;
+    public final int loadGameState = 5;
+    public final int settingsState = 6;
+    public final int characterPickState = 7;
 
     public Font customFont;
 
@@ -71,21 +74,17 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void setupGame(){
-        System.out.println("Player Name: " + player.getName());
-        System.out.println("Player Gender: " + player.getGender());
-        System.out.println("Player Race: " + player.getRace());
         aSetter.setObject();
         aSetter.setNPC();
         aSetter.setMonster();
-        gameState = playState;
-        playMusic(0);
+        playMusic(2);
         sound.setVolume(-30.0f);
+        gameState = titleState;
     }
 
     public void startGameThread(){
         gameThread = new Thread(this);
         gameThread.start();
-        gameState = 1;
     }
 
     public void run(){
@@ -122,16 +121,12 @@ public class GamePanel extends JPanel implements Runnable {
             }
 
             if (timer >= 1000000000){
-//                System.out.println("FPS: " + drawCount);
                 drawCount = 0;
                 timer = 0;
             }
         }
     }
 
-    public void setFPS(double FPS){
-        this.FPS = FPS;
-    }
 
     public void toggleStatWindow(Entity entity) {
         if (statWindow == null) {
@@ -150,16 +145,8 @@ public class GamePanel extends JPanel implements Runnable {
         }
     }
 
-    public void initializePlayer(String name, String gender, String race) {
-        player.setName(name);
-        player.setGender(gender);
-        player.setRace(race);
-        player.getPlayerImage();
-    }
-
-
     public void update(){
-        if (gameState == playState || gameState == flowState) {
+        if (gameState == playState) {
             player.update();
         }
         if (gameState == playState){
@@ -206,53 +193,72 @@ public class GamePanel extends JPanel implements Runnable {
         if (keyH.showDebugTest){
             drawStart = System.nanoTime();
         }
-        tileM.draw(g2);
+        if(gameState == titleState){
+            ui.draw(g2);
+        }
+        else if(gameState == newGameState){
+            ui.draw(g2);
+        }
+        else if(gameState == loadGameState){
+            ui.draw(g2);
+        }
+        else if(gameState == settingsState){
+            ui.draw(g2);
+        }
+        else if(gameState == characterPickState){
+            ui.draw(g2);
+        }
+        else{
+            //PLAY STATE
+            tileM.draw(g2);
 
-        entityList.clear();
-        entityList.add(player);
+            entityList.clear();
+            entityList.add(player);
 
-        for (Entity[] entities : new Entity[][] {npc, obj, monster}) {
-            for (Entity e : entities) {
-                if (e != null) {
-                    entityList.add(e);
+            for (Entity[] entities : new Entity[][] {npc, obj, monster}) {
+                for (Entity e : entities) {
+                    if (e != null) {
+                        entityList.add(e);
+                    }
                 }
             }
-        }
 
 
-        entityList.sort(new Comparator<>() {
-            @Override
-            public int compare(Entity e1, Entity e2) {
-                return Integer.compare(e1.worldY, e2.worldY);
+            entityList.sort(new Comparator<>() {
+                @Override
+                public int compare(Entity e1, Entity e2) {
+                    return Integer.compare(e1.worldY, e2.worldY);
+                }
+            });
+
+            for (Entity entity : entityList) {
+                entity.draw(g2);
             }
-        });
 
-        for (Entity entity : entityList) {
-            entity.draw(g2);
+            entityList.clear();
+
+            ui.draw(g2);
+
+
+            if (keyH.showDebugTest){
+                long drawEnd = System.nanoTime();
+                long passed = drawEnd - drawStart;
+
+                g2.setFont(g2.getFont().deriveFont(23f));
+                g2.setColor(Color.white);
+                int x = 10;
+                int y = 400;
+                int lineHeight = 20;
+
+                g2.drawString("WorldX" + player.worldX, x, y);y += lineHeight;
+                g2.drawString("WorldY" + player.worldY, x, y);y += lineHeight;
+                g2.drawString("Col" + (player.worldX+ player.solidArea.x)/tileSize, x, y);y += lineHeight;
+                g2.drawString("Row" + (player.worldY+ player.solidArea.y)/tileSize, x, y);y += lineHeight;
+
+                g2.drawString("Draw Time: " + passed , x, y );
+            }
         }
 
-        entityList.clear();
-
-        ui.draw(g2);
-
-
-        if (keyH.showDebugTest){
-            long drawEnd = System.nanoTime();
-            long passed = drawEnd - drawStart;
-
-            g2.setFont(g2.getFont().deriveFont(23f));
-            g2.setColor(Color.white);
-            int x = 10;
-            int y = 400;
-            int lineHeight = 20;
-
-            g2.drawString("WorldX" + player.worldX, x, y);y += lineHeight;
-            g2.drawString("WorldY" + player.worldY, x, y);y += lineHeight;
-            g2.drawString("Col" + (player.worldX+ player.solidArea.x)/tileSize, x, y);y += lineHeight;
-            g2.drawString("Row" + (player.worldY+ player.solidArea.y)/tileSize, x, y);y += lineHeight;
-
-            g2.drawString("Draw Time: " + passed , x, y );
-        }
 
 
         g2.dispose();
@@ -264,30 +270,6 @@ public class GamePanel extends JPanel implements Runnable {
             throw new IllegalArgumentException("min should be less than or equal to max");
         }
         return num.nextInt((max - min) + 1) + min;
-    }
-
-    public String randomName(String filePath) {
-        String[] names = new String[100];
-        int count = 0;
-        Random random = new Random();
-
-        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
-            String line;
-            while ((line = br.readLine()) != null && count < names.length) {
-                names[count++] = line;
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(null, filePath + " missing", "File Error", JOptionPane.ERROR_MESSAGE);
-        }
-
-        if (count == 0) {
-            System.out.println("No names found in " + filePath);
-            return "Bob";
-        }
-
-        int randomIndex = random.nextInt(count);
-        return names[randomIndex];
     }
 
     public void playMusic(int i){

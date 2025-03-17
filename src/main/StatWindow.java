@@ -82,8 +82,6 @@ public class StatWindow extends JFrame implements Forms {
 
         lblNAME.setText(gp.player.getName());
         lblLEVEL.setText(String.valueOf(gp.player.level));
-        lblGENDER.setText(gp.player.getGender());
-        lblRACE.setText(gp.player.getRace());
         lblPXP.setText(gp.player.exp + "/" + gp.player.nextLevelExp);
 
 
@@ -158,8 +156,6 @@ public class StatWindow extends JFrame implements Forms {
 
         lblNAME.setText(entity.getName());
         lblLEVEL.setText(String.valueOf(entity.level));
-        lblGENDER.setText(entity.getGender());
-        lblRACE.setText(entity.getRace());
         lblPXP.setText(entity.exp + "/" + entity.nextLevelExp);
 
         lblHPVal.setText(entity.life + "/" + entity.maxLife);
@@ -184,8 +180,6 @@ public class StatWindow extends JFrame implements Forms {
     private void updateLabels() {
         lblNAME.setText(entity.getName());
         lblLEVEL.setText(String.valueOf(entity.level));
-        lblGENDER.setText(entity.getGender());
-        lblRACE.setText(entity.getRace());
         lblPXP.setText(entity.exp + "/" + entity.nextLevelExp);
 
         lblHPVal.setText(entity.life + "/" + entity.maxLife);

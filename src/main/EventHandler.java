@@ -87,8 +87,6 @@ public class EventHandler {
         gp.player.worldX = gp.tileSize * 78;
         gp.player.worldY = gp.tileSize * 84;
         canTouchEvent = false;
-
-
     }
 
     public void damagePit(int gameState) {

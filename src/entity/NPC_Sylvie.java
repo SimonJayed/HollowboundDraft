@@ -14,26 +14,15 @@ public class NPC_Sylvie extends Entity {
         maxLife = 10;
         life = maxLife;
 
-        solidArea.x = 18;
-        solidArea.y = 18;
-        solidArea.width = 5;
-        solidArea.height = 5;
-        solidAreaDefaultX = solidArea.x;
-        solidAreaDefaultY = solidArea.y;
+        this.solidArea.x = 8;
+        this.solidArea.y = 16;
+        this.solidAreaDefaultX = this.solidArea.x;
+        this.solidAreaDefaultY = this.solidArea.y;
+        this.solidArea.width = 32;
+        this.solidArea.height = 32;
 
         getImage("sylvie");
         setDialogue();
-    }
-
-    public void getImage(String folder) {
-        up1 = setup("/" + folder + "/up1", gp.tileSize, gp.tileSize);
-        up2 = setup("/" + folder + "/up2", gp.tileSize, gp.tileSize);
-        down1 = setup("/" + folder + "/down1", gp.tileSize, gp.tileSize);
-        down2 = setup("/" + folder + "/down2", gp.tileSize, gp.tileSize);
-        left1 = setup("/" + folder + "/left1", gp.tileSize, gp.tileSize);
-        left2 = setup("/" + folder + "/left2", gp.tileSize, gp.tileSize);
-        right1 = setup("/" + folder + "/right1", gp.tileSize, gp.tileSize);
-        right2 = setup("/" + folder + "/right2", gp.tileSize, gp.tileSize);
     }
 
     public void setAction() {

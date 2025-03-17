@@ -14,15 +14,6 @@ public class Player extends Entity{
     KeyHandler keyH;
     MouseHandler mouseH;
 
-//    private String name = gp.randomName("res/text/names/namesAll.txt");
-//    private String gender = gp.randomName("res/text/names/genders/genders");
-//    private String race = gp.randomName("res/text/names/races/races");
-
-    private String name = "Bob";
-    private String gender = "Male";
-    private String race = "Human";
-
-
     public final int screenX;
     public final int screenY;
 
@@ -51,10 +42,9 @@ public class Player extends Entity{
         this.solidArea.height = 32;
 
         setDefaultValues();
-        getPlayerImage();
+        getImage("fort");
         getPlayerAttackImage();
         getPlayerRunImage();
-
     }
 
 
@@ -69,39 +59,7 @@ public class Player extends Entity{
         life = maxLife;
     }
 
-    public void setName(String name) {
-       this.name = name;
-    }
-    public String getName() {
-        return name;
-    }
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
-    public String getGender() {
-        return gender;
-    }
-    public void setRace(String race) {
-        this.race = race;
-    }
-    public String getRace() {
-        return race;
-    }
 
-    public void getPlayerImage(){
-        up1 = setup("/player/human/up1", gp.tileSize, gp.tileSize);
-        up2 = setup("/player/human/up2", gp.tileSize, gp.tileSize);
-        up3 = setup("/player/human/up1", gp.tileSize, gp.tileSize);
-        down1 = setup("/player/human/down1", gp.tileSize, gp.tileSize);
-        down2 = setup("/player/human/down2", gp.tileSize, gp.tileSize);
-        down3 = setup("/player/human/down1", gp.tileSize, gp.tileSize);
-        left1 = setup("/player/human/left1", gp.tileSize, gp.tileSize);
-        left2 = setup("/player/human/left2", gp.tileSize, gp.tileSize);
-        left3 = setup("/player/human/left3", gp.tileSize, gp.tileSize);
-        right1 = setup("/player/human/right1", gp.tileSize, gp.tileSize);
-        right2 = setup("/player/human/right2", gp.tileSize, gp.tileSize);
-        right3 = setup("/player/human/right3", gp.tileSize, gp.tileSize);
-    }
     public void getPlayerAttackImage() {
         up1 = setup("/player/human/up1", gp.tileSize, gp.tileSize);
         up2 = setup("/player/human/up2", gp.tileSize, gp.tileSize);
@@ -134,35 +92,11 @@ public class Player extends Entity{
 
     public void update() {
 //        System.out.println(tempSpeed + " and " + this.speed + " and " + gp.gameState + " and " + getName() + " and " + getRace() + " and " + getGender() );
-        if (keyH.enterPressed || mouseH.lmbPressed) {
-            isAttacking = true;
-            attacking();
-        }
-        else{
-            isAttacking = false;
-        }
         if (!keyH.upPressed && !keyH.downPressed && !keyH.rightPressed && !keyH.leftPressed){
             isIdling = true;
             idling();
         }
 
-        if (keyH.zeroPressed){
-            gp.setFPS(5);
-            System.out.println("Bullet time");
-        }
-        else{
-            gp.setFPS(60);
-        }
-//
-//        if (keyH.tabPressed) {
-//            System.out.println("Tab is pressed...");
-//        }
-//        if (keyH.shiftPressed) {
-//            System.out.println("Shift is pressed...");
-//        }
-//        if (keyH.enterPressed) {
-//            System.out.println("Enter is pressed...");
-//        }
         if (keyH.mPressed) {
             stopAll();
             System.out.println("M is pressed...");
@@ -243,17 +177,7 @@ public class Player extends Entity{
                     }
                 }
             }
-
-//            gp.keyH.mPressed = false;
-//            gp.keyH.qPressed = false;
-//            gp.keyH.enterPressed = false;
-//            keyH.ctrPressed = false;
-
-            if (race.equals("human")) {
-                spriteAnim(3);
-            } else {
-                spriteAnim(2);
-            }
+            spriteAnim(2);
 
             if (invincible) {
                 invincibleCounter++;

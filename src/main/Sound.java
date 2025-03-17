@@ -17,6 +17,8 @@ public class Sound {
         try {
             soundURL[0] = getClass().getResource("/sound/LetterBee.wav");
             soundURL[1] = getClass().getResource("/sound/AnimalCrossingTalkingSound.wav");
+            soundURL[2] = getClass().getResource("/sound/LetterBee-Lag&Niche.wav");
+            soundURL[3] = getClass().getResource("/sound/ClickSound.wav");
         } catch (Exception e) {
             e.printStackTrace();
         }

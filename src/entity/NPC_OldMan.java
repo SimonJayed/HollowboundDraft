@@ -20,11 +20,12 @@ public class NPC_OldMan extends Entity {
         exp = 58*2;
         checkLevelUp();
 
-        solidArea.y = 18;
-        solidArea.width = 42;
-        solidArea.height = 30;
-        solidAreaDefaultX = solidArea.x;
-        solidAreaDefaultY = solidArea.y;
+        this.solidArea.x = 8;
+        this.solidArea.y = 16;
+        this.solidAreaDefaultX = this.solidArea.x;
+        this.solidAreaDefaultY = this.solidArea.y;
+        this.solidArea.width = 32;
+        this.solidArea.height = 32;
 
         getImage();
         setDialogue();
@@ -75,6 +76,5 @@ public class NPC_OldMan extends Entity {
 
     public void speak(){
         super.speak();
-        gp.playSoundEffect(1);
     }
 }

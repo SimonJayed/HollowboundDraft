@@ -8,7 +8,7 @@ public class Game {
         window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         window.setResizable(false);
         window.setSize(768, 576);
-        window.setTitle("REMAIN");
+        window.setTitle("HollowBound");
 
         GamePanel gamePanel = new GamePanel();
         window.add(gamePanel);

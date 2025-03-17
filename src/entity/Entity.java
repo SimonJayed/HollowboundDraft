@@ -14,8 +14,6 @@ public class Entity {
 
     public int level = 1;
     private String name;
-    private String gender;
-    private String race;
     public int worldX, worldY;
     public int speed = 1;
     public int strength = 2;
@@ -66,12 +64,20 @@ public class Entity {
     }
 
     public String getName() {return name;}
-    public String getRace() {return race;}
-    public String getGender() {return gender;}
 
     public void setName(String name) {this.name =  name;}
-    public void setRace(String race) {this.race =  race;}
-    public void setGender(String gender) {this.gender =  gender;}
+
+    public void getImage(String folder) {
+        up1 = setup("/" + folder + "/up1", gp.tileSize, gp.tileSize);
+        up2 = setup("/" + folder + "/up2", gp.tileSize, gp.tileSize);
+        down1 = setup("/" + folder + "/down1", gp.tileSize, gp.tileSize);
+        down2 = setup("/" + folder + "/down2", gp.tileSize, gp.tileSize);
+        left1 = setup("/" + folder + "/left1", gp.tileSize, gp.tileSize);
+        left2 = setup("/" + folder + "/left2", gp.tileSize, gp.tileSize);
+        right1 = setup("/" + folder + "/right1", gp.tileSize, gp.tileSize);
+        right2 = setup("/" + folder + "/right2", gp.tileSize, gp.tileSize);
+        portrait = setup("/" + folder + "/portrait", gp.tileSize, gp.tileSize);
+    }
 
 
     public void speak(){
@@ -80,6 +86,7 @@ public class Entity {
         }
         gp.ui.currentDialogue = dialogues[dialogueIndex];
         dialogueIndex++;
+        gp.playSoundEffect(1);
 
         switch (gp.player.direction){
             case "up": {
@@ -232,24 +239,6 @@ public class Entity {
     public void idling(){
         isIdling = false;
     }
-//
-//    public void displayStamina(Graphics2D g2){
-//
-//        int screenX = worldX - gp.player.worldX + gp.player.screenX;
-//        int screenY = worldY - gp.player.worldY + gp.player.screenY;
-//
-//        double oneScale = (double) gp.tileSize/stamina;
-//        double staminaBarValue = oneScale * stamina;
-//
-//        if (isRunning){
-//            g2.setColor(new Color(35,35,35));
-//            g2.fillRect(screenX - 1, screenY + solidArea.y*2, gp.tileSize+2, 16);
-//
-//            g2.setColor(new Color(34, 123, 219, 180));
-//            g2.fillRect(screenX, screenY + solidArea.y*2, (int) staminaBarValue, 14);
-//        }
-//
-//    }
 
     public void getAttackImage() {
     }
@@ -314,9 +303,6 @@ public class Entity {
     public void displayEntityStats(Graphics2D g2){
         int screenX = worldX - gp.player.worldX + gp.player.screenX;
         int screenY = worldY - gp.player.worldY + gp.player.screenY;
-
-        g2.setColor(new Color(157, 128, 0));
-        g2.fillRect(screenX, screenY , solidArea.width, solidArea.height);
 
         g2.setColor(new Color(172, 69, 69));
         g2.fillRect(screenX, screenY , attackArea.width, attackArea.height);
@@ -398,8 +384,6 @@ public class Entity {
 //    }
 
     public void checkLevelUp(){
-
-
         while (exp >= nextLevelExp){
             level++;
             nextLevelExp *= 2;

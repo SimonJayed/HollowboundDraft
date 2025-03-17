@@ -14,15 +14,18 @@ public class UI {
 
     GamePanel gp;
     Graphics2D g2;
-    BufferedImage heart_full, heart_half, heart_blank, portrait;
+
+    BufferedImage heart_full, heart_half, heart_blank;
+    BufferedImage portrait;
+
     public boolean messageOn = false;
-//    public String message = "";
-//    int messageCounter = 0;
     ArrayList <String> message = new ArrayList<>();
     ArrayList <Integer> messageCounter = new ArrayList<>();
+
     public boolean gameFinished = false;
+
     public String currentDialogue = "";
-    public int entityX = 0, entityY = 0;
+    public int commandNum = 0;
 
     public boolean toggleTime = true;
 
@@ -31,8 +34,6 @@ public class UI {
 
     public UI(GamePanel gp){
         this.gp = gp;
-
-
         Entity heart = new OBJ_Heart(gp);
         heart_full = heart.image1;
         heart_half = heart.image2;
@@ -56,18 +57,34 @@ public class UI {
         if (gp.gameState == gp.playState) {
             drawPlayerLife();
             playTime += (double) 1 / 60;
-            drawMessage();
-        } else if (gp.gameState == gp.pauseState) {
+//            drawMessage();
+        }
+        else if (gp.gameState == gp.pauseState) {
             drawPlayerLife();
             drawPauseScreen();
         }
+        if (gp.gameState == gp.titleState) {
+            drawTitleScreen();
+        }
+        if (gp.gameState == gp.newGameState) {
+            drawNewGameScreen();
+        }
+       if (gp.gameState == gp.loadGameState) {
+            drawLoadGameScreen();
+        }
+        if (gp.gameState == gp.settingsState) {
+            drawSettingsScreen();
+        }
+        if (gp.gameState == gp.characterPickState) {
+            drawCharacterPickScreen();
+        }
+
         if (gp.gameState == gp.dialogueState) {
             drawPlayerLife();
             drawDialogueScreen();
         }
-
-
     }
+
 
     public void drawPlayerLife(){
         int x = gp.tileSize/2;
@@ -119,6 +136,72 @@ public class UI {
         }
     }
 
+    public void drawTitleScreen(){
+
+        g2.setFont(g2.getFont().deriveFont(50f));
+        String text = "Hollowbound";
+        int x = getXforCenteredText(g2, text);
+        int y = gp.screenHeight/5;
+
+        g2.drawString(text, x, y);
+
+
+        x = gp.screenWidth/2 - gp.tileSize;
+
+        g2.drawImage(gp.player.portrait, x, y, gp.tileSize*13, gp.tileSize*15, null);
+
+        text = "New Game";
+        g2.setFont(g2.getFont().deriveFont(40f));
+        x = gp.tileSize+5;
+        y += gp.tileSize*6;
+        if(commandNum == 0){
+            g2.drawString(">", x-gp.tileSize+10, y);
+        }
+
+        g2.drawString(text, x, y);
+
+        text = "Load Game";
+        g2.setFont(g2.getFont().deriveFont(40f));
+        x += 10;
+        y += gp.tileSize+5;
+        if(commandNum == 1){
+            g2.drawString(">", x-gp.tileSize+10, y);
+        }
+
+        g2.drawString(text, x, y);
+
+        text = "Settings";
+        g2.setFont(g2.getFont().deriveFont(40f));
+        x += 10;
+        y += gp.tileSize+5;
+        if(commandNum == 2){
+            g2.drawString(">", x-gp.tileSize+10, y);
+        }
+
+        g2.drawString(text, x, y);
+
+        text = "Exit";
+        g2.setFont(g2.getFont().deriveFont(40f));
+        x += 10;
+        y += gp.tileSize+5;
+        if(commandNum == 3){
+            g2.drawString(">", x-gp.tileSize+10, y);
+        }
+
+        g2.drawString(text, x, y);
+    }
+    public void drawNewGameScreen(){
+
+    }
+    public void drawLoadGameScreen(){
+
+    }
+    public void drawSettingsScreen(){
+
+    }
+    public void drawCharacterPickScreen(){
+
+    }
     public void drawPauseScreen(){
         Color c = new Color (0, 0, 0, 95);
         g2.setColor(c);
@@ -133,23 +216,6 @@ public class UI {
 
         g2.drawString(text, x, y);
     }
-//
-//    public void drawDialogueScreen(){
-//        int x = gp.tileSize*2;
-//        int y = gp.tileSize/2;
-//        int width = gp.screenWidth - (gp.tileSize*4);
-//        int height = gp.tileSize*5;
-//
-//        drawSubWindow(x, y, width, height);
-//
-//        x+= gp.tileSize;
-//        y+= gp.tileSize;
-//
-//        for(String line: currentDialogue.split("\n")) {
-//            g2.drawString(line, x, y);
-//            y+=40;
-//        }
-//    }
 
     public void drawDialogueScreen() {
         int width = gp.screenWidth - (gp.tileSize * 2);
@@ -159,7 +225,6 @@ public class UI {
 
         drawSubWindow(x, y, width, height);
 
-        // Load and draw the image
         try {
             portrait = ImageIO.read(getClass().getResourceAsStream("/fort/portrait.png"));
         } catch (IOException e) {
@@ -167,14 +232,13 @@ public class UI {
         }
 
         if (portrait != null) {
-            int imgX = gp.tileSize * 12; // Adjust position as needed
+            int imgX = gp.tileSize * 12;
             int imgY = gp.tileSize * 4;
             int imgHeight = gp.tileSize * 11;
             int imgWidth = gp.tileSize * 8;
             g2.drawImage(portrait, imgX, imgY, imgWidth, imgHeight, null);
         }
 
-        // Adjust text position to be next to the image
         x += gp.tileSize;
         y += gp.tileSize;
 
