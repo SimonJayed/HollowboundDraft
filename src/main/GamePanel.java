@@ -33,7 +33,7 @@ public class GamePanel extends JPanel implements Runnable {
     public int currentMap = 0;
 
 
-    public double FPS = 60;
+    public double FPS = 40;
 
     int failCTR = 0;
 
