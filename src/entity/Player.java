@@ -41,6 +41,8 @@ public class Player extends Entity{
         this.solidArea.width = 32;
         this.solidArea.height = 32;
 
+        buffer = 0;
+
         setDefaultValues();
         getImage("fort");
         getPlayerAttackImage();
@@ -49,14 +51,17 @@ public class Player extends Entity{
 
 
     public void setDefaultValues(){
-        worldX = gp.tileSize * 30;
-        worldY = gp.tileSize * 15;
-        speed = 1;
+        worldX = gp.tileSize * 18;
+        worldY = gp.tileSize * 47;
+        speed = 4;
         tempSpeed = speed;
         direction = "down";
 
-        maxLife = 2;
+        maxLife = 400;
         life = maxLife;
+        maxEnergy = 100;
+        energy = maxEnergy;
+        energyRegen = maxEnergy*0.1;
     }
 
 
@@ -96,22 +101,7 @@ public class Player extends Entity{
             isIdling = true;
             idling();
         }
-
-        if (keyH.mPressed) {
-            stopAll();
-            System.out.println("M is pressed...");
-            if (gp.statWindow == null) {
-                System.out.println("Creating StatWindow...");
-                gp.toggleStatWindow(this);
-                gp.statWindow.setVisible(true);
-                gp.setFocusable(true);
-            }
-            else{
-                gp.statWindow.dispose();
-                gp.statWindow = null;
-            }
-            keyH.mPressed = false;
-        }
+        regen();
 
         if (keyH.tabPressed) {
             System.out.println("Tab is pressed...");
@@ -130,12 +120,17 @@ public class Player extends Entity{
             if (gp.keyH.leftPressed) {
                 direction = "left";
             }
-            if (gp.keyH.shiftPressed) {
+            if (gp.keyH.shiftPressed && energy > 0) {
+                buffer++;
                 isRunning = true;
 //                running();
                 speed++;
                 if (speed >= tempSpeed + 4) {
                     speed = tempSpeed + 4;
+                }
+                if(buffer >= 5){
+                    energy--;
+                    buffer = 0;
                 }
             } else {
                 keyH.shiftPressed = false;
@@ -189,64 +184,24 @@ public class Player extends Entity{
         }
     }
 
-    public void stopAll () {
-        isAttacking = false;
-        isRunning = false;
-        if (gp.statWindow != null) {
-            gp.statWindow.dispose();
-            gp.statWindow = null;
-        }
-        keyH.upPressed = false;
-        keyH.downPressed = false;
-        keyH.leftPressed = false;
-        keyH.rightPressed = false;
+    public void regen(){
+        super.regen();
     }
-
-
-//    public void running(){
-//        if ( keyH.upPressed || keyH.downPressed || keyH.rightPressed || keyH.leftPressed) {
-//            super.running();
-//        }
-//    }
 
     public void idling(){
         isAttacking = false;
         isRunning = false;
-        isIdling = false;
+        isIdling = true;
     }
 
     public void interactEntity(int i){
-            if (i != 999){
-                if (keyH.qPressed) {
-                    if (gp.npc[i] != null) {
-                        stopAll();
-                        System.out.println("q is pressed...");
-
-                        System.out.println("Creating StatWindow...");
-                        gp.toggleStatWindow(gp.npc[i]);
-                        gp.statWindow.setVisible(true);
-                        gp.setFocusable(true);
-                    }
-                    else if (gp.monster[i] != null){
-                        stopAll();
-                        System.out.println("q is pressed...");
-
-                        System.out.println("Creating StatWindow...");
-                        gp.toggleStatWindow(gp.monster[i]);
-                        gp.statWindow.setVisible(true);
-                        gp.setFocusable(true);
-                    }
-                }
-
-                if (keyH.spacePressed){
-                    if(gp.npc[i].type != 2) {
-                        stopAll();
-                        gp.gameState = gp.dialogueState;
-                        gp.npc[i].speak();
-                    }
-                }
-                keyH.qPressed = false;
+        if (keyH.spacePressed){
+            if(gp.npc[i].type != 2) {
+                gp.gameState = gp.dialogueState;
+                gp.npc[i].speak();
+            }
         }
+        keyH.qPressed = false;
     }
 
     public void pickUpObject(int i){
@@ -291,7 +246,6 @@ public class Player extends Entity{
 
 
     public void draw(Graphics2D g2){
-//      super.draw(g2);
         BufferedImage image = null;
 
         int tempScreenX = screenX;

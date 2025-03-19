@@ -2,6 +2,7 @@ package main;
 
 import entity.Entity;
 import entity.Player;
+import tile.Map;
 import tile.TileManager;
 
 import javax.swing.*;
@@ -28,6 +29,8 @@ public class GamePanel extends JPanel implements Runnable {
 
     public final int maxWorldCol = 50;
     public final int maxWorldRow = 50;
+    public final int maxMap = 10;
+    public int currentMap = 0;
 
 
     public double FPS = 60;
@@ -39,11 +42,11 @@ public class GamePanel extends JPanel implements Runnable {
     public KeyHandler keyH = new KeyHandler(this);
     public MouseHandler mouseH = new MouseHandler(this);
     Sound sound = new Sound();
-    public StatWindow statWindow = null;
     public CollisionChecker cChecker = new CollisionChecker(this);
     public AssetSetter aSetter = new AssetSetter(this);
     public UI ui = new UI(this);
     public EventHandler eHandler = new EventHandler(this);
+    Map map = new Map(this);
     Thread gameThread;
 
     public Player player = new Player(this, keyH, mouseH);
@@ -55,12 +58,14 @@ public class GamePanel extends JPanel implements Runnable {
     public int gameState;
     public final int titleState = 0;
     public final int playState = 1;
-    public final int pauseState = 2;
+    public final int inventoryState = 2;
     public final int dialogueState = 3;
     public final int newGameState = 4;
     public final int loadGameState = 5;
     public final int settingsState = 6;
     public final int characterPickState = 7;
+    public final int battleState = 8;
+    public final int mapState = 9;
 
     public Font customFont;
 
@@ -77,8 +82,8 @@ public class GamePanel extends JPanel implements Runnable {
         aSetter.setObject();
         aSetter.setNPC();
         aSetter.setMonster();
-        playMusic(2);
-        sound.setVolume(-30.0f);
+//        playMusic(2);
+//        sound.setVolume(-20.0f);
         gameState = titleState;
     }
 
@@ -110,12 +115,12 @@ public class GamePanel extends JPanel implements Runnable {
                     delta-=1;
                     drawCount++;
                 } catch (ArrayIndexOutOfBoundsException e){
-                    failCTR++;
-                    JOptionPane.showMessageDialog(null, "Someone got erased from existence", "Dead Lol", JOptionPane.ERROR_MESSAGE);
-                    if (failCTR == 3){
-                        JOptionPane.showMessageDialog(null, "Game doesn't want you, bro. Peace Out.", "Death Loop", JOptionPane.INFORMATION_MESSAGE);
-                        System.exit(0);
-                    }
+//                    failCTR++;
+//                    JOptionPane.showMessageDialog(null, "Someone got erased from existence", "Dead Lol", JOptionPane.ERROR_MESSAGE);
+//                    if (failCTR == 3){
+//                        JOptionPane.showMessageDialog(null, "Game doesn't want you, bro. Peace Out.", "Death Loop", JOptionPane.INFORMATION_MESSAGE);
+//                        System.exit(0);
+//                    }
                 }
 
             }
@@ -124,24 +129,6 @@ public class GamePanel extends JPanel implements Runnable {
                 drawCount = 0;
                 timer = 0;
             }
-        }
-    }
-
-
-    public void toggleStatWindow(Entity entity) {
-        if (statWindow == null) {
-            statWindow = new StatWindow(this, entity);
-            statWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-            statWindow.addWindowListener(new java.awt.event.WindowAdapter() {
-                @Override
-                public void windowClosing(java.awt.event.WindowEvent e) {
-                    statWindow = null;
-                }
-            });
-            statWindow.setVisible(true);
-        } else {
-            statWindow.dispose();
-            statWindow = null;
         }
     }
 
@@ -237,7 +224,11 @@ public class GamePanel extends JPanel implements Runnable {
 
             entityList.clear();
 
+            map.drawMiniMap(g2);
+
             ui.draw(g2);
+
+//            ui.drawForegroundFoliage();
 
 
             if (keyH.showDebugTest){

@@ -1,6 +1,7 @@
 package main;
 
 
+import java.awt.*;
 import java.util.Objects;
 
 public class EventHandler {
@@ -44,16 +45,59 @@ public class EventHandler {
             canTouchEvent = true;
         }
 
-        if (canTouchEvent){
-            if (hit(23, 24, "down")) {
-                damagePit(gp.dialogueState);
+        if (canTouchEvent && gp.currentMap == 0){
+//            if (hit(23, 24, "down")) {
+//                damagePit(gp.dialogueState);
+//            }
+//            if (hit(23, 12, "up")) {
+//                healingPool(gp.dialogueState);
+//            }
+            //GOING TO MAP 2
+            if (hit(48, 42, "right")){
+                teleport(gp.playState, 2, 45, "right");
             }
-            if (hit(23, 12, "up")) {
-                healingPool(gp.dialogueState);
+            if (hit(48, 43, "right")){
+                teleport(gp.playState, 2, 46, "right");
+            }
+            if (hit(48, 44, "right")){
+                teleport(gp.playState, 2, 47, "right");
+            }
+            if (hit(48, 45, "right")){
+                teleport(gp.playState, 2, 47, "right");
+            }
+            if (hit(48, 46, "right")){
+                teleport(gp.playState, 2, 48, "right");
             }
         }
+        if (canTouchEvent && gp.currentMap == 1){
+            //GOING BACK TO MAP 1
+            if (hit(1, 45, "left")){
+                teleport(gp.playState, 48, 42, "left");
+            }
+            if (hit(1, 46, "left")){
+                teleport(gp.playState, 48, 43, "left");
+            }
+            if (hit(1, 47, "left")){
+                teleport(gp.playState, 48, 44, "left");
+            }
+            if (hit(1, 48, "left")){
+                teleport(gp.playState, 48, 46, "left");
+            }
 
-
+            //GOING TO MAP 3
+            if (hit(48, 45, "right")){
+                teleport(gp.playState, 2, 1, "right");
+            }
+            if (hit(48, 46, "right")){
+                teleport(gp.playState, 2, 3, "right");
+            }
+            if (hit(48, 47, "right")){
+                teleport(gp.playState, 2, 4, "right");
+            }
+            if (hit(48, 48, "right")){
+                teleport(gp.playState, 2, 5, "right");
+            }
+        }
     }
 
     public boolean hit(int col, int row, String reqDirection) {
@@ -81,12 +125,30 @@ public class EventHandler {
         return hit;
     }
 
-    public void teleport(int gameState) {
+    public void teleport(int gameState, int x, int y, String reqDirection) {
         gp.gameState = gameState;
-        gp.ui.currentDialogue = "Entered cave.";
-        gp.player.worldX = gp.tileSize * 78;
-        gp.player.worldY = gp.tileSize * 84;
+        switch(gp.currentMap){
+            case 0:{
+                if(reqDirection.equals("right")){
+                    gp.currentMap = 1;
+                }
+
+                break;
+            }
+            case 1:{
+                if(reqDirection.equals("left")){
+                    gp.currentMap = 0;
+                }if(reqDirection.equals("right")){
+                    gp.currentMap = 0;
+                    System.out.println("Next Map");
+                }
+                break;
+            }
+        }
+        gp.player.worldX = gp.tileSize * x;
+        gp.player.worldY = gp.tileSize * y;
         canTouchEvent = false;
+        System.out.println("Map Changed");
     }
 
     public void damagePit(int gameState) {

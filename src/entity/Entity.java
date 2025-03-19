@@ -55,8 +55,14 @@ public class Entity {
     public int dyingCounter = 0;
     public int hpBarCounter = 0;
 
-    public int maxLife;
-    public int life;
+    public double maxLife;
+    public double life;
+    public double maxEnergy = 10;
+    public double energy = 10;
+    public double energyRegen = maxEnergy*0.1;
+
+    public int buffer = 0;
+
 
     public Entity(GamePanel gp){
         this.gp = gp;
@@ -113,12 +119,20 @@ public class Entity {
 
     public void setAction(){}
 
-    public void update(){
-        if (isAttacking) {
-            attacking();
+    public void regen(){
+        buffer++;
+        if(buffer >= 250 && energy < maxEnergy && isRunning == false){
+            energy += energyRegen;
+            buffer = 0;
+            System.out.println(name + " is regenerating.");
         }
-        setAction();
 
+
+    }
+
+    public void update(){
+        setAction();
+        regen();
 
         collisionOn = false;
         gp.cChecker.checkTile(this);
@@ -127,14 +141,14 @@ public class Entity {
         gp.cChecker.checkEntity(this, gp.monster);
         boolean contactPlayer = gp.cChecker.checkPlayer(this);
 
-        if (this.type == 2 && contactPlayer) {
+        if (type == 2 && contactPlayer) {
             if (!gp.player.invincible){
-                gp.player.life -= 1;
-                gp.player.invincible = true;
+//                gp.gameState = gp.battleState;
+                System.out.println("FIGHT!!!");
             }
         }
 
-        if (!collisionOn) {
+        if (!collisionOn && isIdling == false) {
             switch (direction) {
                 case "up": {
                     worldY -= speed;
@@ -154,6 +168,9 @@ public class Entity {
                 }
             }
         }
+        else{
+            idling();
+        }
 
         if (invincible){
             invincibleCounter++;
@@ -172,72 +189,9 @@ public class Entity {
         spriteNum = (spriteCounter - 1) / 13 + 1;
     }
 
-    public void attacking(){
-        System.out.println(name + " attacks.");
-
-        spriteCounter++;
-        int i = 13;
-        if (spriteCounter <= i){
-            spriteNum = 1;
-        }
-        else if (spriteCounter <= i*2){
-            spriteNum = 2;
-        }
-
-        else if (spriteCounter <= i*3){
-            spriteNum = 3;
-
-            int currentWorldX = worldX;
-            int currentWorldY = worldY;
-            int solidAreaWidth = solidArea.width;
-            int solidAreaHeight = solidArea.height;
-
-            switch (direction){
-                case "up":{
-                    worldY -= attackArea.height;
-                    break;
-                }
-                case "down":{
-                    worldY += attackArea.height;
-                    break;
-                }
-                case "left":{
-                    worldY -= attackArea.width;
-                    break;
-                }
-                case "right":{
-                    worldX += attackArea.width;
-                    break;
-                }
-            }
-
-            solidArea.width = attackArea.width;
-            solidArea.height = attackArea.height;
-
-            int npcIndex = gp.cChecker.checkEntity(this, gp.npc);
-            damageEntity(npcIndex);
-
-            int monsterIndex = gp.cChecker.checkEntity(this, gp.monster);
-            damageEntity(monsterIndex);
-
-            worldX = currentWorldX;
-            worldY = currentWorldY;
-            solidArea.width = solidAreaWidth;
-            solidArea.height = solidAreaHeight;
-        }
-        else{
-            spriteNum = 1;
-            spriteCounter = 0;
-            isAttacking = false;
-            gp.keyH.enterPressed = false;
-            gp.mouseH.lmbPressed = false;
-            isIdling = true;
-        }
-    }
-
 
     public void idling(){
-        isIdling = false;
+        isIdling = true;
     }
 
     public void getAttackImage() {
@@ -304,11 +258,10 @@ public class Entity {
         int screenX = worldX - gp.player.worldX + gp.player.screenX;
         int screenY = worldY - gp.player.worldY + gp.player.screenY;
 
-        g2.setColor(new Color(172, 69, 69));
-        g2.fillRect(screenX, screenY , attackArea.width, attackArea.height);
+//        g2.setColor(new Color(172, 69, 69));
+//        g2.fillRect(screenX, screenY , attackArea.width, attackArea.height);
 
-        if (type == 2 && hpBarOn){
-
+        if (type == 2 && hpBarOn && gp.gameState == gp.battleState ){
 
             double oneScale = (double) gp.tileSize/maxLife;
             double hpBarValue = oneScale * life;
@@ -327,61 +280,7 @@ public class Entity {
             }
         }
 
-        FontMetrics metrics = g2.getFontMetrics();
-        int nameWidth = metrics.stringWidth(name);
-        int centeredX = screenX+21 - nameWidth / 2;
-
-
-        boolean isInstanceOfObj = false;
-
-        for (Entity objEntity : gp.obj) {
-            if (this.getClass().isInstance(objEntity)) {
-                isInstanceOfObj = true;
-                break;
-            }
-        }
-
-        if (!isInstanceOfObj) {
-            g2.setColor(new Color(35,35,35));
-            g2.setFont(g2.getFont().deriveFont(23f));
-            g2.drawString(name, centeredX-2, screenY - (solidArea.y +16));
-
-            if (type == 2) {
-                g2.setColor(Color.red);
-            } else if (type == 1){
-                g2.setColor(Color.white);
-            }
-            g2.setFont(g2.getFont().deriveFont(22f));
-
-            g2.drawString(name, centeredX, screenY - (solidArea.y +15));
-        }
-
     }
-
-//    public void drawPlayerMessage(Graphics2D g2){
-//        int messageX = gp.tileSize;
-//        int messageY = gp.tileSize + 4;
-//
-//        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 22f));
-//
-//        for (int i = 0; i < gp.ui.message.size(); i++){
-//
-//            if (message.get(i) != null){
-//
-//                g2.setColor(Color.white);
-//                g2.drawString(message.get(i), messageX, messageY);
-//
-//                int counter = messageCounter.get(i) + 1;
-//                messageCounter.set(i, counter);
-//                messageY += 50;
-//
-//                if (messageCounter.get(i) > 180){
-//                    message.remove(i);
-//                    messageCounter.remove(i);
-//                }
-//            }
-//        }
-//    }
 
     public void checkLevelUp(){
         while (exp >= nextLevelExp){

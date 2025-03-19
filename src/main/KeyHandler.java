@@ -31,6 +31,7 @@ public class KeyHandler implements KeyListener {
                     gp.ui.commandNum = 3;
                 }
                 gp.playSoundEffect(3);
+                gp.sound.setVolume(-20.0f);
             }
             if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
                 gp.ui.commandNum++;
@@ -38,6 +39,7 @@ public class KeyHandler implements KeyListener {
                     gp.ui.commandNum = 0;
                 }
                 gp.playSoundEffect(3);
+                gp.sound.setVolume(-20.0f);
             }
             if (code == KeyEvent.VK_ENTER) {
                 if (gp.ui.commandNum == 0) {
@@ -73,9 +75,6 @@ public class KeyHandler implements KeyListener {
             if (code == KeyEvent.VK_SHIFT) {
                 shiftPressed = true;
             }
-            if (code == KeyEvent.VK_M) {
-                mPressed = !mPressed;
-            }
             if (code == KeyEvent.VK_Q) {
                 qPressed = true;
             }
@@ -91,26 +90,40 @@ public class KeyHandler implements KeyListener {
             if (code == KeyEvent.VK_0) {
                 zeroPressed = !zeroPressed;
             }
+            if (code == KeyEvent.VK_I || code == KeyEvent.VK_ESCAPE) {
+                gp.gameState = gp.inventoryState;
+                System.out.println("Inventory opened");
+            }
+            if (code == KeyEvent.VK_M ) {
+                gp.gameState = gp.mapState;
+                System.out.println("Map opened");
+            }
+        }
+        else if (gp.gameState == gp.dialogueState) {
+            if (code == KeyEvent.VK_SPACE) {
+                gp.gameState = gp.playState;
+            }
+        }
+        else if (gp.gameState == gp.inventoryState) {
+            if (code == KeyEvent.VK_I || code == KeyEvent.VK_ESCAPE) {
+                gp.gameState = gp.playState;
+                System.out.println("Inventory closed");
+            }
+        }
+        else if (gp.gameState == gp.mapState) {
+            if (code == KeyEvent.VK_M || code == KeyEvent.VK_ESCAPE) {
+                gp.gameState = gp.playState;
+                System.out.println("Map closed");
+            }
         }
 
 
-        if (code == KeyEvent.VK_P) {
-            gp.gameState = gp.pauseState;
-            System.out.println("P pressed and " + gp.gameState);
-        }
+
         if (code == KeyEvent.VK_T) {
             if (!showDebugTest) {
                 showDebugTest = true;
             } else {
                 showDebugTest = false;
-            }
-        } else if (gp.gameState == gp.pauseState) {
-            if (code == KeyEvent.VK_P) {
-                gp.gameState = gp.playState;
-            }
-        } else if (gp.gameState == gp.dialogueState) {
-            if (code == KeyEvent.VK_SPACE) {
-                gp.gameState = gp.playState;
             }
         }
     }
@@ -118,16 +131,16 @@ public class KeyHandler implements KeyListener {
     public void keyReleased(KeyEvent e) {
         int code = e.getKeyCode();
 
-        if (code == KeyEvent.VK_W){
+        if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP){
             upPressed = false;
         }
-        if (code == KeyEvent.VK_A){
+        if (code == KeyEvent.VK_A || code == KeyEvent.VK_LEFT){
             leftPressed = false;
         }
-        if (code == KeyEvent.VK_S){
+        if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN){
             downPressed = false;
         }
-        if (code == KeyEvent.VK_D){
+        if (code == KeyEvent.VK_D || code == KeyEvent.VK_RIGHT){
             rightPressed = false;
         }
         if (code == KeyEvent.VK_Q){

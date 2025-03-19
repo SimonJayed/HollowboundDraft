@@ -1,6 +1,7 @@
 package entity;
 
 import main.GamePanel;
+import misc.QuestGiver;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -8,7 +9,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 
-public class NPC_OldMan extends Entity {
+public class NPC_OldMan extends Entity implements QuestGiver {
 
     public NPC_OldMan(GamePanel gp) {
         super(gp);
@@ -49,22 +50,7 @@ public class NPC_OldMan extends Entity {
     }
 
     public void setAction() {
-        actionLockCounter++;
-
-        if (actionLockCounter >= gp.randomize(120, 350)) {
-            int i = gp.randomize(1, 100);
-
-            if (i <= 25) {
-                direction = "up";
-            } else if (i <= 50) {
-                direction = "down";
-            } else if (i <= 75) {
-                direction = "left";
-            } else if (i <= 100) {
-                direction = "right";
-            }
-            actionLockCounter = 0;
-        }
+        idling();
         spriteAnim(2);
     }
 
@@ -76,5 +62,10 @@ public class NPC_OldMan extends Entity {
 
     public void speak(){
         super.speak();
+    }
+
+    @Override
+    public void giveQuest() {
+
     }
 }

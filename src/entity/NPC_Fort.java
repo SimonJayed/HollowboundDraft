@@ -9,6 +9,7 @@ public class NPC_Fort extends Entity {
     public NPC_Fort(GamePanel gp) {
         super(gp);
 
+        type = 2;
         setName("Fort");
         speed = 1;
         maxLife = 10;
@@ -29,17 +30,23 @@ public class NPC_Fort extends Entity {
     public void setAction() {
         actionLockCounter++;
 
-        if (actionLockCounter >= gp.randomize(120, 350)) {
-            int i = gp.randomize(1, 100);
+        if (actionLockCounter >= gp.randomize(120, 750)) {
+            int i = gp.randomize(1, 150);
 
             if (i <= 25) {
                 direction = "up";
+                isIdling = false;
             } else if (i <= 50) {
                 direction = "down";
+                isIdling = false;
             } else if (i <= 75) {
                 direction = "left";
+                isIdling = false;
             } else if (i <= 100) {
                 direction = "right";
+                isIdling = false;
+            } else if (i <= 125) {
+                idling();
             }
             actionLockCounter = 0;
         }

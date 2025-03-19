@@ -7,7 +7,7 @@ public class Game {
         JFrame window = new JFrame();
         window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         window.setResizable(false);
-        window.setSize(768, 576);
+        window.setSize(864, 672);
         window.setTitle("HollowBound");
 
         GamePanel gamePanel = new GamePanel();
