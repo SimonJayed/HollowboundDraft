@@ -143,7 +143,7 @@ public class Entity {
 
         if (type == 2 && contactPlayer) {
             if (!gp.player.invincible){
-//                gp.gameState = gp.battleState;
+                gp.gameState = gp.battleState;
                 System.out.println("FIGHT!!!");
             }
         }

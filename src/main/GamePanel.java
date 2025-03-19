@@ -33,7 +33,7 @@ public class GamePanel extends JPanel implements Runnable {
     public int currentMap = 0;
 
 
-    public double FPS = 40;
+    public double FPS = 55;
 
     int failCTR = 0;
 
@@ -84,7 +84,7 @@ public class GamePanel extends JPanel implements Runnable {
         aSetter.setMonster();
 //        playMusic(2);
 //        sound.setVolume(-20.0f);
-        gameState = titleState;
+        gameState = battleState;
     }
 
     public void startGameThread(){

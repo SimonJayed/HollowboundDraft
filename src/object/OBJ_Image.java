@@ -10,7 +10,7 @@ public class OBJ_Image extends Entity {
 
         setName("Heart");
         image1 = setup("/background/background_nature", gp.screenWidth, gp.screenHeight);
-        image2 = setup("/ui/portrait", gp.screenWidth, gp.screenHeight);
+        image2 = setup("/background/tempBackground", gp.screenWidth, gp.screenHeight);
         image3 = setup("/objects/heart_full", gp.screenWidth, gp.screenHeight);
 
     }

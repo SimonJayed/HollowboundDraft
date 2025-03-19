@@ -58,6 +58,45 @@ public class KeyHandler implements KeyListener {
             }
         }
 
+        else if (gp.gameState == gp.battleState) {
+            if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
+                gp.ui.commandNum--;
+                if (gp.ui.commandNum < 0) {
+                    gp.ui.commandNum = 3;
+                }
+                gp.playSoundEffect(3);
+                gp.sound.setVolume(-20.0f);
+            }
+            if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
+                gp.ui.commandNum++;
+                if (gp.ui.commandNum > 3) {
+                    gp.ui.commandNum = 0;
+                }
+                gp.playSoundEffect(3);
+                gp.sound.setVolume(-20.0f);
+            }
+            if (code == KeyEvent.VK_ENTER) {
+                if (gp.ui.commandNum == 0) {
+                }
+                if (gp.ui.commandNum == 1) {
+
+                }
+                if (gp.ui.commandNum == 2) {
+
+                }
+                if (gp.ui.commandNum == 3) {
+                    int num = gp.randomize(1, 8);
+                    if(num == 8){
+                        gp.gameState = gp.playState;
+                        gp.player.invincible = true;
+                    }
+                    else{
+                        System.out.println("Escape Failed.");
+                    }
+                }
+            }
+        }
+
         else if (gp.gameState == gp.playState) {
             if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
                 upPressed = true;

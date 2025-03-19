@@ -17,10 +17,8 @@ public class UI {
     Graphics2D g2;
 
 
-
-    BufferedImage heart_full, heart_half, heart_blank;
     BufferedImage portrait;
-    BufferedImage titleBackground;
+    BufferedImage titleBackground, battleBackground;
 
     public boolean messageOn = false;
     ArrayList <String> message = new ArrayList<>();
@@ -86,6 +84,9 @@ public class UI {
         else if (gp.gameState == gp.dialogueState) {
             drawPlayerLife();
             drawDialogueScreen();
+        }
+        else if (gp.gameState == gp.battleState) {
+            drawBattleScreen();
         }
         else if(gp.gameState == gp.mapState){
             gp.map.drawFullMapScreen(g2);
@@ -355,6 +356,67 @@ public class UI {
 //            g2.drawImage(img, imgX, imgY, imgWidth, imgHeight, null);
 //        }
 //    }
+
+    public void drawBattleScreen(){
+        Entity background = new OBJ_Image(gp);
+        battleBackground = background.image2;
+
+        int x = 0;
+        int y = 0;
+
+        g2.drawImage(battleBackground, x, y, gp.screenWidth, gp.screenHeight, null);
+
+        x = gp.tileSize/2;
+        y = gp.tileSize*9 + (gp.tileSize/2);
+        g2.setColor(new Color(0,0,0));
+        g2.fillRoundRect(x, y, gp.tileSize*5, gp.tileSize*4, 20, 20);
+
+        x += gp.tileSize*5 + gp.tileSize;
+        g2.setColor(new Color(0,0,0));
+        g2.fillRoundRect(x, y, gp.tileSize*11, gp.tileSize*4, 20, 20);
+
+        String text = "ATTACK";
+        g2.setFont(g2.getFont().deriveFont(25f));
+        g2.setColor(Color.white);
+        x = gp.tileSize/2+5;
+        y += gp.tileSize/2+3;
+        g2.drawString(text, x, y);
+        if(commandNum == 0){
+            g2.setColor(new Color(255, 0, 0));
+            g2.drawString("ATTACK", x, y);
+        }
+
+        text = "SKILL";
+        g2.setFont(g2.getFont().deriveFont(25f));
+        g2.setColor(Color.white);
+        y += gp.tileSize;
+        g2.drawString(text, x, y);
+        if(commandNum == 1){
+            g2.setColor(new Color(255, 0, 0));
+            g2.drawString("SKILL", x, y);
+        }
+
+        text = "INVENTORY";
+        g2.setFont(g2.getFont().deriveFont(25f));
+        g2.setColor(Color.white);
+        y += gp.tileSize;
+        g2.drawString(text, x, y);
+        if(commandNum == 2){
+            g2.setColor(new Color(255, 0, 0));
+            g2.drawString("INVENTORY", x, y);
+        }
+
+        text = "FLEE";
+        g2.setFont(g2.getFont().deriveFont(25f));
+        g2.setColor(Color.white);
+        y += gp.tileSize;
+        g2.drawString(text, x, y);
+        if(commandNum == 3){
+            g2.setColor(new Color(255, 0, 0));
+            g2.drawString("FLEE", x, y);
+        }
+
+    }
 
     public void drawSubWindow(int x, int y, int width, int height){
         Color c = new Color(255, 255, 255);
