@@ -14,6 +14,8 @@ public class NPC_OldMan extends Entity implements QuestGiver {
     public NPC_OldMan(GamePanel gp) {
         super(gp);
 
+        type = 2;
+
         setName("Lars");
         speed = 1;
         maxLife = 10;

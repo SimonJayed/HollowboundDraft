@@ -15,6 +15,7 @@ public class NPC_Fort extends Entity {
         maxLife = 10;
         life = maxLife;
 
+        solidArea = new Rectangle();
         this.solidArea.x = 8;
         this.solidArea.y = 16;
         this.solidAreaDefaultX = this.solidArea.x;

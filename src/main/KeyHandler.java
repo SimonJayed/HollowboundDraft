@@ -24,6 +24,7 @@ public class KeyHandler implements KeyListener {
     public void keyPressed(KeyEvent e) {
         int code = e.getKeyCode();
 
+        //TITLESTATE
         if (gp.gameState == gp.titleState) {
             if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
                 gp.ui.commandNum--;
@@ -45,6 +46,8 @@ public class KeyHandler implements KeyListener {
                 if (gp.ui.commandNum == 0) {
                     gp.gameState = gp.playState;
                     System.out.println(gp.gameState);
+                    gp.playMusic(2);
+                    gp.sound.setVolume(-25.0f);
                 }
                 if (gp.ui.commandNum == 1) {
 
@@ -57,46 +60,74 @@ public class KeyHandler implements KeyListener {
                 }
             }
         }
-
+        //BATTLESTATE
         else if (gp.gameState == gp.battleState) {
-            if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
-                gp.ui.commandNum--;
-                if (gp.ui.commandNum < 0) {
-                    gp.ui.commandNum = 3;
-                }
-                gp.playSoundEffect(3);
-                gp.sound.setVolume(-20.0f);
-            }
-            if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
-                gp.ui.commandNum++;
-                if (gp.ui.commandNum > 3) {
-                    gp.ui.commandNum = 0;
-                }
-                gp.playSoundEffect(3);
-                gp.sound.setVolume(-20.0f);
-            }
-            if (code == KeyEvent.VK_ENTER) {
-                if (gp.ui.commandNum == 0) {
-                }
-                if (gp.ui.commandNum == 1) {
-
-                }
-                if (gp.ui.commandNum == 2) {
-
-                }
-                if (gp.ui.commandNum == 3) {
-                    int num = gp.randomize(1, 8);
-                    if(num == 8){
-                        gp.gameState = gp.playState;
-                        gp.player.invincible = true;
+            if(!gp.battleScreen.isAttacking){
+                if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
+                    gp.battleScreen.commandNum--;
+                    if (gp.battleScreen.commandNum < 0) {
+                        gp.battleScreen.commandNum = 3;
                     }
-                    else{
-                        System.out.println("Escape Failed.");
+                    gp.playSoundEffect(3);
+                    gp.sound.setVolume(-20.0f);
+                }
+                if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
+                    gp.battleScreen.commandNum++;
+                    if (gp.battleScreen.commandNum > 3) {
+                        gp.battleScreen.commandNum = 0;
                     }
+                    gp.playSoundEffect(3);
+                    gp.sound.setVolume(-20.0f);
+                }
+                if (code == KeyEvent.VK_ENTER) {
+                    if (gp.battleScreen.commandNum == 0) {
+                        gp.battleScreen.attack();
+                    }
+                    if (gp.battleScreen.commandNum == 3) {
+                        int num = gp.randomize(1, 8);
+                        if(num == 8){
+                            gp.gameState = gp.playState;
+                        }
+                        else {
+                            System.out.println("Escape Failed.");
+                        }
+                    }
+                }
+            }
+            else if(gp.battleScreen.isAttacking){
+                if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
+                    gp.battleScreen.commandNum--;
+                    if (gp.battleScreen.commandNum < 0) {
+                        gp.battleScreen.commandNum = 2;
+                    }
+                    gp.playSoundEffect(3);
+                    gp.sound.setVolume(-20.0f);
+                }
+                if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
+                    gp.battleScreen.commandNum++;
+                    if (gp.battleScreen.commandNum > 2) {
+                        gp.battleScreen.commandNum = 0;
+                    }
+                    gp.playSoundEffect(3);
+                    gp.sound.setVolume(-20.0f);
+                }
+                if(code == KeyEvent.VK_ENTER){
+                    if(gp.battleScreen.commandNum == 0){
+                        gp.battleScreen.damage("HEAD");
+                    }
+                    if(gp.battleScreen.commandNum == 1){
+                        gp.battleScreen.damage("TORSO");
+                    }
+                    if(gp.battleScreen.commandNum == 2){
+                        gp.battleScreen.damage("LEGS");
+                    }
+                }
+                if(code == KeyEvent.VK_ESCAPE){
+                    gp.battleScreen.isAttacking = false;
                 }
             }
         }
-
+        //PLAYSTATE
         else if (gp.gameState == gp.playState) {
             if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
                 upPressed = true;

@@ -62,6 +62,7 @@ public class Player extends Entity{
         maxEnergy = 100;
         energy = maxEnergy;
         energyRegen = maxEnergy*0.1;
+        luck = 1;
     }
 
 
@@ -143,11 +144,8 @@ public class Player extends Entity{
             int objIndex = gp.cChecker.checkObject(this, true);
             pickUpObject(objIndex);
 
-            int npcIndex = gp.cChecker.checkEntity(this, gp.npc);
-            interactEntity(npcIndex);
-
-            int monsterIndex = gp.cChecker.checkEntity(this, gp.monster);
-            contactMonster(monsterIndex);
+            int livingEntityIndex = gp.cChecker.checkEntity(this, gp.livingEntity);
+            interactEntity(livingEntityIndex);
 
 
             gp.eHandler.checkEvent();
@@ -195,29 +193,35 @@ public class Player extends Entity{
     }
 
     public void interactEntity(int i){
-        if (keyH.spacePressed){
-            if(gp.npc[i].type != 2) {
-                gp.gameState = gp.dialogueState;
-                gp.npc[i].speak();
+        if(i != 999){
+            if (keyH.spacePressed){
+                if(gp.livingEntity[gp.currentMap][i].type != 2) {
+                    gp.gameState = gp.dialogueState;
+                    gp.livingEntity[gp.currentMap][i].speak();
+                }
+                else{
+                    gp.battleScreen.currentEnemy = gp.livingEntity[gp.currentMap][i];
+                    gp.gameState = gp.battleState;
+                }
             }
         }
-        keyH.qPressed = false;
+
     }
 
     public void pickUpObject(int i){
         if (i != 999){
-            String objectName = gp.obj[i].getName();
+            String objectName = gp.objectEntity[gp.currentMap][i].getName();
 
             switch(objectName){
                 case "Key":{
                     hasKey++;
-                    gp.obj[i] = null;
+                    gp.objectEntity[gp.currentMap][i] = null;
                     gp.ui.addMessage("Obtained KEY!");
                     break;
                 }
                 case "Door":{
                     if (hasKey > 0) {
-                        gp.obj[i] = null;
+                        gp.objectEntity[gp.currentMap][i] = null;
                         hasKey--;
                         gp.ui.addMessage("Door opened");
                     }
@@ -228,12 +232,12 @@ public class Player extends Entity{
                 }
                 case "Boots":{
                     this.speed += 1;
-                    gp.obj[i] = null;
+                    gp.objectEntity[gp.currentMap][i] = null;
                     gp.ui.addMessage("Speed increased!");
                     break;
                 }
                 case "Chest":{
-                    gp.obj[i] = null;
+                    gp.objectEntity[gp.currentMap][i] = null;
                     gp.ui.addMessage("Chest opened!");
 
                     gp.ui.gameFinished = true;
@@ -247,6 +251,8 @@ public class Player extends Entity{
 
     public void draw(Graphics2D g2){
         BufferedImage image = null;
+
+        displayEntityStats(g2);
 
         int tempScreenX = screenX;
         int tempScreenY = screenY;

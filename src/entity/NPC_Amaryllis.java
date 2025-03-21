@@ -9,6 +9,8 @@ public class NPC_Amaryllis extends Entity {
     public NPC_Amaryllis(GamePanel gp) {
         super(gp);
 
+        type = 2;
+
         setName("Amaryllis");
         speed = 1;
         maxLife = 10;
@@ -23,6 +25,10 @@ public class NPC_Amaryllis extends Entity {
 
         getImage("amaryllis");
         setDialogue();
+    }
+
+    public void setDefaultValues() {
+
     }
 
     public void setAction() {

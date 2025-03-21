@@ -1,0 +1,51 @@
+package misc;
+
+import entity.*;
+import main.GamePanel;
+import object.*;
+
+public class AssetSetter {
+    GamePanel gp;
+
+    int buffer = 0;
+    public AssetSetter(GamePanel gp){
+        this.gp = gp;
+    }
+
+    public void setObjectEntity(){
+        int mapNum = 0;
+        int i= 0;
+        gp.objectEntity[0][i] = new OBJ_Boots(gp);
+        gp.objectEntity[0][i].worldX = 23 * gp.tileSize;
+        gp.objectEntity[0][i].worldY = 10 * gp.tileSize;
+        i++;
+        gp.objectEntity[0][i] = new OBJ_Lipoden(gp);
+        gp.objectEntity[0][i].worldX = 25 * gp.tileSize;
+        gp.objectEntity[0][i].worldY = 24 * gp.tileSize;
+        i++;
+        gp.objectEntity[0][i] = new OBJ_Lipoden(gp);
+        gp.objectEntity[0][i].worldX = 35 * gp.tileSize;
+        gp.objectEntity[0][i].worldY = 12 * gp.tileSize;
+    }
+
+    public void setLivingEntity(){
+        int mapNum = 0;
+        int i= 0;
+        gp.livingEntity[0][i] = new NPC_OldMan(gp);
+        gp.livingEntity[0][i].worldX = 11 * gp.tileSize;
+        gp.livingEntity[0][i].worldY = 31 * gp.tileSize;
+        i++;
+        gp.livingEntity[0][i] = new NPC_Sylvie(gp);
+        gp.livingEntity[0][i].worldX = 11 * gp.tileSize;
+        gp.livingEntity[0][i].worldY = 32 * gp.tileSize;
+        i++;
+        gp.livingEntity[0][i] = new NPC_Fort(gp);
+        gp.livingEntity[0][i].worldX = 11 * gp.tileSize;
+        gp.livingEntity[0][i].worldY = 30  * gp.tileSize;
+        i++;
+        gp.livingEntity[0][i] = new NPC_Amaryllis(gp);
+        gp.livingEntity[0][i].worldX = 28 * gp.tileSize;
+        gp.livingEntity[0][i].worldY = 12 * gp.tileSize;
+        i++;
+    }
+}

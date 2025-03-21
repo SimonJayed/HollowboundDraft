@@ -9,6 +9,8 @@ public class NPC_Sylvie extends Entity {
     public NPC_Sylvie(GamePanel gp) {
         super(gp);
 
+        type = 2;
+
         setName("Sylvie");
         speed = 1;
         maxLife = 10;

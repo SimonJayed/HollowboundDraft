@@ -86,7 +86,7 @@ public class UI {
             drawDialogueScreen();
         }
         else if (gp.gameState == gp.battleState) {
-            drawBattleScreen();
+            gp.battleScreen.draw(g2);
         }
         else if(gp.gameState == gp.mapState){
             gp.map.drawFullMapScreen(g2);
@@ -99,7 +99,7 @@ public class UI {
         int x = 0;
         int y = 0;
 
-        double oneScale = (gp.tileSize*5-3)/gp.player.maxLife;
+        double oneScale = (gp.tileSize*5+3)/gp.player.maxLife;
         double hpBarValue = oneScale * gp.player.life;
 
         g2.setColor(new Color(255, 255, 255));
@@ -108,15 +108,14 @@ public class UI {
         g2.setColor(new Color(255,0,30));
         g2.fillRect(x, y, (int) hpBarValue, 14);
 
-        String text = Double.toString(gp.player.life);
-        String text2 = Double.toString(gp.player.maxLife);
+        String text = gp.player.life + "/" + gp.player.maxLife;
         g2.setFont(g2.getFont().deriveFont( 14f));
         g2.setColor(Color.black);
-        g2.drawString(text+"/"+text2, x+5, y+12);
+        g2.drawString(text, x+5, y+12);
 
         y += gp.tileSize/3;
 
-        double oneScale1 = (gp.tileSize*5-3)/gp.player.maxEnergy;
+        double oneScale1 = (gp.tileSize*5+3)/gp.player.maxEnergy;
         double energyBarValue = oneScale1 * gp.player.energy;
 
         g2.setColor(new Color(255, 255, 255));
@@ -125,16 +124,15 @@ public class UI {
         g2.setColor(new Color(255, 227, 24));
         g2.fillRect(x, y, (int) energyBarValue, 14);
 
-        text = Double.toString(gp.player.energy);
-        text2 = Double.toString(gp.player.maxEnergy);
+        text = gp.player.energy + "/" + gp.player.maxEnergy;
         g2.setFont(g2.getFont().deriveFont( 14f));
         g2.setColor(Color.black);
-        g2.drawString(text+"/"+text2, x+5, y+12);
+        g2.drawString(text, x+5, y+12);
 
         y = gp.screenHeight-18;
 
-        double oneScale2 = (gp.tileSize*18)/gp.player.maxEnergy;
-        double expBarValue = oneScale2 * gp.player.energy;
+        double oneScale2 = gp.screenWidth/gp.player.nextLevelExp;
+        double expBarValue = oneScale2 * gp.player.exp;
 
         g2.setColor(new Color(117, 117, 117));
         g2.fillRect(x, y, gp.screenWidth, 24);
@@ -142,7 +140,7 @@ public class UI {
         g2.setColor(new Color(255, 255, 255));
         g2.fillRect(x, y+3, (int) expBarValue, 14);
 
-        text = gp.player.energy + "/" + gp.player.maxEnergy;
+        text = gp.player.exp + "/" + gp.player.nextLevelExp;
         x = getXforCenteredText(g2, text);
         g2.setFont(g2.getFont().deriveFont( 14f));
         g2.setColor(Color.black);
@@ -356,67 +354,6 @@ public class UI {
 //            g2.drawImage(img, imgX, imgY, imgWidth, imgHeight, null);
 //        }
 //    }
-
-    public void drawBattleScreen(){
-        Entity background = new OBJ_Image(gp);
-        battleBackground = background.image2;
-
-        int x = 0;
-        int y = 0;
-
-        g2.drawImage(battleBackground, x, y, gp.screenWidth, gp.screenHeight, null);
-
-        x = gp.tileSize/2;
-        y = gp.tileSize*9 + (gp.tileSize/2);
-        g2.setColor(new Color(0,0,0));
-        g2.fillRoundRect(x, y, gp.tileSize*5, gp.tileSize*4, 20, 20);
-
-        x += gp.tileSize*5 + gp.tileSize;
-        g2.setColor(new Color(0,0,0));
-        g2.fillRoundRect(x, y, gp.tileSize*11, gp.tileSize*4, 20, 20);
-
-        String text = "ATTACK";
-        g2.setFont(g2.getFont().deriveFont(25f));
-        g2.setColor(Color.white);
-        x = gp.tileSize/2+5;
-        y += gp.tileSize/2+3;
-        g2.drawString(text, x, y);
-        if(commandNum == 0){
-            g2.setColor(new Color(255, 0, 0));
-            g2.drawString("ATTACK", x, y);
-        }
-
-        text = "SKILL";
-        g2.setFont(g2.getFont().deriveFont(25f));
-        g2.setColor(Color.white);
-        y += gp.tileSize;
-        g2.drawString(text, x, y);
-        if(commandNum == 1){
-            g2.setColor(new Color(255, 0, 0));
-            g2.drawString("SKILL", x, y);
-        }
-
-        text = "INVENTORY";
-        g2.setFont(g2.getFont().deriveFont(25f));
-        g2.setColor(Color.white);
-        y += gp.tileSize;
-        g2.drawString(text, x, y);
-        if(commandNum == 2){
-            g2.setColor(new Color(255, 0, 0));
-            g2.drawString("INVENTORY", x, y);
-        }
-
-        text = "FLEE";
-        g2.setFont(g2.getFont().deriveFont(25f));
-        g2.setColor(Color.white);
-        y += gp.tileSize;
-        g2.drawString(text, x, y);
-        if(commandNum == 3){
-            g2.setColor(new Color(255, 0, 0));
-            g2.drawString("FLEE", x, y);
-        }
-
-    }
 
     public void drawSubWindow(int x, int y, int width, int height){
         Color c = new Color(255, 255, 255);
