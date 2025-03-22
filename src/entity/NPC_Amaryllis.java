@@ -19,7 +19,6 @@ public class NPC_Amaryllis extends Entity {
         this.solidArea.height = 32;
 
         getImage("amaryllis");
-        getDefeatedImage("amaryllis");
         setDefaultValues(1, 250, 250,5,5, 8, 10, 13, 9);
         setDialogue();
     }

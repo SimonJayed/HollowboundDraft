@@ -21,7 +21,6 @@ public class NPC_Fort extends Entity {
         this.solidArea.height = 32;
 
         getImage("fort");
-        getDefeatedImage("fort");
         setDefaultValues(1, 400, 100,4, 15, 6, 4, 5,  15);
         setDialogue();
     }

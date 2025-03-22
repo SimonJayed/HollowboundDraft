@@ -21,9 +21,15 @@ public class NPC_OldMan extends Entity implements QuestGiver {
         this.solidArea.height = 32;
 
         getImage("lars");
-        getDefeatedImage("amaryllis");
         setDialogue();
         setDefaultValues(1, 500, 700,2, 15, 5, 15, 10,  5);
+    }
+
+    public void setStatIncrements(){
+        this.vit += 3;
+        this.pow += 1;
+        this.mag += 3;
+        this.agi += 3;
     }
 
     public void setAction() {

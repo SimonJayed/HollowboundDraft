@@ -103,19 +103,21 @@ public abstract class Entity {
         nextLevelExp = 10 * Math.pow(level, 1.2);
         while(tempLevel > 0){
             setStatIncrements();
+            System.out.println(getName() + " stats going up");
             tempLevel--;
         }
         calculateStats();
+
     }
     public void calculateStats(){
         this.maxHP = initialHP + (15 * level) + (vit * 2);
-        this.hp = maxHP;
         this.maxEnergy = initialEnergy + (15 * level) + (mag * 2);
-        this.energy = maxEnergy;
         this.energyRegen = maxEnergy * 0.1 + (mag / 100);
+        this.hp = maxHP;
+        this.energy = maxEnergy;
+
         this.attack = pow * 3;
         this.defense = vit * 1.5;
-        this.speed = speed + ((double) level / 50);
     }
 
     public void setStatIncrements(){
@@ -145,11 +147,18 @@ public abstract class Entity {
         right1 = setup("/sprites/" + folder + "/right1", gp.tileSize, gp.tileSize);
         right2 = setup("/sprites/" + folder + "/right2", gp.tileSize, gp.tileSize);
         portrait = setup("/sprites/" + folder + "/portrait", gp.tileSize, gp.tileSize);
-    }
 
-    public void getDefeatedImage(String folder) {
         defeated1 = setup("/sprites/" + folder + "/defeated/front", gp.tileSize, gp.tileSize);
         defeated2 = setup("/sprites/" + folder + "/defeated/side", gp.tileSize, gp.tileSize);
+
+        runUp1 = setup("/sprites/" + folder + "/running/up1", gp.tileSize, gp.tileSize);
+        runUp2 = setup("/sprites/" + folder + "/running/up2", gp.tileSize, gp.tileSize);
+        runDown1 = setup("/sprites/" + folder + "/running/down1", gp.tileSize, gp.tileSize);
+        runDown2 = setup("/sprites/" + folder + "/running/down2", gp.tileSize, gp.tileSize);
+        runLeft1 = setup("/sprites/" + folder + "/running/left1", gp.tileSize, gp.tileSize);
+        runLeft2 = setup("/sprites/" + folder + "/running/left2", gp.tileSize, gp.tileSize);
+        runRight1 = setup("/sprites/" + folder + "/running/right1", gp.tileSize, gp.tileSize);
+        runRight2 = setup("/sprites/" + folder + "/running/right2", gp.tileSize, gp.tileSize);
     }
 
     public void speak(){
@@ -207,6 +216,7 @@ public abstract class Entity {
         regen();
         checkDefeated();
         checkLevelUp();
+        calculateStats();
 
         collisionOn = false;
         gp.cChecker.checkTile(this);
@@ -260,6 +270,13 @@ public abstract class Entity {
                 isDefeated = false;
                 hp = maxHP;
                 energy = maxEnergy;
+                int num = 0;
+                while(num <= hollowCounter){
+                    setStatIncrements();
+                    calculateStats();
+                    num++;
+                    System.out.println(getName() + " is being strengthened.");
+                }
                 buffer = 0;
                 System.out.println(getName() + " has respawned.");
                 System.out.println(getName() + " died " + hollowCounter + " times");

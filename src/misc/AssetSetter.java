@@ -55,7 +55,7 @@ public class AssetSetter {
         gp.livingEntity[0][i].worldX = 11 * gp.tileSize;
         gp.livingEntity[0][i].worldY = 31 * gp.tileSize;
         gp.livingEntity[0][i].hasEvent = true;
-        gp.livingEntity[0][i].level = 10;
+        gp.livingEntity[0][i].level = 100;
         System.out.println(gp.livingEntity[0][i].getName() +" has event in Map " + gp.currentMap);
         i++;
         gp.livingEntity[0][i] = new NPC_Sylvie(gp);

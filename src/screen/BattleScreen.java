@@ -33,6 +33,7 @@ public class BattleScreen implements Screen{
 
         gp.ui.drawMessage();
 
+        //ENEMYBAR
         double oneScale = gp.screenWidth/currentEnemy.maxHP;
         double hpBarValue = oneScale * currentEnemy.hp;
 
@@ -42,7 +43,7 @@ public class BattleScreen implements Screen{
         g2.setColor(new Color(255,0,30));
         g2.fillRect(x, y, (int) hpBarValue, 18);
 
-        String text = currentEnemy.hp + "/" + currentEnemy.maxHP;
+        String text = gp.df.format(currentEnemy.hp) + "/" + gp.df.format(currentEnemy.maxHP);
         g2.setFont(g2.getFont().deriveFont( 14f));
         g2.setColor(Color.black);
         g2.drawString(text, gp.ui.getXforCenteredText(g2, text), y+12);
@@ -58,13 +59,53 @@ public class BattleScreen implements Screen{
         g2.setColor(new Color(255, 227, 24));
         g2.fillRect(x, y, (int) energyBarValue, 16);
 
-        text = currentEnemy.hp + "/" + currentEnemy.maxHP;
+        text = gp.df.format(currentEnemy.energy) + "/" + gp.df.format(currentEnemy.maxEnergy);
         g2.setFont(g2.getFont().deriveFont( 14f));
         g2.setColor(Color.black);
         g2.drawString(text, gp.ui.getXforCenteredText(g2, text), y+12);
         y += gp.tileSize/3;
         text = "Level: " + currentEnemy.level;
         g2.drawString(text, gp.ui.getXforCenteredText(g2, text), y+12);
+
+
+
+        //PLAYERBAR
+
+        y = (gp.screenHeight/2)+gp.tileSize*2-8;
+        double oneScale3 = gp.screenWidth/gp.player.maxHP;
+        double hpBarValue2 = oneScale3 * gp.player.hp;
+
+        g2.setColor(new Color(255, 255, 255));
+        g2.fillRect(x, y, gp.screenWidth, 20);
+
+        g2.setColor(new Color(255,0,30));
+        g2.fillRect(x, y, (int) hpBarValue2, 18);
+
+        text = gp.player.hp + "/" + gp.player.maxHP;
+        g2.setFont(g2.getFont().deriveFont( 14f));
+        g2.setColor(Color.black);
+        g2.drawString(text, gp.ui.getXforCenteredText(g2, text), y+12);
+
+        y += gp.tileSize/3;
+
+        double oneScale4 = gp.screenWidth/gp.player.maxEnergy;
+        double energyBarValue2 = oneScale4 * gp.player.energy;
+
+        g2.setColor(new Color(255, 255, 255));
+        g2.fillRect(x, y, gp.screenWidth, 18);
+
+        g2.setColor(new Color(255, 227, 24));
+        g2.fillRect(x, y, (int) energyBarValue2, 16);
+
+        text = gp.df.format(gp.player.energy) + "/" + gp.df.format(gp.player.maxEnergy);
+        g2.setFont(g2.getFont().deriveFont( 14f));
+        g2.setColor(Color.black);
+        g2.drawString(text, gp.ui.getXforCenteredText(g2, text), y+12);
+        y += gp.tileSize*4;
+        text = "Level: " + gp.player.level;
+        g2.drawString(text, gp.ui.getXforCenteredText(g2, text), y+12);
+
+
 
         x = gp.screenHeight/2 - gp.tileSize/2;
         y = gp.screenHeight/3 - gp.tileSize;
@@ -256,7 +297,7 @@ public class BattleScreen implements Screen{
         double expGain = currentEnemy.nextLevelExp;
 
         if (levelDifference < -10) {
-            expGain *= 4;
+            expGain *=  Math.abs(levelDifference) / 2;
         } else if (levelDifference < -5) {
             expGain *= 2;
         } else if (levelDifference > 10) {
@@ -284,7 +325,7 @@ public class BattleScreen implements Screen{
         } else if (levelDifference > 5) {
             expGain *= 0.75;
         } else if (levelDifference < -10) {
-            expGain *= 4;
+            expGain *=  Math.abs(levelDifference) / 2;
         } else if (levelDifference < -5) {
             expGain *= 2;
         } else {

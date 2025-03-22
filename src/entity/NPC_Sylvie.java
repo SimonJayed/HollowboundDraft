@@ -18,7 +18,6 @@ public class NPC_Sylvie extends Entity {
         this.solidArea.height = 32;
 
         getImage("sylvie");
-        getDefeatedImage("sylvie");
         setDefaultValues(1, 100, 400,3, 7, 5, 19, 5,  9);
         setDialogue();
     }
@@ -34,7 +33,7 @@ public class NPC_Sylvie extends Entity {
         actionLockCounter++;
 
         if (actionLockCounter >= gp.randomize(120, 750)) {
-            System.out.println(getName() + " moves but has been defeated is " + isDefeated );
+//            System.out.println(getName() + " moves but has been defeated is " + isDefeated );
             int i = gp.randomize(1, 150);
 
             if (i <= 25) {

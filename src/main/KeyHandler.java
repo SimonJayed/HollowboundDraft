@@ -44,7 +44,7 @@ public class KeyHandler implements KeyListener {
             }
             if (code == KeyEvent.VK_ENTER || code == KeyEvent.VK_SPACE) {
                 if (gp.ui.commandNum == 0) {
-                    gp.aSetter.setPlayer(2);
+                    gp.aSetter.setPlayer(0);
                     gp.gameState = gp.playState;
                     System.out.println(gp.gameState);
                     gp.playMusic(2);
@@ -171,7 +171,7 @@ public class KeyHandler implements KeyListener {
             if (code == KeyEvent.VK_0) {
                 zeroPressed = !zeroPressed;
             }
-            if (code == KeyEvent.VK_I || code == KeyEvent.VK_ESCAPE || code == KeyEvent.VK_Q) {
+            if (code == KeyEvent.VK_I || code == KeyEvent.VK_ESCAPE) {
                 gp.gameState = gp.inventoryState;
                 System.out.println("Inventory opened");
             }

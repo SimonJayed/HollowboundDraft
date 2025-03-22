@@ -43,9 +43,6 @@ public class Player extends Entity{
         this.solidArea.height = 32;
 
         buffer = 0;
-
-        getPlayerAttackImage();
-        getPlayerRunImage();
     }
 
 
@@ -58,47 +55,22 @@ public class Player extends Entity{
             case "fort":{
                 setName("Fort");
                 getImage("fort");
-                getDefeatedImage("fort");
                 setDefaultValues(1, 400, 100,4, 15, 6, 4, 5,  15);
                 break;
             }
             case "amaryllis":{
                 setName("Amaryllis");
                 getImage("amaryllis");
-                getDefeatedImage("amaryllis");
                 setDefaultValues(1, 250, 250,5,5, 8, 10, 13, 9);
                 break;
             }
             case "sylvie":{
                 setName("Sylvie");
                 getImage("sylvie");
-                getDefeatedImage("sylvie");
                 setDefaultValues(1, 100, 400,3, 7, 5, 19, 5,  9);
                 break;
             }
         }
-    }
-
-
-    public void getPlayerAttackImage() {
-        up1 = setup("/player/human/up1", gp.tileSize, gp.tileSize);
-        up2 = setup("/player/human/up2", gp.tileSize, gp.tileSize);
-        down1 = setup("/player/human/down1", gp.tileSize, gp.tileSize);
-        down2 = setup("/player/human/down2", gp.tileSize, gp.tileSize);
-        left1 = setup("/player/human/left1", gp.tileSize, gp.tileSize);
-        left2 = setup("/player/human/left2", gp.tileSize, gp.tileSize);
-        right1 = setup("/player/human/right1", gp.tileSize, gp.tileSize);
-        right2 = setup("/player/human/right2", gp.tileSize, gp.tileSize);
-    }
-    public void getPlayerRunImage(){
-        up1 = setup("/player/human/up1", gp.tileSize, gp.tileSize);
-        up2 = setup("/player/human/up2", gp.tileSize, gp.tileSize);
-        down1 = setup("/player/human/down1", gp.tileSize, gp.tileSize);
-        down2 = setup("/player/human/down2", gp.tileSize, gp.tileSize);
-        left1 = setup("/player/human/left1", gp.tileSize, gp.tileSize);
-        left2 = setup("/player/human/left2", gp.tileSize, gp.tileSize);
-        right1 = setup("/player/human/right1", gp.tileSize, gp.tileSize);
-        right2 = setup("/player/human/right2", gp.tileSize, gp.tileSize);
     }
 
 
@@ -115,7 +87,7 @@ public class Player extends Entity{
         }
 
         if (keyH.upPressed || keyH.downPressed || keyH.rightPressed || keyH.leftPressed) {
-            System.out.println(getName() + " moves but has been defeated is " + isDefeated );
+//            System.out.println(getName() + " moves but has been defeated is " + isDefeated );
             if (gp.keyH.upPressed) {
                 direction = "up";
             }
@@ -197,6 +169,13 @@ public class Player extends Entity{
                 hp = maxHP;
                 energy = maxEnergy;
                 buffer = 0;
+                int num = 0;
+                while(num <= hollowCounter){
+                    setStatIncrements();
+                    calculateStats();
+                    num++;
+                    System.out.println(getName() + " is being strengthened.");
+                }
                 gp.player.worldX = 5 * gp.tileSize;
                 gp.player.worldY = 9 * gp.tileSize;
                 System.out.println(getName() + " has respawned.");
@@ -276,12 +255,20 @@ public class Player extends Entity{
 
         switch (direction) {
             case "up": {
-                if(!isDefeated){
+                if(!isDefeated && !isRunning){
                     if (spriteNum == 1){
                         image = up1;
                     }
                     if (spriteNum == 2) {
                         image = up2;
+                    }
+                }
+                else if(isRunning){
+                    if (spriteNum == 1){
+                        image = runUp1;
+                    }
+                    if (spriteNum == 2) {
+                        image = runUp2;
                     }
                 }
                 else{
@@ -295,12 +282,20 @@ public class Player extends Entity{
                 break;
             }
             case "down": {
-                if(!isDefeated){
+                if(!isDefeated && !isRunning){
                     if (spriteNum == 1){
                         image = down1;
                     }
                     if (spriteNum == 2) {
                         image = down2;
+                    }
+                }
+                else if(isRunning){
+                    if (spriteNum == 1){
+                        image = runDown1;
+                    }
+                    if (spriteNum == 2) {
+                        image = runDown2;
                     }
                 }
                 else{
@@ -314,12 +309,20 @@ public class Player extends Entity{
                 break;
             }
             case "left": {
-                if(!isDefeated){
+                if(!isDefeated && !isRunning){
                     if (spriteNum == 1){
                         image = left1;
                     }
                     if (spriteNum == 2) {
                         image = left2;
+                    }
+                }
+                else if(isRunning){
+                    if (spriteNum == 1){
+                        image = runLeft1;
+                    }
+                    if (spriteNum == 2) {
+                        image = runLeft2;
                     }
                 }
                 else{
@@ -333,12 +336,20 @@ public class Player extends Entity{
                 break;
             }
             case "right": {
-                if(!isDefeated){
+                if(!isDefeated && !isRunning){
                     if (spriteNum == 1){
                         image = right1;
                     }
                     if (spriteNum == 2) {
                         image = right2;
+                    }
+                }
+                else if(isRunning){
+                    if (spriteNum == 1){
+                        image = runRight1;
+                    }
+                    if (spriteNum == 2) {
+                        image = runRight2;
                     }
                 }
                 else{
