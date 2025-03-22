@@ -2,19 +2,13 @@ package entity;
 
 import main.GamePanel;
 
-import java.awt.*;
-
 public class NPC_Sylvie extends Entity {
 
     public NPC_Sylvie(GamePanel gp) {
         super(gp);
 
         type = 2;
-
         setName("Sylvie");
-        speed = 1;
-        maxLife = 10;
-        life = maxLife;
 
         this.solidArea.x = 8;
         this.solidArea.y = 16;
@@ -24,13 +18,23 @@ public class NPC_Sylvie extends Entity {
         this.solidArea.height = 32;
 
         getImage("sylvie");
+        getDefeatedImage("sylvie");
+        setDefaultValues(1, 100, 400,3, 7, 5, 19, 5,  9);
         setDialogue();
+    }
+
+    public void setStatIncrements(){
+        this.vit += 1;
+        this.pow += 1;
+        this.mag += 4;
+        this.agi += 1;
     }
 
     public void setAction() {
         actionLockCounter++;
 
         if (actionLockCounter >= gp.randomize(120, 750)) {
+            System.out.println(getName() + " moves but has been defeated is " + isDefeated );
             int i = gp.randomize(1, 150);
 
             if (i <= 25) {
@@ -46,7 +50,7 @@ public class NPC_Sylvie extends Entity {
                 direction = "right";
                 isIdling = false;
             } else if (i <= 125) {
-                idling();
+                isIdling = true;
             }
             actionLockCounter = 0;
         }
@@ -54,6 +58,7 @@ public class NPC_Sylvie extends Entity {
     }
 
     public void setDialogue(){
+
         dialogues[0] = "Hello, lad.";
         dialogues[1] = "You seem lost.";
         dialogues[2] = "I can fix that.";

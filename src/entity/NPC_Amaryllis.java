@@ -2,8 +2,6 @@ package entity;
 
 import main.GamePanel;
 
-import java.awt.*;
-
 public class NPC_Amaryllis extends Entity {
 
     public NPC_Amaryllis(GamePanel gp) {
@@ -12,9 +10,6 @@ public class NPC_Amaryllis extends Entity {
         type = 2;
 
         setName("Amaryllis");
-        speed = 1;
-        maxLife = 10;
-        life = maxLife;
 
         this.solidArea.x = 8;
         this.solidArea.y = 16;
@@ -24,17 +19,33 @@ public class NPC_Amaryllis extends Entity {
         this.solidArea.height = 32;
 
         getImage("amaryllis");
+        getDefeatedImage("amaryllis");
+        setDefaultValues(1, 250, 250,5,5, 8, 10, 13, 9);
         setDialogue();
     }
 
-    public void setDefaultValues() {
-
+    public void setStatIncrements(){
+        this.vit += 1;
+        this.pow += 1;
+        this.mag += 2;
+        this.agi += 3;
     }
 
+//    public void checkLevelUp(){
+//        while (exp >= nextLevelExp) {
+//            level++;
+//            setStatIncrements();
+//            calculateStats();
+//            nextLevelExp += nextLevelExp + (level * 2);
+//            gp.ui.addMessage(getName() + " has leveled up! (Lvl " + level + ")");
+//        }
+//    }
+
     public void setAction() {
+//        System.out.println(getName() + " moves but has been defeated is " + isDefeated );
         actionLockCounter++;
 
-        if (actionLockCounter >= gp.randomize(120, 750)) {
+        if (actionLockCounter >= gp.randomize(120, 500)) {
             int i = gp.randomize(1, 150);
 
             if (i <= 25) {
@@ -50,7 +61,7 @@ public class NPC_Amaryllis extends Entity {
                 direction = "right";
                 isIdling = false;
             } else if (i <= 125) {
-                idling();
+                isIdling = true;
             }
             actionLockCounter = 0;
         }

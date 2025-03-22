@@ -49,7 +49,7 @@ public class Map extends TileManager{
     }
 
     public void drawFullMapScreen(Graphics2D g2){
-        g2.setColor(Color.black);
+        g2.setColor(new Color(0, 0, 0, 150));
         g2.fillRect(0,0, gp.screenWidth, gp.screenHeight);
 
         int width = 500;

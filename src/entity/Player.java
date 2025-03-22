@@ -19,14 +19,15 @@ public class Player extends Entity{
 
     public int hasKey = 0;
 
-    int tempSpeed = 0;
+    public String playing = "";
+
+    public int StatPoints = 0;
 
     public Player(GamePanel gp, KeyHandler keyH, MouseHandler mouseH){
         super(gp);
         this.keyH = keyH;
         this.mouseH = mouseH;
 
-        level = 1;
         screenX = gp.screenWidth/2 - (gp.tileSize/2);
         screenY = gp.screenHeight/2 - (gp.tileSize/2);
 
@@ -43,8 +44,6 @@ public class Player extends Entity{
 
         buffer = 0;
 
-        setDefaultValues();
-        getImage("fort");
         getPlayerAttackImage();
         getPlayerRunImage();
     }
@@ -53,62 +52,70 @@ public class Player extends Entity{
     public void setDefaultValues(){
         worldX = gp.tileSize * 18;
         worldY = gp.tileSize * 47;
-        speed = 4;
-        tempSpeed = speed;
         direction = "down";
 
-        maxLife = 400;
-        life = maxLife;
-        maxEnergy = 100;
-        energy = maxEnergy;
-        energyRegen = maxEnergy*0.1;
-        luck = 1;
+        switch(playing){
+            case "fort":{
+                setName("Fort");
+                getImage("fort");
+                getDefeatedImage("fort");
+                setDefaultValues(1, 400, 100,4, 15, 6, 4, 5,  15);
+                break;
+            }
+            case "amaryllis":{
+                setName("Amaryllis");
+                getImage("amaryllis");
+                getDefeatedImage("amaryllis");
+                setDefaultValues(1, 250, 250,5,5, 8, 10, 13, 9);
+                break;
+            }
+            case "sylvie":{
+                setName("Sylvie");
+                getImage("sylvie");
+                getDefeatedImage("sylvie");
+                setDefaultValues(1, 100, 400,3, 7, 5, 19, 5,  9);
+                break;
+            }
+        }
     }
 
 
     public void getPlayerAttackImage() {
         up1 = setup("/player/human/up1", gp.tileSize, gp.tileSize);
         up2 = setup("/player/human/up2", gp.tileSize, gp.tileSize);
-        up3 = setup("/player/human/up1", gp.tileSize, gp.tileSize);
         down1 = setup("/player/human/down1", gp.tileSize, gp.tileSize);
         down2 = setup("/player/human/down2", gp.tileSize, gp.tileSize);
-        down3 = setup("/player/human/down1", gp.tileSize, gp.tileSize);
         left1 = setup("/player/human/left1", gp.tileSize, gp.tileSize);
         left2 = setup("/player/human/left2", gp.tileSize, gp.tileSize);
-        left3 = setup("/player/human/left3", gp.tileSize, gp.tileSize);
         right1 = setup("/player/human/right1", gp.tileSize, gp.tileSize);
         right2 = setup("/player/human/right2", gp.tileSize, gp.tileSize);
-        right3 = setup("/player/human/right3", gp.tileSize, gp.tileSize);
     }
     public void getPlayerRunImage(){
         up1 = setup("/player/human/up1", gp.tileSize, gp.tileSize);
         up2 = setup("/player/human/up2", gp.tileSize, gp.tileSize);
-        up3 = setup("/player/human/up1", gp.tileSize, gp.tileSize);
         down1 = setup("/player/human/down1", gp.tileSize, gp.tileSize);
         down2 = setup("/player/human/down2", gp.tileSize, gp.tileSize);
-        down3 = setup("/player/human/down1", gp.tileSize, gp.tileSize);
         left1 = setup("/player/human/left1", gp.tileSize, gp.tileSize);
         left2 = setup("/player/human/left2", gp.tileSize, gp.tileSize);
-        left3 = setup("/player/human/left3", gp.tileSize, gp.tileSize);
         right1 = setup("/player/human/right1", gp.tileSize, gp.tileSize);
         right2 = setup("/player/human/right2", gp.tileSize, gp.tileSize);
-        right3 = setup("/player/human/right3", gp.tileSize, gp.tileSize);
     }
 
 
     public void update() {
-//        System.out.println(tempSpeed + " and " + this.speed + " and " + gp.gameState + " and " + getName() + " and " + getRace() + " and " + getGender() );
         if (!keyH.upPressed && !keyH.downPressed && !keyH.rightPressed && !keyH.leftPressed){
             isIdling = true;
-            idling();
+            isRunning = false;
         }
         regen();
-
-        if (keyH.tabPressed) {
-            System.out.println("Tab is pressed...");
+        checkDefeated();
+        checkLevelUp();
+        if (keyH.qPressed) {
+            System.out.println("Q is pressed...");
         }
 
         if (keyH.upPressed || keyH.downPressed || keyH.rightPressed || keyH.leftPressed) {
+            System.out.println(getName() + " moves but has been defeated is " + isDefeated );
             if (gp.keyH.upPressed) {
                 direction = "up";
             }
@@ -147,7 +154,6 @@ public class Player extends Entity{
             int livingEntityIndex = gp.cChecker.checkEntity(this, gp.livingEntity);
             interactEntity(livingEntityIndex);
 
-
             gp.eHandler.checkEvent();
 
             if (!collisionOn) {
@@ -182,20 +188,27 @@ public class Player extends Entity{
         }
     }
 
-    public void regen(){
-        super.regen();
-    }
-
-    public void idling(){
-        isAttacking = false;
-        isRunning = false;
-        isIdling = true;
+    public void checkDefeated(){
+        if(isDefeated && hollowCounter < 5){
+            buffer++;
+            isIdling = true;
+            if(buffer > 100 && !hasEvent){
+                isDefeated = false;
+                hp = maxHP;
+                energy = maxEnergy;
+                buffer = 0;
+                gp.player.worldX = 5 * gp.tileSize;
+                gp.player.worldY = 9 * gp.tileSize;
+                System.out.println(getName() + " has respawned.");
+                System.out.println(getName() + " died " + hollowCounter + " times");
+            }
+        }
     }
 
     public void interactEntity(int i){
         if(i != 999){
             if (keyH.spacePressed){
-                if(gp.livingEntity[gp.currentMap][i].type != 2) {
+                if(gp.livingEntity[gp.currentMap][i].type != 2 || gp.livingEntity[gp.currentMap][i].isDefeated) {
                     gp.gameState = gp.dialogueState;
                     gp.livingEntity[gp.currentMap][i].speak();
                 }
@@ -203,6 +216,10 @@ public class Player extends Entity{
                     gp.battleScreen.currentEnemy = gp.livingEntity[gp.currentMap][i];
                     gp.gameState = gp.battleState;
                 }
+            }
+            if(keyH.qPressed){
+                gp.gameState = gp.inventoryState;
+                gp.ui.drawInventoryScreen(gp.livingEntity[gp.currentMap][i]);
             }
         }
 
@@ -252,148 +269,84 @@ public class Player extends Entity{
     public void draw(Graphics2D g2){
         BufferedImage image = null;
 
-        displayEntityStats(g2);
+//        displayEntityStats(g2);
 
         int tempScreenX = screenX;
         int tempScreenY = screenY;
 
         switch (direction) {
             case "up": {
-                if (!isAttacking && !isRunning) {
-                    if (spriteNum == 1) {
-                        image = up1;
-                    }
-                    if (spriteNum == 2) {
-                        image = up2;
-                    }
-                    if (spriteNum == 3) {
-                        image = up3;
-                    }
-                }
-                if (isAttacking){
-                    tempScreenY = screenY - gp.tileSize;
-                    if (spriteNum == 1){
-                        image = attackUp1;
-                    }
-                    if (spriteNum == 2) {
-                        image = attackUp2;
-                    }
-                    if (spriteNum == 3) {
-                        image = attackUp3;
-                    }
-                }
-                if (isRunning){
+                if(!isDefeated){
                     if (spriteNum == 1){
                         image = up1;
                     }
                     if (spriteNum == 2) {
                         image = up2;
                     }
-                    if (spriteNum == 3) {
-                        image = up1;
+                }
+                else{
+                    if (spriteNum == 1){
+                        image = defeated1;
+                    }
+                    if (spriteNum == 2) {
+                        image = defeated2;
                     }
                 }
                 break;
             }
             case "down": {
+                if(!isDefeated){
                     if (spriteNum == 1){
                         image = down1;
                     }
                     if (spriteNum == 2) {
                         image = down2;
-                    }
-                    if (spriteNum == 3) {
-                        image = down3;
-                    }
-                if (isAttacking){
-                    if (spriteNum == 1){
-                        image = attackDown1;
-                    }
-                    if (spriteNum == 2) {
-                        image = attackDown2;
-                    }
-                    if (spriteNum == 3) {
-                        image = attackDown3;
                     }
                 }
-                if (isRunning){
+                else{
                     if (spriteNum == 1){
-                        image = down1;
+                        image = defeated1;
                     }
                     if (spriteNum == 2) {
-                        image = down2;
-                    }
-                    if (spriteNum == 3) {
-                        image = down3;
+                        image = defeated2;
                     }
                 }
                 break;
             }
             case "left": {
+                if(!isDefeated){
                     if (spriteNum == 1){
                         image = left1;
                     }
                     if (spriteNum == 2) {
                         image = left2;
                     }
-                    if (spriteNum == 3) {
-                        image = left3;
-                    }
-                if (isAttacking){
-                    tempScreenX = screenX - gp.tileSize;
-                    if (spriteNum == 1){
-                        image = attackLeft3;
-                    }
-                    if (spriteNum == 2) {
-                        image = attackLeft2;
-                    }
-                    if (spriteNum == 3) {
-                        image = attackLeft3;
-                    }
                 }
-                if (isRunning){
+                else{
                     if (spriteNum == 1){
-                        image = runLeft1;
+                        image = defeated1;
                     }
                     if (spriteNum == 2) {
-                        image = runLeft2;
-                    }
-                    if (spriteNum == 3) {
-                        image = runLeft3;
+                        image = defeated2;
                     }
                 }
                 break;
             }
             case "right": {
+                if(!isDefeated){
                     if (spriteNum == 1){
                         image = right1;
                     }
                     if (spriteNum == 2) {
                         image = right2;
                     }
-                    if (spriteNum == 3) {
-                        image = right3;
-                    }
-                if (isAttacking && !isRunning){
-                    if (spriteNum == 1){
-                        image = attackRight1;
-                    }
-                    if (spriteNum == 2) {
-                        image = attackRight2;
-                    }
-                    if (spriteNum == 3) {
-                        image = attackRight3;
-                    }
                 }
-                if (isRunning){
+                else{
                     if (spriteNum == 1){
-                        image = runRight1;
+                        image = defeated1;
                     }
                     if (spriteNum == 2) {
-                        image = runRight2;
-                    }
-                    if (spriteNum == 3) {
-                        image = runRight3;
+                        image = defeated2;
                     }
                 }
                 break;

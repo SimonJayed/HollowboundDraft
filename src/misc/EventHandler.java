@@ -1,6 +1,7 @@
 package misc;
 
 
+import entity.Entity;
 import main.GamePanel;
 
 import java.util.Objects;
@@ -51,7 +52,7 @@ public class EventHandler{
         if (distance > gp.tileSize){
             canTouchEvent = true;
         }
-
+        //MAP 1 EVENTS
         if (canTouchEvent && gp.currentMap == 0){
             //GOING TO MAP 2
             if (hit(0,48, 42, "right")){
@@ -69,7 +70,17 @@ public class EventHandler{
             if (hit(0,48, 46, "right")){
                 teleport(gp.playState, 2, 48, "right");
             }
+
+            if(hit(0, 12, 47, "any")){
+                damagePit(gp.dialogueState);
+            }
+            //ENCOUNTERS
+
+            if(hit(0,11,35,"any")){
+                opponentEncounter(gp.livingEntity[gp.currentMap], 0, 11, 35);
+            }
         }
+        //MAP 2 EVENTS
         if (canTouchEvent && gp.currentMap == 1){
             //GOING BACK TO MAP 1
             if (hit(0,1, 45, "left")){
@@ -97,6 +108,11 @@ public class EventHandler{
             }
             if (hit(0,48, 48, "right")){
                 teleport(gp.playState, 2, 5, "right");
+            }
+
+            //ENCOUNTERS
+            if(hit(1,19,46, "any")){
+                opponentEncounter(gp.livingEntity[gp.currentMap], 4, 19, 46);
             }
         }
     }
@@ -133,7 +149,6 @@ public class EventHandler{
                 if(reqDirection.equals("right")){
                     gp.currentMap = 1;
                 }
-
                 break;
             }
             case 1:{
@@ -155,7 +170,7 @@ public class EventHandler{
     public void damagePit(int gameState) {
         gp.gameState = gameState;
         gp.ui.currentDialogue = "You fell into a pit!";
-        gp.player.life -= 1;
+        gp.player.hp -= 100;
 
         if (Objects.equals(gp.player.direction, "up")) {
             gp.player.worldY += (gp.player.speed + 2);
@@ -172,12 +187,28 @@ public class EventHandler{
         canTouchEvent = false;
     }
 
-    public void scene(int gameState) {
-        if (gp.keyH.enterPressed) {
-            gp.gameState = gameState;
-            gp.ui.currentDialogue = "You drink the water. \nYour life has been recovered.";
-            gp.player.life = gp.player.maxLife;
+    public void opponentEncounter(Entity[] entity,int index, int x, int y) {
+        entity[gp.currentMap] = gp.livingEntity[gp.currentMap][index];
+        if(!entity[gp.currentMap].isDefeated){
+            if(entity[gp.currentMap] != null && entity[gp.currentMap].isAlive){
+                gp.gameState = gp.eventState;
+                entity[gp.currentMap].isIdling = false;
+                gp.battleScreen.currentEnemy = entity[gp.currentMap];
+            }
+            else{
+                entity[gp.currentMap] = null;
+                System.out.println(entity[gp.currentMap] + " is no more.");
+            }
+            entity[gp.currentMap].solidArea.x = 0;
+            entity[gp.currentMap].solidArea.y = 0;
+            gp.battleScreen.canEscape = false;
+            canTouchEvent = false;
+            eventRect[gp.currentMap][x][y].eventDone = true;
         }
+        else{
+            canTouchEvent = true;
+        }
+
     }
 }
 

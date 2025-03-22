@@ -1,7 +1,6 @@
 package main;
 
 import entity.Entity;
-import object.OBJ_Heart;
 import object.OBJ_Image;
 
 import javax.imageio.ImageIO;
@@ -60,14 +59,14 @@ public class UI {
         if (gp.gameState == gp.playState) {
             drawPlayerLife();
             playTime += (double) 1 / 60;
-//            drawMessage();
+            drawMessage();
         }
         else if (gp.gameState == gp.titleState) {
             drawTitleScreen();
         }
         else if(gp.gameState == gp.inventoryState){
             drawPlayerLife();
-            drawInventoryScreen();
+            drawInventoryScreen(gp.player);
         }
         else if (gp.gameState == gp.newGameState) {
             drawNewGameScreen();
@@ -91,6 +90,9 @@ public class UI {
         else if(gp.gameState == gp.mapState){
             gp.map.drawFullMapScreen(g2);
         }
+        else if(gp.gameState == gp.eventState){
+            drawPlayerLife();
+        }
     }
 
 
@@ -99,72 +101,95 @@ public class UI {
         int x = 0;
         int y = 0;
 
-        double oneScale = (gp.tileSize*5+3)/gp.player.maxLife;
-        double hpBarValue = oneScale * gp.player.life;
+//        g2.setColor(new Color(255, 255, 255));
+//        g2.fillRect(x, y, gp.screenWidth, 5);
+//        g2.setColor(new Color(255, 255, 255));
+//        g2.fillRect(x, y, 5, gp.screenHeight);
+//        g2.setColor(new Color(255, 255, 255));
+//        g2.fillRect(x+gp.screenWidth-5, y, 5, gp.screenHeight);
+
+        String text = gp.player.getName();
+        g2.setColor(new Color(255, 255, 255));
+        g2.fillRoundRect(x-3, y, text.length()*(gp.tileSize/2)-35, 5, 5, 5);
+        g2.setColor(new Color(255, 255, 255));
+        g2.fillRoundRect(x-2, y+5, text.length()*(gp.tileSize/2)-30, 5, 5, 5);
+        g2.setColor(new Color(255, 255, 255));
+        g2.fillRoundRect(x-1, y+10, text.length()*(gp.tileSize/2)-25, 5,5, 5);
+        g2.setColor(new Color(255, 255, 255));
+        g2.fillRoundRect(x, y+15, text.length()*(gp.tileSize/2)-20, 5,5, 5);
+
+        g2.setFont(g2.getFont().deriveFont( 14f));
+        g2.setColor(new Color(0, 0, 0));
+        g2.drawString(text, x+10, y+15);
+
+        y += gp.tileSize/3+2;
+
+        double oneScale = (gp.tileSize*5)/gp.player.maxHP;
+        double hpBarValue = oneScale * gp.player.hp;
 
         g2.setColor(new Color(255, 255, 255));
-        g2.fillRect(x, y, gp.tileSize*5, 16);
+        g2.fillRect(x, y, gp.tileSize*5+10, 20);
 
         g2.setColor(new Color(255,0,30));
-        g2.fillRect(x, y, (int) hpBarValue, 14);
+        g2.fillRect(x+3, y+2, (int) hpBarValue+4, 16);
 
-        String text = gp.player.life + "/" + gp.player.maxLife;
+        text = gp.df.format(gp.player.hp) + "/" + gp.df.format(gp.player.maxHP);
         g2.setFont(g2.getFont().deriveFont( 14f));
-        g2.setColor(Color.black);
-        g2.drawString(text, x+5, y+12);
+        g2.setColor(new Color(0, 0, 0));
+        g2.drawString(text, x+5, y+15);
 
-        y += gp.tileSize/3;
+        y += gp.tileSize/3+2;
 
-        double oneScale1 = (gp.tileSize*5+3)/gp.player.maxEnergy;
+        double oneScale1 = (gp.tileSize*5)/gp.player.maxEnergy;
         double energyBarValue = oneScale1 * gp.player.energy;
 
         g2.setColor(new Color(255, 255, 255));
-        g2.fillRect(x, y, gp.tileSize*5, 16);
+        g2.fillRect(x, y, gp.tileSize*5+3, 18);
 
         g2.setColor(new Color(255, 227, 24));
-        g2.fillRect(x, y, (int) energyBarValue, 14);
+        g2.fillRect(x+3, y, (int) energyBarValue-3, 16);
 
-        text = gp.player.energy + "/" + gp.player.maxEnergy;
+        text = gp.df.format(gp.player.energy) + "/" + gp.df.format(gp.player.maxEnergy);
         g2.setFont(g2.getFont().deriveFont( 14f));
-        g2.setColor(Color.black);
-        g2.drawString(text, x+5, y+12);
+        g2.setColor(new Color(0, 0, 0));
+        g2.drawString(text, x+5, y+13);
 
         y = gp.screenHeight-18;
 
         double oneScale2 = gp.screenWidth/gp.player.nextLevelExp;
         double expBarValue = oneScale2 * gp.player.exp;
 
-        g2.setColor(new Color(117, 117, 117));
+        g2.setColor(new Color(255, 255, 255));
         g2.fillRect(x, y, gp.screenWidth, 24);
 
-        g2.setColor(new Color(255, 255, 255));
+        g2.setColor(new Color(70, 255, 36));
         g2.fillRect(x, y+3, (int) expBarValue, 14);
 
-        text = gp.player.exp + "/" + gp.player.nextLevelExp;
+        text = gp.df.format(gp.player.exp) + "/" + gp.df.format(gp.player.nextLevelExp);
         x = getXforCenteredText(g2, text);
         g2.setFont(g2.getFont().deriveFont( 14f));
-        g2.setColor(Color.black);
+        g2.setColor(new Color(0, 0, 0));
         g2.drawString(text, x, y+15);
     }
 
     public void drawMessage(){
-        int messageX = gp.tileSize;
-        int messageY = gp.tileSize + 4;
+        int messageX = gp.tileSize/2;
+        int messageY = gp.tileSize*2;
 
-        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 22f));
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 16f));
 
         for (int i = 0; i < message.size(); i++){
 
             if (message.get(i) != null){
 
-                g2.setColor(Color.white);
+                g2.setColor(Color.black);
                 g2.drawString(message.get(i), messageX, messageY);
 
                 int counter = messageCounter.get(i) + 1;
                 messageCounter.set(i, counter);
                 messageY += 50;
 
-                if (messageCounter.get(i) > 180){
+                if (messageCounter.get(i) > 250){
                     message.remove(i);
                     messageCounter.remove(i);
                 }
@@ -275,7 +300,7 @@ public class UI {
         drawSubWindow(x, y, width, height);
 
         try {
-            portrait = ImageIO.read(getClass().getResourceAsStream("/fort/portrait.png"));
+            portrait = ImageIO.read(getClass().getResourceAsStream("/sprites/fort/portrait.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -292,13 +317,13 @@ public class UI {
         y += gp.tileSize;
 
         g2.setFont(g2.getFont().deriveFont(Font.BOLD, 18f));
-        g2.setColor(Color.black);
+        g2.setColor(Color.white);
         for (String line : currentDialogue.split("\n")) {
             g2.drawString(line, x, y);
             y += 40;
         }
     }
-    public void drawInventoryScreen(){
+    public void drawInventoryScreen(Entity entity){
         //Inventory Frame
         int frameX = gp.tileSize;
         int frameY = gp.tileSize*3;
@@ -314,53 +339,54 @@ public class UI {
 
         //Inventory Content
         g2.setColor(Color.white);
-        int x = gp.tileSize*2 + (gp.tileSize/2);
+        int x = gp.tileSize*2+(gp.tileSize/2);
         int y = gp.tileSize*5;
 
         g2.drawImage(gp.player.down1, x, y, gp.tileSize*4, gp.tileSize*4, null);
 
-//        x = gp.tileSize+10;
-//        y = gp.tileSize*8+15;
-//        g2.drawString("NAME: " + gp.player.getName(), x, y);
-//        y += gp.tileSize/2;
-//        g2.drawString("LEVEL: " + Double.toString(gp.player.level), x, y);
-//
-//        y += gp.tileSize;
-//        g2.drawString("HEALTH: " + gp.player.life + "/" + gp.player.maxLife, x, y);
-//        y += gp.tileSize/2;
-//        g2.drawString("ENERGY: " + gp.player.energy + "/" + gp.player.maxEnergy, x, y);
-//
-//        y += gp.tileSize;
-//        g2.drawString("ATTACK: ", x, y);
-//        y += gp.tileSize/2;
-//        g2.drawString("DEFENSE: ", x, y);
-//        y += gp.tileSize/2;
-//        g2.drawString("SPEED: " + gp.player.speed, x, y);
+        x = gp.tileSize+8;
+        y = gp.tileSize*4;
+        g2.setFont(g2.getFont().deriveFont(20f));
+        g2.drawString("NAME: " + gp.player.getName(), x, y);
+
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 14f));
+        x = (gp.tileSize/2) + gp.screenWidth/2;
+        g2.drawString("LEVEL: " + gp.df.format(gp.player.level), x, y);
+        y += gp.tileSize/2;
+        g2.drawString("EXP: " + gp.df.format(gp.player.exp), x, y);
+        y += gp.tileSize/2;
+        g2.drawString("EXP TO NEXT LEVEL: " + gp.df.format((gp.player.nextLevelExp-gp.player.exp)), x, y);
+
+        y += gp.tileSize;
+        g2.drawString("HEALTH: " + gp.df.format(gp.player.hp) + "/" + gp.df.format(gp.player.maxHP), x, y);
+        y += gp.tileSize/2;
+        g2.drawString("ENERGY: " + gp.df.format(gp.player.energy) + "/" + gp.df.format(gp.player.maxEnergy), x, y);
+
+        y += gp.tileSize/2;
+        g2.drawString("ATTACK: " + gp.df.format(gp.player.attack), x, y);
+        y += gp.tileSize/2;
+        g2.drawString("DEFENSE: " + gp.df.format(gp.player.defense), x, y);
+        y += gp.tileSize/2;
+        g2.drawString("SPEED: " + gp.df.format(gp.player.speed), x, y);
+
+        y += gp.tileSize;
+        g2.drawString("VITALITY: " + gp.df.format(gp.player.vit), x, y);
+        y += gp.tileSize/2;
+        g2.drawString("POWER: " + gp.df.format(gp.player.pow), x, y);
+        y += gp.tileSize/2;
+        g2.drawString("MAGIC: " + gp.df.format(gp.player.mag), x, y);
+        y += gp.tileSize/2;
+        g2.drawString("AGILITY: " + gp.df.format(gp.player.agi), x, y);
+        y += gp.tileSize/2;
+        g2.drawString("LUCK: " + gp.df.format(gp.player.luck), x, y);
     }
-//    public void drawForegroundFoliage(){
-//        BufferedImage img = null;
-//
-//        try {
-//            img = ImageIO.read(getClass().getResourceAsStream("/graphics/FoliageUR.png"));
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
-//        if (img != null) {
-//            int imgX = gp.tileSize * 12;
-//            int imgY = 1;
-//            int imgHeight = gp.tileSize * 8;
-//            int imgWidth = gp.tileSize * 8;
-//            g2.drawImage(img, imgX, imgY, imgWidth, imgHeight, null);
-//        }
-//    }
 
     public void drawSubWindow(int x, int y, int width, int height){
-        Color c = new Color(255, 255, 255);
+        Color c = new Color(0, 0, 0, 150);
         g2.setColor(c);
         g2.fillRoundRect(x, y, width, height,20, 20);
 
-        c = new Color (68, 255, 202);
+        c = new Color (255, 255, 255);
         g2.setColor(c);
         g2.setStroke(new BasicStroke(5));
         g2.drawRoundRect(x, y, width, height, 20, 20);

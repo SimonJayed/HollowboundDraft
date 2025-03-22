@@ -15,22 +15,33 @@ public abstract class Entity {
     public int level = 1;
     private String name;
     public int worldX, worldY;
-    public int speed = 1;
-    public int attack = 2;
-    public int defense = 1;
+    public double speed = 1;
+    public double tempSpeed = 0;
+    public double attack = 2;
+    public double defense = 1;
     public double exp = 1;
     public double nextLevelExp = level*2;
-    public double maxLife;
-    public double life;
+
+    public double initialHP;
+    public double initialEnergy;
+    public double maxHP;
+    public double hp;
     public double maxEnergy = 10;
     public double energy = 10;
     public double energyRegen = maxEnergy*0.1;
+
+    public double vit;
+    public double pow;
+    public double mag;
+    public double agi;
     public double luck;
 
+    public int hollowCounter = 0;
 
-    public BufferedImage up1, up2, up3, down1, down2, down3, left1, left2, left3, right1, right2, right3;
-    public BufferedImage attackUp1, attackUp2, attackUp3, attackDown1, attackDown2, attackDown3, attackLeft1, attackLeft2, attackLeft3, attackRight1, attackRight2, attackRight3;
-    public BufferedImage runUp1, runUp2, runUp3, runDown1, runDown2, runDown3, runLeft1, runLeft2, runLeft3, runRight1, runRight2, runRight3;
+    public BufferedImage up1, up2, down1, down2, left1, left2, right1, right2;
+    public BufferedImage attackUp1, attackUp2, attackDown1, attackDown2, attackLeft1, attackLeft2, attackRight1, attackRight2;
+    public BufferedImage runUp1, runUp2, runDown1, runDown2, runLeft1, runLeft2, runRight1, runRight2;
+    public BufferedImage defeated1, defeated2;
     public BufferedImage image1, image2, image3, image4;
     public BufferedImage portrait;
 
@@ -50,11 +61,13 @@ public abstract class Entity {
     public boolean invincible = false;
     public boolean collisionOn = false;
     public boolean isAttacking = false;
-    public boolean isIdling = false;
+    public boolean isIdling = true;
     public boolean isRunning = false;
     public boolean isAlive = true;
     public boolean isDying = false;
+    public boolean isDefeated = false;
     public boolean hpBarOn = true;
+    public boolean hasEvent = false;
 
     public int actionLockCounter = 0;
     public int invincibleCounter = 0;
@@ -66,24 +79,78 @@ public abstract class Entity {
 
     public Entity(GamePanel gp){
         this.gp = gp;
+        setDefaultValues(1, 200, 200, 2,1, 1, 1, 1, 1);
     }
 
     public String getName() {return name;}
 
     public void setName(String name) {this.name =  name;}
 
-    public void getImage(String folder) {
-        up1 = setup("/" + folder + "/up1", gp.tileSize, gp.tileSize);
-        up2 = setup("/" + folder + "/up2", gp.tileSize, gp.tileSize);
-        down1 = setup("/" + folder + "/down1", gp.tileSize, gp.tileSize);
-        down2 = setup("/" + folder + "/down2", gp.tileSize, gp.tileSize);
-        left1 = setup("/" + folder + "/left1", gp.tileSize, gp.tileSize);
-        left2 = setup("/" + folder + "/left2", gp.tileSize, gp.tileSize);
-        right1 = setup("/" + folder + "/right1", gp.tileSize, gp.tileSize);
-        right2 = setup("/" + folder + "/right2", gp.tileSize, gp.tileSize);
-        portrait = setup("/" + folder + "/portrait", gp.tileSize, gp.tileSize);
+    public void setDefaultValues(int level, double initialHP, double initialEnergy, double speed, double vit, double pow, double mag, double agi, double luck){
+        this.level = level;
+        int tempLevel = level;
+        this.initialHP = initialHP;
+        this.initialEnergy = initialEnergy;
+        this.speed = speed;
+        this.tempSpeed = speed;
+
+        this.vit = vit;
+        this.pow = pow;
+        this.mag = mag;
+        this.agi = agi;
+        this.luck = luck;
+
+        nextLevelExp = 10 * Math.pow(level, 1.2);
+        while(tempLevel > 0){
+            setStatIncrements();
+            tempLevel--;
+        }
+        calculateStats();
+    }
+    public void calculateStats(){
+        this.maxHP = initialHP + (15 * level) + (vit * 2);
+        this.hp = maxHP;
+        this.maxEnergy = initialEnergy + (15 * level) + (mag * 2);
+        this.energy = maxEnergy;
+        this.energyRegen = maxEnergy * 0.1 + (mag / 100);
+        this.attack = pow * 3;
+        this.defense = vit * 1.5;
+        this.speed = speed + ((double) level / 50);
     }
 
+    public void setStatIncrements(){
+        this.vit += 1;
+        this.pow += 1;
+        this.mag += 1;
+        this.agi += 1;
+    }
+
+    public void checkLevelUp(){
+        while (exp >= nextLevelExp) {
+            level++;
+            setStatIncrements();
+            calculateStats();
+            nextLevelExp = 10 * Math.pow(level, 1.2);
+            gp.ui.addMessage(name + " has leveled up! (Lvl " + level + ")");
+        }
+    }
+
+    public void getImage(String folder) {
+        up1 = setup("/sprites/" + folder + "/up1", gp.tileSize, gp.tileSize);
+        up2 = setup("/sprites/" + folder + "/up2", gp.tileSize, gp.tileSize);
+        down1 = setup("/sprites/" + folder + "/down1", gp.tileSize, gp.tileSize);
+        down2 = setup("/sprites/" + folder + "/down2", gp.tileSize, gp.tileSize);
+        left1 = setup("/sprites/" + folder + "/left1", gp.tileSize, gp.tileSize);
+        left2 = setup("/sprites/" + folder + "/left2", gp.tileSize, gp.tileSize);
+        right1 = setup("/sprites/" + folder + "/right1", gp.tileSize, gp.tileSize);
+        right2 = setup("/sprites/" + folder + "/right2", gp.tileSize, gp.tileSize);
+        portrait = setup("/sprites/" + folder + "/portrait", gp.tileSize, gp.tileSize);
+    }
+
+    public void getDefeatedImage(String folder) {
+        defeated1 = setup("/sprites/" + folder + "/defeated/front", gp.tileSize, gp.tileSize);
+        defeated2 = setup("/sprites/" + folder + "/defeated/side", gp.tileSize, gp.tileSize);
+    }
 
     public void speak(){
         if (dialogues[dialogueIndex] == null){
@@ -93,25 +160,27 @@ public abstract class Entity {
         dialogueIndex++;
         gp.playSoundEffect(1);
 
-        switch (gp.player.direction){
-            case "up": {
-                direction = "down";
-                break;
-            }
-            case "down": {
-                direction = "up";
-                break;
-            }
-            case "left": {
-                direction = "right";
-                break;
-            }
-            case "right": {
-                direction = "left";
-                break;
-            }
-            default:{
-                direction = "down";
+        if(!isDefeated){
+            switch (gp.player.direction){
+                case "up": {
+                    direction = "down";
+                    break;
+                }
+                case "down": {
+                    direction = "up";
+                    break;
+                }
+                case "left": {
+                    direction = "right";
+                    break;
+                }
+                case "right": {
+                    direction = "left";
+                    break;
+                }
+                default:{
+                    direction = "down";
+                }
             }
         }
     }
@@ -128,19 +197,28 @@ public abstract class Entity {
                 energy = maxEnergy;
             }
         }
-
-
     }
 
     public void update(){
-        setAction();
+        spriteAnim(2);
+        if(!hasEvent && !isDefeated){
+            setAction();
+        }
         regen();
+        checkDefeated();
+        checkLevelUp();
 
         collisionOn = false;
         gp.cChecker.checkTile(this);
         gp.cChecker.checkObject(this, false);
         gp.cChecker.checkEntity(this, gp.livingEntity);
         boolean contactPlayer = gp.cChecker.checkPlayer(this);
+
+        if(contactPlayer && gp.gameState == gp.eventState){
+            if(type == 2){
+                gp.gameState = gp.battleState;
+            }
+        }
 
         if (!collisionOn && isIdling == false) {
             switch (direction) {
@@ -163,7 +241,7 @@ public abstract class Entity {
             }
         }
         else{
-            idling();
+            isIdling = true;
         }
         if (invincible){
             invincibleCounter++;
@@ -174,20 +252,27 @@ public abstract class Entity {
         }
     }
 
+    public void checkDefeated(){
+        if(isDefeated && hollowCounter < 5){
+            buffer++;
+            isIdling = true;
+            if(buffer > 1500 && !hasEvent){
+                isDefeated = false;
+                hp = maxHP;
+                energy = maxEnergy;
+                buffer = 0;
+                System.out.println(getName() + " has respawned.");
+                System.out.println(getName() + " died " + hollowCounter + " times");
+            }
+        }
+    }
+
     public void spriteAnim(int spriteQuantity){
         spriteCounter++;
         if (spriteCounter > spriteQuantity * 13) {
             spriteCounter = 1;
         }
         spriteNum = (spriteCounter - 1) / 13 + 1;
-    }
-
-
-    public void idling(){
-        isIdling = true;
-    }
-
-    public void getAttackImage() {
     }
 
     public void displayEntityStats(Graphics2D g2){
@@ -216,22 +301,6 @@ public abstract class Entity {
 
 
 
-    }
-
-    public void checkLevelUp(){
-        while (exp >= nextLevelExp){
-            level++;
-            nextLevelExp *= 2;
-            maxLife += 2;
-            attack++;
-            defense++;
-            if (this.level % 3 == 0){
-                this.speed++;
-                gp.ui.addMessage(this.name + " speed increased!");
-            }
-
-            gp.ui.addMessage(name + " has levelled up! (Lvl " + level + ")");
-        }
     }
 
     public void dyingAnimation(Graphics2D g2){
@@ -299,44 +368,84 @@ public abstract class Entity {
                 worldY - gp.tileSize < gp.player.worldY + gp.player.screenY){
             switch (direction) {
                 case "up": {
-                    if (spriteNum == 1){
-                        image1 = up1;
+                    if(!isDefeated){
+                        if (spriteNum == 1){
+                            image1 = up1;
+                        }
+                        if (spriteNum == 2) {
+                            image1 = up2;
+                        }
                     }
-                    if (spriteNum == 2) {
-                        image1 = up2;
+                    else{
+                        if (spriteNum == 1){
+                            image1 = defeated1;
+                        }
+                        if (spriteNum == 2) {
+                            image1 = defeated2;
+                        }
                     }
                     break;
                 }
                 case "down": {
-                    if (spriteNum == 1){
-                        image1 = down1;
+                    if(!isDefeated){
+                        if (spriteNum == 1){
+                            image1 = down1;
+                        }
+                        if (spriteNum == 2) {
+                            image1 = down2;
+                        }
                     }
-                    if (spriteNum == 2) {
-                        image1 = down2;
+                    else{
+                        if (spriteNum == 1){
+                            image1 = defeated1;
+                        }
+                        if (spriteNum == 2) {
+                            image1 = defeated2;
+                        }
                     }
                     break;
                 }
                 case "left": {
-                    if (spriteNum == 1){
-                        image1 = left1;
+                    if(!isDefeated){
+                        if (spriteNum == 1){
+                            image1 = left1;
+                        }
+                        if (spriteNum == 2) {
+                            image1 = left2;
+                        }
                     }
-                    if (spriteNum == 2) {
-                        image1 = left2;
+                    else{
+                        if (spriteNum == 1){
+                            image1 = defeated1;
+                        }
+                        if (spriteNum == 2) {
+                            image1 = defeated2;
+                        }
                     }
                     break;
                 }
                 case "right": {
-                    if (spriteNum == 1){
-                        image1 = right1;
+                    if(!isDefeated){
+                        if (spriteNum == 1){
+                            image1 = right1;
+                        }
+                        if (spriteNum == 2) {
+                            image1 = right2;
+                        }
                     }
-                    if (spriteNum == 2) {
-                        image1 = right2;
+                    else{
+                        if (spriteNum == 1){
+                            image1 = defeated1;
+                        }
+                        if (spriteNum == 2) {
+                            image1 = defeated2;
+                        }
                     }
                     break;
                 }
             }
         }
-        displayEntityStats(g2);
+//        displayEntityStats(g2);
 
         if (invincible){
             hpBarOn = true;

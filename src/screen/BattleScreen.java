@@ -13,6 +13,7 @@ public class BattleScreen implements Screen{
 
     public int hitChance;
     public boolean isAttacking = false;
+    public boolean canEscape = true;
 
     public BattleScreen(GamePanel gp){
         this.gp = gp;
@@ -30,9 +31,10 @@ public class BattleScreen implements Screen{
 //        x = gp.screenWidth/2 - gp.tileSize;
 //        y = gp.tileSize*2;
 
+        gp.ui.drawMessage();
 
-        double oneScale = gp.screenWidth/currentEnemy.maxLife;
-        double hpBarValue = oneScale * currentEnemy.life;
+        double oneScale = gp.screenWidth/currentEnemy.maxHP;
+        double hpBarValue = oneScale * currentEnemy.hp;
 
         g2.setColor(new Color(255, 255, 255));
         g2.fillRect(x, y, gp.screenWidth, 20);
@@ -40,7 +42,7 @@ public class BattleScreen implements Screen{
         g2.setColor(new Color(255,0,30));
         g2.fillRect(x, y, (int) hpBarValue, 18);
 
-        String text = currentEnemy.life + "/" + currentEnemy.maxLife;
+        String text = currentEnemy.hp + "/" + currentEnemy.maxHP;
         g2.setFont(g2.getFont().deriveFont( 14f));
         g2.setColor(Color.black);
         g2.drawString(text, gp.ui.getXforCenteredText(g2, text), y+12);
@@ -56,9 +58,12 @@ public class BattleScreen implements Screen{
         g2.setColor(new Color(255, 227, 24));
         g2.fillRect(x, y, (int) energyBarValue, 16);
 
-        text = currentEnemy.life + "/" + currentEnemy.maxLife;
+        text = currentEnemy.hp + "/" + currentEnemy.maxHP;
         g2.setFont(g2.getFont().deriveFont( 14f));
         g2.setColor(Color.black);
+        g2.drawString(text, gp.ui.getXforCenteredText(g2, text), y+12);
+        y += gp.tileSize/3;
+        text = "Level: " + currentEnemy.level;
         g2.drawString(text, gp.ui.getXforCenteredText(g2, text), y+12);
 
         x = gp.screenHeight/2 - gp.tileSize/2;
@@ -187,19 +192,133 @@ public class BattleScreen implements Screen{
         }
 
         if (hitRoll <= hitChance) {
+            gp.ui.addMessage(gp.player.getName() + " ATTACKS!");
             int damage = (int) ((gp.player.attack - currentEnemy.defense) * damageMultiplier);
             damage = Math.max(damage, 1);
-            currentEnemy.life -= damage;
-            System.out.println("Hit! Dealt " + damage + " damage to " + currentEnemy.getName());
+            currentEnemy.hp -= damage;
+            if(currentEnemy.hp < 0){
+                currentEnemy.hp = 0;
+            }
+//            gp.ui.addMessage("Hit!" + gp.player.getName() + " deals " + damage + " damage to " + currentEnemy.getName());
         } else {
-            System.out.println("Missed!");
+//            gp.ui.addMessage(gp.player.getName() + " missed!");
+        }
+
+        if(currentEnemy.hp == 0){
+            endBattle();
         }
     }
 
-//    public void damage(int i, int damage){
-//        damage = damage - gp.livingEntity[i].defense;
-//
-//        gp.livingEntity[i].health -= damage;
-//    }
+    public void damagePlayer(String targetArea) {
+        int hitRoll = gp.randomize(1, 100);
+        double luckFactor = currentEnemy.luck * 0.01;
+
+        int hitChance = 0;
+        double damageMultiplier = 1.0;
+
+
+        switch (targetArea) {
+            case "HEAD":
+                hitChance = (int)(40 + (luckFactor * 100));
+                damageMultiplier = gp.randomize(2, 3);
+                break;
+            case "TORSO":
+                hitChance = (int)(85 + (luckFactor * 100));
+                damageMultiplier = 1.0;
+                break;
+            case "LEGS":
+                hitChance = (int)(65 + (luckFactor * 100));
+                damageMultiplier = 1.0;
+                gp.player.speed -= 1;
+                break;
+        }
+
+        if (hitRoll <= hitChance) {
+            gp.ui.addMessage(currentEnemy.getName() + " ATTACKS!");
+            int damage = (int) ((currentEnemy.attack - gp.player.defense) * damageMultiplier);
+            damage = Math.max(damage, 1);
+            gp.player.hp -= damage;
+            if(gp.player.hp < 0){
+                gp.player.hp = 0;
+            }
+//            gp.ui.addMessage("Hit! " + currentEnemy.getName() + " deals " + damage + " damage to " + gp.player.getName());
+        } else {
+//            gp.ui.addMessage(currentEnemy.getName() + " missed!");
+        }
+
+        if(gp.player.hp == 0){
+            enemyEndBattle();
+        }
+    }
+
+    public void endBattle(){
+        double levelDifference = gp.player.level-currentEnemy.level;
+        double expGain = currentEnemy.nextLevelExp;
+
+        if (levelDifference < -10) {
+            expGain *= 4;
+        } else if (levelDifference < -5) {
+            expGain *= 2;
+        } else if (levelDifference > 10) {
+            expGain *= 0.5;
+        } else if (levelDifference > 5) {
+            expGain *= 0.75;
+        } else {
+            expGain *= 1.25;
+        }
+
+        gp.player.exp += expGain;
+        currentEnemy.isDefeated = true;
+        currentEnemy.hollowCounter++;
+        System.out.println(currentEnemy.getName() + " has died " + currentEnemy.hollowCounter + " times");
+        gp.gameState = gp.playState;
+        System.out.println("Battle finished.");
+    }
+
+    public void enemyEndBattle(){
+        double levelDifference = gp.player.level-currentEnemy.level;
+        double expGain = gp.player.nextLevelExp;
+
+        if (levelDifference > 10) {
+            expGain *= 0.5;
+        } else if (levelDifference > 5) {
+            expGain *= 0.75;
+        } else if (levelDifference < -10) {
+            expGain *= 4;
+        } else if (levelDifference < -5) {
+            expGain *= 2;
+        } else {
+            expGain *= 1.25;
+        }
+
+        currentEnemy.exp += expGain;
+
+        gp.player.isDefeated = true;
+        gp.player.hollowCounter++;
+        System.out.println(gp.player.getName() + " has died " + gp.player.hollowCounter + " times");
+        gp.gameState = gp.playState;
+        System.out.println("Battle finished.");
+    }
+
+    public void enemyTurn(){
+        if(currentEnemy != null){
+            int choice = gp.randomize(0,2);
+
+            switch (choice){
+                case 0:{
+                    damagePlayer("HEAD");
+                    break;
+                }
+                case 1:{
+                    damagePlayer("TORSO");
+                    break;
+                }
+                case 2:{
+                    damagePlayer("LEGS");
+                    break;
+                }
+            }
+        }
+    }
 
 }

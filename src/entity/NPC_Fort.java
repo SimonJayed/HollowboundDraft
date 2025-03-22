@@ -11,9 +11,6 @@ public class NPC_Fort extends Entity {
 
         type = 2;
         setName("Fort");
-        speed = 1;
-        maxLife = 10;
-        life = maxLife;
 
         solidArea = new Rectangle();
         this.solidArea.x = 8;
@@ -24,9 +21,17 @@ public class NPC_Fort extends Entity {
         this.solidArea.height = 32;
 
         getImage("fort");
+        getDefeatedImage("fort");
+        setDefaultValues(1, 400, 100,4, 15, 6, 4, 5,  15);
         setDialogue();
     }
 
+    public void setStatIncrements(){
+        this.vit += 3;
+        this.pow += 2;
+        this.mag += 1;
+        this.agi += 1;
+    }
 
     public void setAction() {
         actionLockCounter++;
@@ -47,7 +52,7 @@ public class NPC_Fort extends Entity {
                 direction = "right";
                 isIdling = false;
             } else if (i <= 125) {
-                idling();
+                isIdling = true;
             }
             actionLockCounter = 0;
         }

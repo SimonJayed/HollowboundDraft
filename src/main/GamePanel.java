@@ -12,6 +12,7 @@ import tile.TileManager;
 import javax.swing.*;
 import java.awt.*;
 import java.io.InputStream;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Random;
@@ -32,7 +33,6 @@ public class GamePanel extends JPanel implements Runnable {
     public final int maxWorldRow = 50;
     public final int maxMap = 10;
     public int currentMap = 0;
-
 
     public double FPS = 60;
 
@@ -65,10 +65,13 @@ public class GamePanel extends JPanel implements Runnable {
     public final int characterPickState = 7;
     public final int battleState = 8;
     public final int mapState = 9;
+    public final int eventState = 10;
 
     public BattleScreen battleScreen = new BattleScreen(this);
 
     public Font customFont;
+
+    public DecimalFormat df = new DecimalFormat("#,##0.#");
 
     public GamePanel(){
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -82,7 +85,7 @@ public class GamePanel extends JPanel implements Runnable {
     public void setupGame(){
         aSetter.setObjectEntity();
         aSetter.setLivingEntity();
-        gameState = playState;
+        gameState = titleState;
     }
 
     public void startGameThread(){
@@ -134,12 +137,13 @@ public class GamePanel extends JPanel implements Runnable {
         if (gameState == playState) {
             player.update();
         }
-        if (gameState == playState){
-            for (int i = 0; i < livingEntity[1].length; i++){
-                if (livingEntity[currentMap][i] != null){
-                    livingEntity[currentMap][i].update();
-                    if (!livingEntity[currentMap][i].isAlive){
-                        livingEntity[i] = null;
+        if(gameState == playState || gameState == eventState){
+            for(Entity entity: livingEntity[currentMap]){
+                if (entity != null){
+                    entity.update();
+                    if (!entity.isAlive){
+                        entity = null;
+                        entityList.remove(entity);
                     }
                 }
             }
@@ -189,13 +193,13 @@ public class GamePanel extends JPanel implements Runnable {
             entityList.clear();
             entityList.add(player);
 
-            for(int i = 0; i < livingEntity[1].length; i++){
-                if(livingEntity[currentMap][i] != null){
+            for(int i = 0; i < livingEntity[1].length; i++) {
+                if (livingEntity[currentMap][i] != null && livingEntity[currentMap][i].isAlive) {
                     entityList.add(livingEntity[currentMap][i]);
                 }
             }
-            for(int i = 0; i < objectEntity[1].length; i++){
-                if(objectEntity[currentMap][i] != null){
+            for(int i = 0; i < objectEntity[1].length; i++) {
+                if (objectEntity[currentMap][i] != null) {
                     entityList.add(objectEntity[currentMap][i]);
                 }
             }

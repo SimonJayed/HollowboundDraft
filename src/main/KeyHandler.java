@@ -42,8 +42,9 @@ public class KeyHandler implements KeyListener {
                 gp.playSoundEffect(3);
                 gp.sound.setVolume(-20.0f);
             }
-            if (code == KeyEvent.VK_ENTER) {
+            if (code == KeyEvent.VK_ENTER || code == KeyEvent.VK_SPACE) {
                 if (gp.ui.commandNum == 0) {
+                    gp.aSetter.setPlayer(2);
                     gp.gameState = gp.playState;
                     System.out.println(gp.gameState);
                     gp.playMusic(2);
@@ -79,19 +80,28 @@ public class KeyHandler implements KeyListener {
                     gp.playSoundEffect(3);
                     gp.sound.setVolume(-20.0f);
                 }
-                if (code == KeyEvent.VK_ENTER) {
+                if (code == KeyEvent.VK_ENTER || code == KeyEvent.VK_SPACE) {
                     if (gp.battleScreen.commandNum == 0) {
                         gp.battleScreen.attack();
                     }
                     if (gp.battleScreen.commandNum == 3) {
-                        int num = gp.randomize(1, 8);
-                        if(num == 8){
-                            gp.gameState = gp.playState;
+                        if(gp.battleScreen.canEscape){
+                            int num = gp.randomize(1, 8);
+                            if(num == 8){
+                                gp.gameState = gp.playState;
+                            }
+                            else {
+                                System.out.println("Escape Failed.");
+                            }
                         }
-                        else {
-                            System.out.println("Escape Failed.");
+                        else{
+                            System.out.println("Can't Escape.");
                         }
+                        gp.battleScreen.isAttacking = false;
+                        gp.battleScreen.enemyTurn();
                     }
+                    gp.playSoundEffect(3);
+                    gp.sound.setVolume(-20.0f);
                 }
             }
             else if(gp.battleScreen.isAttacking){
@@ -111,7 +121,7 @@ public class KeyHandler implements KeyListener {
                     gp.playSoundEffect(3);
                     gp.sound.setVolume(-20.0f);
                 }
-                if(code == KeyEvent.VK_ENTER){
+                if(code == KeyEvent.VK_ENTER || code == KeyEvent.VK_SPACE){
                     if(gp.battleScreen.commandNum == 0){
                         gp.battleScreen.damage("HEAD");
                     }
@@ -121,6 +131,10 @@ public class KeyHandler implements KeyListener {
                     if(gp.battleScreen.commandNum == 2){
                         gp.battleScreen.damage("LEGS");
                     }
+                    gp.battleScreen.isAttacking = false;
+                    gp.battleScreen.enemyTurn();
+                    gp.playSoundEffect(3);
+                    gp.sound.setVolume(-20.0f);
                 }
                 if(code == KeyEvent.VK_ESCAPE){
                     gp.battleScreen.isAttacking = false;
@@ -128,7 +142,7 @@ public class KeyHandler implements KeyListener {
             }
         }
         //PLAYSTATE
-        else if (gp.gameState == gp.playState) {
+        else if (gp.gameState == gp.playState && !gp.player.isDefeated) {
             if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
                 upPressed = true;
             }
@@ -145,9 +159,6 @@ public class KeyHandler implements KeyListener {
             if (code == KeyEvent.VK_SHIFT) {
                 shiftPressed = true;
             }
-            if (code == KeyEvent.VK_Q) {
-                qPressed = true;
-            }
             if (code == KeyEvent.VK_TAB) {
                 tabPressed = !tabPressed;
             }
@@ -160,12 +171,13 @@ public class KeyHandler implements KeyListener {
             if (code == KeyEvent.VK_0) {
                 zeroPressed = !zeroPressed;
             }
-            if (code == KeyEvent.VK_I || code == KeyEvent.VK_ESCAPE) {
+            if (code == KeyEvent.VK_I || code == KeyEvent.VK_ESCAPE || code == KeyEvent.VK_Q) {
                 gp.gameState = gp.inventoryState;
                 System.out.println("Inventory opened");
             }
             if (code == KeyEvent.VK_M ) {
                 gp.gameState = gp.mapState;
+                gp.map.miniMapOn = false;
                 System.out.println("Map opened");
             }
         }
