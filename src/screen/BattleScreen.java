@@ -2,8 +2,13 @@ package screen;
 
 import entity.Entity;
 import main.GamePanel;
+import misc.UtilityTool;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.util.Objects;
 
 public class BattleScreen implements Screen{
     GamePanel gp;
@@ -23,9 +28,18 @@ public class BattleScreen implements Screen{
         int x = 0;
         int y = 0;
 
+        BufferedImage battlePortrait = currentEnemy.down1;
+        try{
+            battlePortrait = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/sprites/"+ currentEnemy.getName().toLowerCase() + "/portrait.png")));
+        }catch (IOException e){
+            e.printStackTrace();
+        }
 
-        g2.setColor(Color.white);
-        g2.fillRect(x,y,gp.screenWidth, gp.screenHeight);
+        g2.drawImage(battlePortrait, x, y,gp.screenWidth, gp.screenHeight, null);
+
+
+//        g2.setColor(Color.white);
+//        g2.fillRect(x,y,gp.screenWidth, gp.screenHeight);
 
 //        x = gp.screenWidth/2 - gp.tileSize;
 //        y = gp.tileSize*2;
@@ -70,54 +84,56 @@ public class BattleScreen implements Screen{
 
         //PLAYERBAR
 
-        y = (gp.screenHeight/2)+gp.tileSize*2-8;
-        double oneScale3 = gp.screenWidth/gp.player.maxHP;
-        double hpBarValue2 = oneScale3 * gp.player.hp;
+//        y = (gp.screenHeight/2)+gp.tileSize*2-8;
+//        double oneScale3 = gp.screenWidth/gp.player.maxHP;
+//        double hpBarValue2 = oneScale3 * gp.player.hp;
+//
+//        g2.setColor(new Color(255, 255, 255));
+//        g2.fillRect(x, y, gp.screenWidth, 20);
+//
+//        g2.setColor(new Color(255,0,30));
+//        g2.fillRect(x, y, (int) hpBarValue2, 18);
+//
+//        text = gp.player.hp + "/" + gp.player.maxHP;
+//        g2.setFont(g2.getFont().deriveFont( 14f));
+//        g2.setColor(Color.black);
+//        g2.drawString(text, gp.ui.getXforCenteredText(g2, text), y+12);
+//
+//        y += gp.tileSize/3;
+//
+//        double oneScale4 = gp.screenWidth/gp.player.maxEnergy;
+//        double energyBarValue2 = oneScale4 * gp.player.energy;
+//
+//        g2.setColor(new Color(255, 255, 255));
+//        g2.fillRect(x, y, gp.screenWidth, 18);
+//
+//        g2.setColor(new Color(255, 227, 24));
+//        g2.fillRect(x, y, (int) energyBarValue2, 16);
+//
+//        text = gp.df.format(gp.player.energy) + "/" + gp.df.format(gp.player.maxEnergy);
+//        g2.setFont(g2.getFont().deriveFont( 14f));
+//        g2.setColor(Color.black);
+//        g2.drawString(text, gp.ui.getXforCenteredText(g2, text), y+12);
+//        y += gp.tileSize*4;
+//        text = "Level: " + gp.player.level;
+//        g2.drawString(text, gp.ui.getXforCenteredText(g2, text), y+12);
 
-        g2.setColor(new Color(255, 255, 255));
-        g2.fillRect(x, y, gp.screenWidth, 20);
-
-        g2.setColor(new Color(255,0,30));
-        g2.fillRect(x, y, (int) hpBarValue2, 18);
-
-        text = gp.player.hp + "/" + gp.player.maxHP;
-        g2.setFont(g2.getFont().deriveFont( 14f));
-        g2.setColor(Color.black);
-        g2.drawString(text, gp.ui.getXforCenteredText(g2, text), y+12);
-
-        y += gp.tileSize/3;
-
-        double oneScale4 = gp.screenWidth/gp.player.maxEnergy;
-        double energyBarValue2 = oneScale4 * gp.player.energy;
-
-        g2.setColor(new Color(255, 255, 255));
-        g2.fillRect(x, y, gp.screenWidth, 18);
-
-        g2.setColor(new Color(255, 227, 24));
-        g2.fillRect(x, y, (int) energyBarValue2, 16);
-
-        text = gp.df.format(gp.player.energy) + "/" + gp.df.format(gp.player.maxEnergy);
-        g2.setFont(g2.getFont().deriveFont( 14f));
-        g2.setColor(Color.black);
-        g2.drawString(text, gp.ui.getXforCenteredText(g2, text), y+12);
-        y += gp.tileSize*4;
-        text = "Level: " + gp.player.level;
-        g2.drawString(text, gp.ui.getXforCenteredText(g2, text), y+12);
 
 
+//        x = gp.screenHeight/2 - gp.tileSize/2;
+//        y = gp.screenHeight/3 - gp.tileSize;
+//
+//        g2.drawImage(currentEnemy.down1, x, y, gp.tileSize*5, gp.tileSize*5, null);
 
-        x = gp.screenHeight/2 - gp.tileSize/2;
-        y = gp.screenHeight/3 - gp.tileSize;
-
-        g2.drawImage(currentEnemy.down1, x, y, gp.tileSize*5, gp.tileSize*5, null);
+//        g2.drawImage(currentEnemy.portrait, 0, 0, gp.screenWidth, gp.screenHeight, null);
 
         x = gp.tileSize/2;
         y = gp.tileSize*9 + (gp.tileSize/2);
-        g2.setColor(new Color(0,0,0));
+        g2.setColor(new Color(0,0,0, 200));
         g2.fillRoundRect(x, y, gp.tileSize*5, gp.tileSize*4, 20, 20);
 
         x += gp.tileSize*5 + gp.tileSize;
-        g2.setColor(new Color(0,0,0));
+        g2.setColor(new Color(0,0,0, 200));
         g2.fillRoundRect(x, y, gp.tileSize*11, gp.tileSize*4, 20, 20);
 
         if(!isAttacking){

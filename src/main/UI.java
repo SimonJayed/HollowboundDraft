@@ -9,6 +9,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class UI {
 
@@ -300,6 +301,15 @@ public class UI {
     }
 
     public void drawDialogueScreen() {
+        BufferedImage battlePortrait = null;
+        try{
+            battlePortrait = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/sprites/sylvie/portrait.png")));
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+
+        g2.drawImage(battlePortrait, 0, 0,gp.screenWidth, gp.screenHeight, null);
+
         int width = gp.screenWidth - (gp.tileSize * 2);
         int height = gp.tileSize * 4;
         int x = gp.tileSize;

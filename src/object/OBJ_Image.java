@@ -8,11 +8,11 @@ public class OBJ_Image extends Entity {
     public OBJ_Image(GamePanel gp){
         super(gp);
 
-        setName("Heart");
-        image1 = setup("/background/background_nature", gp.screenWidth, gp.screenHeight);
+        setName("Background");
+        image1 = setup("/background/nightmareScene1", gp.screenWidth, gp.screenHeight);
         image2 = setup("/background/tempBackground", gp.screenWidth, gp.screenHeight);
-        image3 = setup("/objects/heart_full", gp.screenWidth, gp.screenHeight);
-        image4 = setup("/graphics/ui", gp.screenWidth, gp.screenHeight);
+        image3 = setup("/background/veyraScene", gp.screenWidth, gp.screenHeight);
+        image4 = setup("/background/catCaveScene1", gp.screenWidth, gp.screenHeight);
 
     }
 }

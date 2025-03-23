@@ -43,11 +43,11 @@ public class KeyHandler implements KeyListener {
                 gp.sound.setVolume(-20.0f);
             }
             if (code == KeyEvent.VK_ENTER || code == KeyEvent.VK_SPACE) {
-                if (gp.ui.commandNum == 0 && gp.gameState == gp.titleState) {
+                if (gp.ui.commandNum == 0) {
                     gp.aSetter.setPlayer(0);
                     gp.gameState = gp.playState;
                     System.out.println(gp.gameState);
-                    gp.playMusic(2);
+//                    gp.playMusic(2);
                     gp.sound.setVolume(-25.0f);
                 }
                 if (gp.ui.commandNum == 1) {
