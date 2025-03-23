@@ -20,7 +20,7 @@ public abstract class Entity {
     public double attack = 2;
     public double defense = 1;
     public double exp = 1;
-    public double nextLevelExp = level*2;
+    public double nextLevelExp;
 
     public double initialHP;
     public double initialEnergy;
@@ -83,12 +83,10 @@ public abstract class Entity {
     }
 
     public String getName() {return name;}
-
     public void setName(String name) {this.name =  name;}
 
     public void setDefaultValues(int level, double initialHP, double initialEnergy, double speed, double vit, double pow, double mag, double agi, double luck){
         this.level = level;
-        int tempLevel = level;
         this.initialHP = initialHP;
         this.initialEnergy = initialEnergy;
         this.speed = speed;
@@ -100,14 +98,18 @@ public abstract class Entity {
         this.agi = agi;
         this.luck = luck;
 
-        nextLevelExp = 10 * Math.pow(level, 1.2);
+        nextLevelExp = 10 * Math.pow(level, 3);
+        setLevel(level);
+        calculateStats();
+    }
+    public void setLevel(int level){
+        this.level = level;
+        int tempLevel = level;
         while(tempLevel > 0){
             setStatIncrements();
             System.out.println(getName() + " stats going up");
             tempLevel--;
         }
-        calculateStats();
-
     }
     public void calculateStats(){
         this.maxHP = initialHP + (15 * level) + (vit * 2);
@@ -119,7 +121,6 @@ public abstract class Entity {
         this.attack = pow * 3;
         this.defense = vit * 1.5;
     }
-
     public void setStatIncrements(){
         this.vit += 1;
         this.pow += 1;
@@ -132,7 +133,7 @@ public abstract class Entity {
             level++;
             setStatIncrements();
             calculateStats();
-            nextLevelExp = 10 * Math.pow(level, 1.2);
+            nextLevelExp = 10 * Math.pow(level, 3);
             gp.ui.addMessage(name + " has leveled up! (Lvl " + level + ")");
         }
     }
@@ -193,9 +194,7 @@ public abstract class Entity {
             }
         }
     }
-
     public void setAction(){}
-
     public void regen(){
         buffer++;
         if(buffer >= 250 && energy < maxEnergy && !isRunning){
@@ -261,7 +260,6 @@ public abstract class Entity {
             }
         }
     }
-
     public void checkDefeated(){
         if(isDefeated && hollowCounter < 5){
             buffer++;

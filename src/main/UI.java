@@ -108,19 +108,26 @@ public class UI {
 //        g2.setColor(new Color(255, 255, 255));
 //        g2.fillRect(x+gp.screenWidth-5, y, 5, gp.screenHeight);
 
-        String text = gp.player.getName();
+        String text = gp.player.getName() + "    Lvl. " + gp.player.level;
         g2.setColor(new Color(255, 255, 255));
-        g2.fillRoundRect(x-3, y, text.length()*(gp.tileSize/2)-35, 5, 5, 5);
+        g2.fillRoundRect(x-3, y, text.length()*(gp.tileSize/3)-35, 5, 5, 5);
         g2.setColor(new Color(255, 255, 255));
-        g2.fillRoundRect(x-2, y+5, text.length()*(gp.tileSize/2)-30, 5, 5, 5);
+        g2.fillRoundRect(x-2, y+5, text.length()*(gp.tileSize/3)-30, 5, 5, 5);
         g2.setColor(new Color(255, 255, 255));
-        g2.fillRoundRect(x-1, y+10, text.length()*(gp.tileSize/2)-25, 5,5, 5);
+        g2.fillRoundRect(x-1, y+10, text.length()*(gp.tileSize/3)-25, 5,5, 5);
         g2.setColor(new Color(255, 255, 255));
-        g2.fillRoundRect(x, y+15, text.length()*(gp.tileSize/2)-20, 5,5, 5);
+        g2.fillRoundRect(x, y+15, text.length()*(gp.tileSize/3)-20, 5,5, 5);
 
         g2.setFont(g2.getFont().deriveFont( 14f));
         g2.setColor(new Color(0, 0, 0));
         g2.drawString(text, x+10, y+15);
+
+        g2.setFont(g2.getFont().deriveFont( 15f));
+        g2.setColor(new Color(0, 0, 0));
+        g2.drawString(Integer.toString(gp.player.hollowCounter), x+gp.tileSize*3+1, y+16);
+        g2.setColor(new Color(255, 0, 0));
+        g2.drawString(Integer.toString(gp.player.hollowCounter), x+gp.tileSize*3, y+15);
+
 
         y += gp.tileSize/3+2;
 
@@ -166,10 +173,11 @@ public class UI {
         g2.fillRect(x, y+3, (int) expBarValue, 14);
 
         text = gp.df.format(gp.player.exp) + "/" + gp.df.format(gp.player.nextLevelExp);
+        String text2 = " (" + gp.df.format(gp.player.exp/gp.player.nextLevelExp*100) + "%)";
         x = getXforCenteredText(g2, text);
         g2.setFont(g2.getFont().deriveFont( 14f));
         g2.setColor(new Color(0, 0, 0));
-        g2.drawString(text, x, y+15);
+        g2.drawString(text + text2, x, y+15);
     }
 
     public void drawMessage(){

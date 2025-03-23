@@ -54,24 +54,22 @@ public class AssetSetter {
         gp.livingEntity[0][i] = new NPC_OldMan(gp);
         gp.livingEntity[0][i].worldX = 11 * gp.tileSize;
         gp.livingEntity[0][i].worldY = 31 * gp.tileSize;
-        gp.livingEntity[0][i].hasEvent = true;
-        gp.livingEntity[0][i].level = 100;
-        System.out.println(gp.livingEntity[0][i].getName() +" has event in Map " + gp.currentMap);
+        gp.livingEntity[0][i].setLevel(100);
         i++;
         gp.livingEntity[0][i] = new NPC_Sylvie(gp);
         gp.livingEntity[0][i].worldX = 11 * gp.tileSize;
         gp.livingEntity[0][i].worldY = 32 * gp.tileSize;
-        gp.livingEntity[0][i].level = 5;
+        gp.livingEntity[0][i].setLevel(5);
         i++;
         gp.livingEntity[0][i] = new NPC_Fort(gp);
         gp.livingEntity[0][i].worldX = 11 * gp.tileSize;
         gp.livingEntity[0][i].worldY = 30  * gp.tileSize;
-        gp.livingEntity[0][i].level = 10;
+        gp.livingEntity[0][i].setLevel(10);
         i++;
         gp.livingEntity[0][i] = new NPC_Amaryllis(gp);
         gp.livingEntity[0][i].worldX = 8 * gp.tileSize;
         gp.livingEntity[0][i].worldY = 15  * gp.tileSize;
-        gp.livingEntity[0][i].level = 50;
+        gp.livingEntity[0][i].setLevel(50);
         i++;
 
 
@@ -80,7 +78,7 @@ public class AssetSetter {
         gp.livingEntity[1][i].worldX = 19 * gp.tileSize;
         gp.livingEntity[1][i].worldY = 45 * gp.tileSize - gp.livingEntity[1][i].solidArea.y;
         gp.livingEntity[1][i].hasEvent = true;
-        gp.livingEntity[1][i].level = 10;
+        gp.livingEntity[1][i].setLevel(10);
         System.out.println(gp.livingEntity[1][i].getName() +" has event in Map " + gp.currentMap);
     }
 }

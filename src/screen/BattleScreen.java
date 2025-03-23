@@ -11,7 +11,6 @@ public class BattleScreen implements Screen{
     public Entity currentEnemy;
     public int commandNum = 0;
 
-    public int hitChance;
     public boolean isAttacking = false;
     public boolean canEscape = true;
 
@@ -297,11 +296,11 @@ public class BattleScreen implements Screen{
         double expGain = currentEnemy.nextLevelExp;
 
         if (levelDifference < -10) {
-            expGain *=  Math.abs(levelDifference) / 2;
+            expGain *= Math.abs(levelDifference) / 2;
         } else if (levelDifference < -5) {
             expGain *= 2;
         } else if (levelDifference > 10) {
-            expGain *= 0.5;
+            expGain /= (levelDifference / 2);
         } else if (levelDifference > 5) {
             expGain *= 0.75;
         } else {
@@ -321,11 +320,11 @@ public class BattleScreen implements Screen{
         double expGain = gp.player.nextLevelExp;
 
         if (levelDifference > 10) {
-            expGain *= 0.5;
+            expGain *= Math.abs(levelDifference) / 2;;
         } else if (levelDifference > 5) {
             expGain *= 0.75;
         } else if (levelDifference < -10) {
-            expGain *=  Math.abs(levelDifference) / 2;
+            expGain /= (levelDifference / 2);
         } else if (levelDifference < -5) {
             expGain *= 2;
         } else {

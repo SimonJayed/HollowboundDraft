@@ -187,6 +187,23 @@ public class KeyHandler implements KeyListener {
             }
         }
         else if (gp.gameState == gp.inventoryState) {
+//            gp.inventoryState.commandNum = 0;
+//            if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
+//                gp.inventoryState.commandNum--;
+//                if (gp.inventoryState.commandNum < 0) {
+//                    gp.inventoryState.commandNum = 2;
+//                }
+//                gp.playSoundEffect(3);
+//                gp.sound.setVolume(-20.0f);
+//            }
+//            if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
+//                gp.inventoryState.commandNum++;
+//                if (gp.inventoryState.commandNum > 2) {
+//                    gp.inventoryState.commandNum = 0;
+//                }
+//                gp.playSoundEffect(3);
+//                gp.sound.setVolume(-20.0f);
+//            }
             if (code == KeyEvent.VK_I || code == KeyEvent.VK_ESCAPE) {
                 gp.gameState = gp.playState;
                 System.out.println("Inventory closed");

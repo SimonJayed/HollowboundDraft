@@ -52,9 +52,9 @@ public class EventHandler{
         if (distance > gp.tileSize){
             canTouchEvent = true;
         }
-        //MAP 1 EVENTS
+        //MAP 0 EVENTS
         if (canTouchEvent && gp.currentMap == 0){
-            //GOING TO MAP 2
+            //GOING TO MAP 1
             if (hit(0,48, 42, "right")){
                 teleport(gp.playState, 2, 45, "right");
             }
@@ -75,14 +75,10 @@ public class EventHandler{
                 damagePit(gp.dialogueState);
             }
             //ENCOUNTERS
-
-            if(hit(0,11,35,"any")){
-                opponentEncounter(gp.livingEntity[gp.currentMap], 0, 11, 35);
-            }
         }
-        //MAP 2 EVENTS
+        //MAP 1 EVENTS
         if (canTouchEvent && gp.currentMap == 1){
-            //GOING BACK TO MAP 1
+            //GOING BACK TO MAP 0
             if (hit(0,1, 45, "left")){
                 teleport(gp.playState, 48, 42, "left");
             }
@@ -96,24 +92,56 @@ public class EventHandler{
                 teleport(gp.playState, 48, 46, "left");
             }
 
-            //GOING TO MAP 3
+            //GOING TO MAP 2
             if (hit(0,48, 45, "right")){
-                teleport(gp.playState, 2, 1, "right");
+                teleport(gp.playState, 2, 41, "right");
             }
             if (hit(0,48, 46, "right")){
-                teleport(gp.playState, 2, 3, "right");
+                teleport(gp.playState, 2, 42, "right");
             }
             if (hit(0,48, 47, "right")){
-                teleport(gp.playState, 2, 4, "right");
+                teleport(gp.playState, 2, 43, "right");
             }
             if (hit(0,48, 48, "right")){
-                teleport(gp.playState, 2, 5, "right");
+                teleport(gp.playState, 2, 44, "right");
             }
 
             //ENCOUNTERS
             if(hit(1,19,46, "any")){
                 opponentEncounter(gp.livingEntity[gp.currentMap], 4, 19, 46);
             }
+        }
+        //MAP 2 EVENTS
+        if (canTouchEvent && gp.currentMap == 2){
+            //GOING BACK TO MAP 2
+            if (hit(0,1, 41, "left")){
+                teleport(gp.playState, 48, 45, "left");
+            }
+            if (hit(0,1, 42, "left")){
+                teleport(gp.playState, 48, 46, "left");
+            }
+            if (hit(0,1, 43, "left")){
+                teleport(gp.playState, 48, 47, "left");
+            }
+            if (hit(0,1, 44, "left")){
+                teleport(gp.playState, 48, 48, "left");
+            }
+
+            //GOING TO MAP 4
+            if (hit(0,48, 38, "right")){
+                teleport(gp.playState, 2, 41, "right");
+            }
+            if (hit(0,48, 39, "right")){
+                teleport(gp.playState, 2, 42, "right");
+            }
+            if (hit(0,48, 40, "right")){
+                teleport(gp.playState, 2, 43, "right");
+            }
+            if (hit(0,48, 41, "right")){
+                teleport(gp.playState, 2, 44, "right");
+            }
+
+            //ENCOUNTERS
         }
     }
 
@@ -155,7 +183,16 @@ public class EventHandler{
                 if(reqDirection.equals("left")){
                     gp.currentMap = 0;
                 }if(reqDirection.equals("right")){
-                    gp.currentMap = 0;
+                    gp.currentMap = 2;
+                    System.out.println("Next Map");
+                }
+                break;
+            }
+            case 2:{
+                if(reqDirection.equals("left")){
+                    gp.currentMap = 1;
+                }if(reqDirection.equals("right")){
+                    gp.currentMap = 2;
                     System.out.println("Next Map");
                 }
                 break;

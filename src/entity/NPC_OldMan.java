@@ -27,7 +27,7 @@ public class NPC_OldMan extends Entity implements QuestGiver {
 
     public void setStatIncrements(){
         this.vit += 3;
-        this.pow += 1;
+        this.pow += 3;
         this.mag += 3;
         this.agi += 3;
     }

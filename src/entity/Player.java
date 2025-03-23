@@ -45,7 +45,6 @@ public class Player extends Entity{
         buffer = 0;
     }
 
-
     public void setDefaultValues(){
         worldX = gp.tileSize * 18;
         worldY = gp.tileSize * 47;
@@ -182,6 +181,11 @@ public class Player extends Entity{
                 System.out.println(getName() + " died " + hollowCounter + " times");
             }
         }
+    }
+
+    public void checkLevelUp(){
+        super.checkLevelUp();
+        StatPoints += 5;
     }
 
     public void interactEntity(int i){
