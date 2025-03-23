@@ -21,7 +21,7 @@ public class Player extends Entity{
 
     public String playing = "";
 
-    public int StatPoints = 0;
+    public int statPoints = 0;
 
     public Player(GamePanel gp, KeyHandler keyH, MouseHandler mouseH){
         super(gp);
@@ -50,6 +50,7 @@ public class Player extends Entity{
         worldY = gp.tileSize * 47;
         direction = "down";
 
+        statPoints = 1;
         switch(playing){
             case "fort":{
                 setName("Fort");
@@ -72,6 +73,15 @@ public class Player extends Entity{
         }
     }
 
+    public void calculateStats(){
+        this.maxHP = initialHP + (15 * level) + (vit * 2);
+        this.maxEnergy = initialEnergy + (15 * level) + (mag * 2);
+        this.energyRegen = maxEnergy * 0.1 + (mag / 100);
+
+        this.attack = pow * 3;
+        this.defense = vit * 1.5;
+    }
+
 
     public void update() {
         if (!keyH.upPressed && !keyH.downPressed && !keyH.rightPressed && !keyH.leftPressed){
@@ -81,6 +91,7 @@ public class Player extends Entity{
         regen();
         checkDefeated();
         checkLevelUp();
+        calculateStats();
         if (keyH.qPressed) {
             System.out.println("Q is pressed...");
         }
@@ -163,11 +174,12 @@ public class Player extends Entity{
         if(isDefeated && hollowCounter < 5){
             buffer++;
             isIdling = true;
-            if(buffer > 100 && !hasEvent){
+            if(buffer > 150 && !hasEvent){
                 isDefeated = false;
                 hp = maxHP;
                 energy = maxEnergy;
                 buffer = 0;
+                exp = nextLevelExp;
                 int num = 0;
                 while(num <= hollowCounter){
                     setStatIncrements();
@@ -184,8 +196,16 @@ public class Player extends Entity{
     }
 
     public void checkLevelUp(){
-        super.checkLevelUp();
-        StatPoints += 5;
+        while (exp >= nextLevelExp) {
+            level++;
+            statPoints += 5;
+            setStatIncrements();
+            calculateStats();
+            nextLevelExp = 10 * Math.pow(level, 3);
+            hp = maxHP;
+            energy = maxEnergy;
+            gp.ui.addMessage(getName() + " has leveled up! (Lvl " + level + ")");
+        }
     }
 
     public void interactEntity(int i){
@@ -197,13 +217,14 @@ public class Player extends Entity{
                 }
                 else{
                     gp.battleScreen.currentEnemy = gp.livingEntity[gp.currentMap][i];
+                    gp.battleScreen.canEscape = true;
                     gp.gameState = gp.battleState;
                 }
             }
-            if(keyH.qPressed){
-                gp.gameState = gp.inventoryState;
-                gp.ui.drawInventoryScreen(gp.livingEntity[gp.currentMap][i]);
-            }
+//            if(keyH.qPressed){
+//                gp.gameState = gp.inventoryState;
+//                gp.ui.drawInventoryScreen(gp.livingEntity[gp.currentMap][i]);
+//            }
         }
 
     }

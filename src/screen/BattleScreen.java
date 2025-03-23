@@ -232,7 +232,6 @@ public class BattleScreen implements Screen{
         }
 
         if (hitRoll <= hitChance) {
-            gp.ui.addMessage(gp.player.getName() + " ATTACKS!");
             int damage = (int) ((gp.player.attack - currentEnemy.defense) * damageMultiplier);
             damage = Math.max(damage, 1);
             currentEnemy.hp -= damage;
@@ -274,7 +273,6 @@ public class BattleScreen implements Screen{
         }
 
         if (hitRoll <= hitChance) {
-            gp.ui.addMessage(currentEnemy.getName() + " ATTACKS!");
             int damage = (int) ((currentEnemy.attack - gp.player.defense) * damageMultiplier);
             damage = Math.max(damage, 1);
             gp.player.hp -= damage;
@@ -293,19 +291,19 @@ public class BattleScreen implements Screen{
 
     public void endBattle(){
         double levelDifference = gp.player.level-currentEnemy.level;
-        double expGain = currentEnemy.nextLevelExp;
+        double expGain = currentEnemy.nextLevelExp/2;
 
-        if (levelDifference < -10) {
-            expGain *= Math.abs(levelDifference) / 2;
-        } else if (levelDifference < -5) {
-            expGain *= 2;
-        } else if (levelDifference > 10) {
-            expGain /= (levelDifference / 2);
-        } else if (levelDifference > 5) {
-            expGain *= 0.75;
-        } else {
-            expGain *= 1.25;
-        }
+//        if (levelDifference < -10) {
+//            expGain *= Math.abs(levelDifference) / 2;
+//        } else if (levelDifference < -5) {
+//            expGain *= 2;
+//        } else if (levelDifference > 10) {
+//            expGain /= (levelDifference / 2);
+//        } else if (levelDifference > 5) {
+//            expGain *= 0.75;
+//        } else {
+//            expGain *= 1.25;
+//        }
 
         gp.player.exp += expGain;
         currentEnemy.isDefeated = true;
@@ -317,19 +315,19 @@ public class BattleScreen implements Screen{
 
     public void enemyEndBattle(){
         double levelDifference = gp.player.level-currentEnemy.level;
-        double expGain = gp.player.nextLevelExp;
+        double expGain = gp.player.nextLevelExp/3;
 
-        if (levelDifference > 10) {
-            expGain *= Math.abs(levelDifference) / 2;;
-        } else if (levelDifference > 5) {
-            expGain *= 0.75;
-        } else if (levelDifference < -10) {
-            expGain /= (levelDifference / 2);
-        } else if (levelDifference < -5) {
-            expGain *= 2;
-        } else {
-            expGain *= 1.25;
-        }
+//        if (levelDifference > 10) {
+//            expGain *= Math.abs(levelDifference) / 2;;
+//        } else if (levelDifference > 5) {
+//            expGain *= 0.75;
+//        } else if (levelDifference < -10) {
+//            expGain /= (levelDifference / 2);
+//        } else if (levelDifference < -5) {
+//            expGain *= 2;
+//        } else {
+//            expGain *= 1.25;
+//        }
 
         currentEnemy.exp += expGain;
 

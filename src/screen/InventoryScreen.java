@@ -71,5 +71,78 @@ public class InventoryScreen implements Screen{
         g2.drawString("AGILITY: " + gp.df.format(gp.player.agi), x, y);
         y += gp.tileSize/2;
         g2.drawString("LUCK: " + gp.df.format(gp.player.luck), x, y);
+        if(gp.player.statPoints > 0){
+            addStatPoints(g2, (gp.tileSize/2) + gp.screenWidth/2, gp.screenHeight/2+(gp.tileSize/2*4));
+        }
+    }
+
+    public void addStatPoints(Graphics2D g2, int x, int y){
+
+        g2.drawOval(x+gp.tileSize*3, y-10, 8, 8);
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 12f));
+        g2.setColor(new Color(0,0,0, 150));
+        g2.drawString("+", x+gp.tileSize*3, y);
+        g2.setColor(new Color(255,255,255));
+        if(commandNum == 0){
+            g2.setColor(new Color(255, 0, 0, 255));
+            g2.drawOval(x+gp.tileSize*3, y-10, 8, 8);
+            g2.setFont(g2.getFont().deriveFont(Font.BOLD, 12f));
+            g2.setColor(new Color(0,0,0, 150));
+            g2.drawString("+", x+gp.tileSize*3, y);
+            g2.setColor(new Color(255,255,255));
+        }
+        y += gp.tileSize/2;
+        g2.drawOval(x+gp.tileSize*3, y-10, 8, 8);
+        g2.setColor(new Color(0,0,0, 150));
+        g2.drawString("+", x+gp.tileSize*3, y);
+        g2.setColor(new Color(255,255,255));
+        if(commandNum == 1){
+            g2.setColor(new Color(255, 0, 0, 255));
+            g2.drawOval(x+gp.tileSize*3, y-10, 8, 8);
+            g2.setFont(g2.getFont().deriveFont(Font.BOLD, 12f));
+            g2.setColor(new Color(0,0,0, 150));
+            g2.drawString("+", x+gp.tileSize*3, y);
+            g2.setColor(new Color(255,255,255));
+        }
+        y += gp.tileSize/2;
+        g2.drawOval(x+gp.tileSize*3, y-10, 8, 8);
+        g2.setColor(new Color(0,0,0, 150));
+        g2.drawString("+", x+gp.tileSize*3, y);
+        g2.setColor(new Color(255,255,255));
+        if(commandNum == 2){
+            g2.setColor(new Color(255, 0, 0, 255));
+            g2.drawOval(x+gp.tileSize*3, y-10, 8, 8);
+            g2.setFont(g2.getFont().deriveFont(Font.BOLD, 12f));
+            g2.setColor(new Color(0,0,0, 150));
+            g2.drawString("+", x+gp.tileSize*3, y);
+            g2.setColor(new Color(255,255,255));
+        }
+        y += gp.tileSize/2;
+        g2.drawOval(x+gp.tileSize*3, y-10, 8, 8);
+        g2.setColor(new Color(0,0,0, 150));
+        g2.drawString("+", x+gp.tileSize*3, y);
+        g2.setColor(new Color(255,255,255));
+        if(commandNum == 3){
+            g2.setColor(new Color(255, 0, 0, 255));
+            g2.drawOval(x+gp.tileSize*3, y-10, 8, 8);
+            g2.setFont(g2.getFont().deriveFont(Font.BOLD, 12f));
+            g2.setColor(new Color(0,0,0, 150));
+            g2.drawString("+", x+gp.tileSize*3, y);
+            g2.setColor(new Color(255,255,255));
+        }
+        y += gp.tileSize/2;
+        g2.drawOval(x+gp.tileSize*3, y-10, 8, 8);
+        g2.setColor(new Color(0,0,0, 150));
+        g2.drawString("+", x+gp.tileSize*3, y);
+        g2.setColor(new Color(255,255,255));
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 14f));
+        if(commandNum == 4){
+            g2.setColor(new Color(255, 0, 0, 255));
+            g2.drawOval(x+gp.tileSize*3, y-10, 8, 8);
+            g2.setFont(g2.getFont().deriveFont(Font.BOLD, 12f));
+            g2.setColor(new Color(0,0,0, 150));
+            g2.drawString("+", x+gp.tileSize*3, y);
+            g2.setColor(new Color(255,255,255));
+        }
     }
 }

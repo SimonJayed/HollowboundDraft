@@ -15,6 +15,7 @@ public abstract class Entity {
     public int level = 1;
     private String name;
     public int worldX, worldY;
+    public int spawnPointX, spawnPointY;
     public double speed = 1;
     public double tempSpeed = 0;
     public double attack = 2;
@@ -98,9 +99,11 @@ public abstract class Entity {
         this.agi = agi;
         this.luck = luck;
 
-        nextLevelExp = 10 * Math.pow(level, 3);
+        nextLevelExp = 10 * Math.pow(level, 2);
         setLevel(level);
         calculateStats();
+        this.hp = maxHP;
+        this.energy = maxEnergy;
     }
     public void setLevel(int level){
         this.level = level;
@@ -120,6 +123,7 @@ public abstract class Entity {
 
         this.attack = pow * 3;
         this.defense = vit * 1.5;
+        nextLevelExp = 10 * Math.pow(level, 2);
     }
     public void setStatIncrements(){
         this.vit += 1;
@@ -133,7 +137,7 @@ public abstract class Entity {
             level++;
             setStatIncrements();
             calculateStats();
-            nextLevelExp = 10 * Math.pow(level, 3);
+            nextLevelExp = 10 * Math.pow(level, 2);
             gp.ui.addMessage(name + " has leveled up! (Lvl " + level + ")");
         }
     }
@@ -268,8 +272,9 @@ public abstract class Entity {
                 isDefeated = false;
                 hp = maxHP;
                 energy = maxEnergy;
+                exp = nextLevelExp;
                 int num = 0;
-                while(num <= hollowCounter){
+                while(num < hollowCounter){
                     setStatIncrements();
                     calculateStats();
                     num++;

@@ -43,7 +43,7 @@ public class KeyHandler implements KeyListener {
                 gp.sound.setVolume(-20.0f);
             }
             if (code == KeyEvent.VK_ENTER || code == KeyEvent.VK_SPACE) {
-                if (gp.ui.commandNum == 0) {
+                if (gp.ui.commandNum == 0 && gp.gameState == gp.titleState) {
                     gp.aSetter.setPlayer(0);
                     gp.gameState = gp.playState;
                     System.out.println(gp.gameState);
@@ -187,23 +187,43 @@ public class KeyHandler implements KeyListener {
             }
         }
         else if (gp.gameState == gp.inventoryState) {
-//            gp.inventoryState.commandNum = 0;
-//            if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
-//                gp.inventoryState.commandNum--;
-//                if (gp.inventoryState.commandNum < 0) {
-//                    gp.inventoryState.commandNum = 2;
-//                }
-//                gp.playSoundEffect(3);
-//                gp.sound.setVolume(-20.0f);
-//            }
-//            if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
-//                gp.inventoryState.commandNum++;
-//                if (gp.inventoryState.commandNum > 2) {
-//                    gp.inventoryState.commandNum = 0;
-//                }
-//                gp.playSoundEffect(3);
-//                gp.sound.setVolume(-20.0f);
-//            }
+            if(gp.player.statPoints > 0){
+                if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
+                    gp.inventoryScreen.commandNum--;
+                    if (gp.inventoryScreen.commandNum < 0) {
+                        gp.inventoryScreen.commandNum = 4;
+                    }
+                    gp.playSoundEffect(3);
+                    gp.sound.setVolume(-20.0f);
+                }
+                if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
+                    gp.inventoryScreen.commandNum++;
+                    if (gp.inventoryScreen.commandNum > 4) {
+                        gp.inventoryScreen.commandNum = 0;
+                    }
+                    gp.playSoundEffect(3);
+                    gp.sound.setVolume(-20.0f);
+                }
+                if(code == KeyEvent.VK_ENTER || code == KeyEvent.VK_SPACE){
+                    if(gp.inventoryScreen.commandNum == 0){
+                        gp.player.vit++;
+                    }
+                    if(gp.inventoryScreen.commandNum == 1){
+                        gp.player.pow++;
+                    }
+                    if(gp.inventoryScreen.commandNum == 2){
+                        gp.player.mag++;
+                    }
+                    if(gp.inventoryScreen.commandNum == 3){
+                        gp.player.agi++;
+                    }
+                    if(gp.inventoryScreen.commandNum == 4){
+                        gp.player.luck++;
+                    }
+                    gp.player.statPoints--;
+                }
+            }
+
             if (code == KeyEvent.VK_I || code == KeyEvent.VK_ESCAPE) {
                 gp.gameState = gp.playState;
                 System.out.println("Inventory closed");
