@@ -15,13 +15,15 @@ public abstract class Entity {
     public int level = 1;
     private String name;
     public int worldX, worldY;
-    public int spawnPointX, spawnPointY;
+    public int spawnPointX = worldX;
+    public int spawnPointY = worldY;
     public double speed = 1;
     public double tempSpeed = 0;
     public double attack = 2;
     public double defense = 1;
     public double exp = 1;
     public double nextLevelExp;
+    public int sizeIncrement = 0;
 
     public double initialHP;
     public double initialEnergy;
@@ -47,13 +49,11 @@ public abstract class Entity {
     public BufferedImage portrait;
 
     public Rectangle solidArea = new Rectangle(0, 0, 48, 48);
-    public Rectangle attackArea = new Rectangle(0, 0, 48, 48);
     public String direction = "down";
     public int spriteCounter = 0;
     public int spriteNum = 2;
     public int solidAreaDefaultX, solidAreaDefaultY;
     public int type;
-
 
     public String dialogues[] = new String[20];
     int dialogueIndex = 0;
@@ -61,12 +61,11 @@ public abstract class Entity {
     public boolean collision = false;
     public boolean invincible = false;
     public boolean collisionOn = false;
-    public boolean isAttacking = false;
     public boolean isIdling = true;
     public boolean isRunning = false;
     public boolean isAlive = true;
-    public boolean isDying = false;
     public boolean isDefeated = false;
+    public boolean isUnconscious = false;
     public boolean hpBarOn = true;
     public boolean hasEvent = false;
 
@@ -105,14 +104,25 @@ public abstract class Entity {
         this.hp = maxHP;
         this.energy = maxEnergy;
     }
+    public void setEvent(String direction, int worldX, int worldY, double speed, int type, boolean isIdling){
+        hasEvent = true;
+        this.direction = direction;
+        this.worldX = worldX * gp.tileSize;
+        this.worldY = worldY * gp.tileSize;
+        this.speed = speed;
+        this.type = type;
+        this.isIdling = isIdling;
+    }
     public void setLevel(int level){
         this.level = level;
         int tempLevel = level;
         while(tempLevel > 0){
             setStatIncrements();
-            System.out.println(getName() + " stats going up");
             tempLevel--;
         }
+    }
+    public void setDialogue(){
+
     }
     public void calculateStats(){
         this.maxHP = initialHP + (15 * level) + (vit * 2);
@@ -167,12 +177,20 @@ public abstract class Entity {
     }
 
     public void speak(){
-        if (dialogues[dialogueIndex] == null){
-            dialogueIndex = 0;
+        if(gp.gameState == gp.eventState){
+            System.out.println("eventDialogue");
+            gp.event.dialogueOn = true;
+            gp.event.dialogueFinished = false;
         }
-        gp.ui.currentDialogue = dialogues[dialogueIndex];
-        dialogueIndex++;
-        gp.playSoundEffect(1);
+        if(dialogues != null && gp.gameState != gp.eventState){
+            gp.gameState = gp.dialogueState;
+            if (dialogues[dialogueIndex] == null){
+                dialogueIndex = 0;
+            }
+            gp.ui.currentDialogue = dialogues[dialogueIndex];
+            dialogueIndex++;
+            gp.playSoundEffect(1);
+        }
 
         if(!isDefeated){
             switch (gp.player.direction){
@@ -231,6 +249,11 @@ public abstract class Entity {
             if(type == 2){
                 gp.gameState = gp.battleState;
             }
+            else{
+                speak();
+                gp.gameState = gp.eventState;
+                gp.event.dialogueOn = true;
+            }
         }
 
         if (!collisionOn && isIdling == false) {
@@ -266,9 +289,9 @@ public abstract class Entity {
     }
     public void checkDefeated(){
         if(isDefeated && hollowCounter < 5){
-            buffer++;
+            this.buffer++;
             isIdling = true;
-            if(buffer > 1500 && !hasEvent){
+            if(this.buffer > 1500 && !hasEvent){
                 isDefeated = false;
                 hp = maxHP;
                 energy = maxEnergy;
@@ -280,7 +303,9 @@ public abstract class Entity {
                     num++;
                     System.out.println(getName() + " is being strengthened.");
                 }
-                buffer = 0;
+                this.buffer = 0;
+                this.worldX = this.spawnPointX;
+                this.worldY = this.spawnPointY;
                 System.out.println(getName() + " has respawned.");
                 System.out.println(getName() + " died " + hollowCounter + " times");
             }
@@ -323,42 +348,6 @@ public abstract class Entity {
 
     }
 
-    public void dyingAnimation(Graphics2D g2){
-
-        dyingCounter++;
-
-        int i = 120;
-
-        if (dyingCounter <= i){
-            changeAlpha(g2, 0f);
-        }
-        if (dyingCounter <= i){
-            changeAlpha(g2, 1f);
-        }
-        if (dyingCounter <= i*2){
-            changeAlpha(g2, 0f);
-        }
-        if (dyingCounter <= i*3){
-            changeAlpha(g2, 1f);
-        }
-        if (dyingCounter <= i*4){
-            changeAlpha(g2, 0f);
-        }
-        if (dyingCounter <= i*5){
-            changeAlpha(g2, 1f);
-        }
-        if (dyingCounter <= i*6){
-            changeAlpha(g2, 0f);
-        }
-        if (dyingCounter <= i*7){
-            changeAlpha(g2, 1f);
-        }
-        if (dyingCounter > i){
-            isDying = false;
-            isAlive = false;
-        }
-    }
-
     public void changeAlpha(Graphics2D g2, float alphaValue){
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alphaValue));
     }
@@ -369,7 +358,7 @@ public abstract class Entity {
 
         try{
             image1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream(imagePath + ".png")));
-            image1 = uTool.scaleImage(image1, width, height);
+            image1 = uTool.scaleImage(image1, width+sizeIncrement, height+sizeIncrement);
         } catch (IOException e){
             e.printStackTrace();
         }
@@ -388,7 +377,7 @@ public abstract class Entity {
                 worldY - gp.tileSize < gp.player.worldY + gp.player.screenY){
             switch (direction) {
                 case "up": {
-                    if(!isDefeated){
+                    if(!isDefeated && !isUnconscious){
                         if (spriteNum == 1){
                             image1 = up1;
                         }
@@ -407,7 +396,7 @@ public abstract class Entity {
                     break;
                 }
                 case "down": {
-                    if(!isDefeated){
+                    if(!isDefeated && !isUnconscious){
                         if (spriteNum == 1){
                             image1 = down1;
                         }
@@ -426,7 +415,7 @@ public abstract class Entity {
                     break;
                 }
                 case "left": {
-                    if(!isDefeated){
+                    if(!isDefeated && !isUnconscious){
                         if (spriteNum == 1){
                             image1 = left1;
                         }
@@ -445,7 +434,7 @@ public abstract class Entity {
                     break;
                 }
                 case "right": {
-                    if(!isDefeated){
+                    if(!isDefeated && !isUnconscious){
                         if (spriteNum == 1){
                             image1 = right1;
                         }
@@ -472,11 +461,8 @@ public abstract class Entity {
             hpBarCounter = 0;
             changeAlpha(g2, 0.4f);
         }
-        if (isDying){
-            dyingAnimation(g2);
-        }
 
-        g2.drawImage(image1, screenX, screenY, gp.tileSize, gp.tileSize,  null);
+        g2.drawImage(image1, screenX, screenY, null);
 
         changeAlpha(g2,1f);
     }

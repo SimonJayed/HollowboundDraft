@@ -21,7 +21,7 @@ public class NPC_OldMan extends Entity implements QuestGiver {
         this.solidArea.height = 32;
 
         getImage("lars");
-        setDialogue();
+//        setDialogue();
         setDefaultValues(1, 500, 700,2, 15, 5, 15, 10,  5);
     }
 
@@ -59,9 +59,9 @@ public class NPC_OldMan extends Entity implements QuestGiver {
     }
 
     public void setDialogue(){
-        dialogues[0] = "You think it favors you? Ha... \nIt only watches.";
-        dialogues[1] = "I had everything once... Then \nit yawned.";
-        dialogues[2] = "Don't bore it... Or do. Maybe it'll \nbe kinder to you.";
+//        gp.event.dialogues[0] = "You think it favors you? Ha... \nIt only watches.";
+//        gp.event.dialogues[1] = "I had everything once... Then \nit yawned.";
+//        gp.event.dialogues[2] = "Don't bore it... Or do. Maybe it'll \nbe kinder to you.";
     }
 
     @Override

@@ -16,9 +16,7 @@ public class UI {
     GamePanel gp;
     Graphics2D g2;
 
-
-    BufferedImage portrait;
-    BufferedImage titleBackground, battleBackground;
+    BufferedImage titleBackground;
 
     public boolean messageOn = false;
     ArrayList <String> message = new ArrayList<>();
@@ -30,6 +28,11 @@ public class UI {
     public int commandNum = 0;
 
     public boolean toggleTime = true;
+
+    public int fadeAlpha = 0;
+    public boolean fading = false;
+    public boolean fadeIn = false;
+    public boolean fadeOut = false;
 
     double playTime;
     DecimalFormat dFormat = new DecimalFormat("#0.00");
@@ -59,6 +62,7 @@ public class UI {
         }
         if (gp.gameState == gp.playState) {
             drawPlayerLife();
+            gp.map.miniMapOn = true;
             playTime += (double) 1 / 60;
             drawMessage();
         }
@@ -66,6 +70,7 @@ public class UI {
             drawTitleScreen();
         }
         else if(gp.gameState == gp.inventoryState){
+            gp.map.miniMapOn = true;
             drawPlayerLife();
             gp.inventoryScreen.draw(g2);
         }
@@ -92,8 +97,9 @@ public class UI {
             gp.map.drawFullMapScreen(g2);
         }
         else if(gp.gameState == gp.eventState){
-            drawPlayerLife();
+            gp.map.miniMapOn = false;
         }
+        fadeToBlack(g2);
     }
 
 
@@ -101,13 +107,6 @@ public class UI {
 
         int x = 0;
         int y = 0;
-
-//        g2.setColor(new Color(255, 255, 255));
-//        g2.fillRect(x, y, gp.screenWidth, 5);
-//        g2.setColor(new Color(255, 255, 255));
-//        g2.fillRect(x, y, 5, gp.screenHeight);
-//        g2.setColor(new Color(255, 255, 255));
-//        g2.fillRect(x+gp.screenWidth-5, y, 5, gp.screenHeight);
 
         String text = gp.player.getName() + "    Lvl. " + gp.player.level;
         g2.setColor(new Color(255, 255, 255));
@@ -301,15 +300,6 @@ public class UI {
     }
 
     public void drawDialogueScreen() {
-        BufferedImage battlePortrait = null;
-        try{
-            battlePortrait = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/sprites/sylvie/portrait.png")));
-        }catch (IOException e){
-            e.printStackTrace();
-        }
-
-        g2.drawImage(battlePortrait, 0, 0,gp.screenWidth, gp.screenHeight, null);
-
         int width = gp.screenWidth - (gp.tileSize * 2);
         int height = gp.tileSize * 4;
         int x = gp.tileSize;
@@ -317,29 +307,64 @@ public class UI {
 
         drawSubWindow(x, y, width, height);
 
-        try {
-            portrait = ImageIO.read(getClass().getResourceAsStream("/sprites/fort/portrait.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        if (portrait != null) {
-            int imgX = gp.tileSize * 10;
-            int imgY = gp.tileSize * 4;
-            int imgHeight = gp.tileSize * 11;
-            int imgWidth = gp.tileSize * 8;
-            g2.drawImage(portrait, imgX, imgY, imgWidth, imgHeight, null);
-        }
-
         x += gp.tileSize;
         y += gp.tileSize;
 
         g2.setFont(g2.getFont().deriveFont(Font.BOLD, 18f));
         g2.setColor(Color.white);
-        for (String line : currentDialogue.split("\n")) {
-            g2.drawString(line, x, y);
-            y += 40;
+        if(currentDialogue != null){
+            for (String line : currentDialogue.split("\n")) {
+                g2.drawString(line, x, y);
+                y += 40;
+            }
         }
+        else{
+            currentDialogue = "...";
+            for (String line : currentDialogue.split("\n")) {
+                g2.drawString(line, x, y);
+                y += 40;
+            }
+        }
+    }
+
+    public void startFadeOut() {
+        fading = true;
+        fadeOut = true;
+        fadeIn = false;
+        fadeAlpha = 0;
+    }
+
+    public void startFadeIn() {
+        fading = true;
+        fadeIn = true;
+        fadeOut = false;
+        fadeAlpha = 255;
+    }
+
+    public void fadeToBlack(Graphics2D g2) {
+        if (!fading) return;
+
+        if (fadeOut) {
+            fadeAlpha += 50;
+            if (fadeAlpha >= 255) {
+                fadeAlpha = 255;
+                fading = false;
+            }
+        } else if (fadeIn) {
+            fadeAlpha -= 10;
+            if (fadeAlpha <= 0) {
+                fadeAlpha = 0;
+                fading = false;
+            }
+        }
+
+        g2.setColor(new Color(0, 0, 0, fadeAlpha));
+        g2.fillRect(0, 0, gp.screenWidth, gp.screenHeight);
+    }
+
+    public int getXforCenteredText(Graphics2D g2, String text){
+        int length = (int)g2.getFontMetrics().getStringBounds(text, g2).getWidth();
+        return gp.screenWidth/2 - length/2;
     }
 
     public void drawSubWindow(int x, int y, int width, int height){
@@ -347,14 +372,8 @@ public class UI {
         g2.setColor(c);
         g2.fillRoundRect(x, y, width, height,20, 20);
 
-        c = new Color (255, 255, 255);
-        g2.setColor(c);
+        g2.setColor(new Color(255,255,255));
         g2.setStroke(new BasicStroke(5));
         g2.drawRoundRect(x, y, width, height, 20, 20);
-    }
-
-    public int getXforCenteredText(Graphics2D g2, String text){
-        int length = (int)g2.getFontMetrics().getStringBounds(text, g2).getWidth();
-        return gp.screenWidth/2 - length/2;
     }
 }

@@ -88,6 +88,7 @@ public class KeyHandler implements KeyListener {
                         if(gp.battleScreen.canEscape){
                             int num = gp.randomize(1, 8);
                             if(num == 8){
+                                gp.player.invincible = true;
                                 gp.gameState = gp.playState;
                             }
                             else {
@@ -182,8 +183,18 @@ public class KeyHandler implements KeyListener {
             }
         }
         else if (gp.gameState == gp.dialogueState) {
-            if (code == KeyEvent.VK_SPACE) {
+            if (code == KeyEvent.VK_ENTER || code == KeyEvent.VK_SPACE) {
                 gp.gameState = gp.playState;
+            }
+        }
+        else if(gp.gameState == gp.eventState){
+            if(gp.event.dialogueOn){
+                if(code == KeyEvent.VK_ENTER || code == KeyEvent.VK_SPACE){
+                    gp.event.nextDialogue();
+                    if(gp.event.dialogueFinished && gp.event.eventFinished){
+                        gp.event.eventExit();
+                    }
+                }
             }
         }
         else if (gp.gameState == gp.inventoryState) {

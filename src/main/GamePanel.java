@@ -6,6 +6,7 @@ import misc.AssetSetter;
 import misc.CollisionChecker;
 import misc.EventHandler;
 import screen.BattleScreen;
+import screen.EventScenes;
 import screen.InventoryScreen;
 import tile.Map;
 import tile.TileManager;
@@ -41,16 +42,16 @@ public class GamePanel extends JPanel implements Runnable {
 
     public TileManager tileM = new TileManager(this);
     public KeyHandler keyH = new KeyHandler(this);
-    public MouseHandler mouseH = new MouseHandler(this);
     public Sound sound = new Sound();
     public CollisionChecker cChecker = new CollisionChecker(this);
     public AssetSetter aSetter = new AssetSetter(this);
     public UI ui = new UI(this);
     public EventHandler eHandler = new EventHandler(this);
     public Map map = new Map(this);
+    public EventScenes event = new EventScenes(this);
     public Thread gameThread;
 
-    public Player player = new Player(this, keyH, mouseH);
+    public Player player = new Player(this, keyH);
     public Entity objectEntity[][] = new Entity[maxMap][10];
     public Entity livingEntity[][] = new Entity[maxMap][20];
     public ArrayList <Entity> entityList = new ArrayList<>();
@@ -58,8 +59,8 @@ public class GamePanel extends JPanel implements Runnable {
     public int gameState;
     public final int titleState = 0;
     public final int playState = 1;
-    public final int inventoryState = 2;
-    public final int dialogueState = 3;
+    public final int dialogueState = 2;
+    public final int inventoryState = 3;
     public final int newGameState = 4;
     public final int loadGameState = 5;
     public final int settingsState = 6;
@@ -80,7 +81,6 @@ public class GamePanel extends JPanel implements Runnable {
         this.setBackground(Color.black);
         this.setDoubleBuffered(true);
         this.addKeyListener(keyH);
-        this.addMouseListener(mouseH);
         this.setFocusable(true);
     }
 
@@ -118,12 +118,6 @@ public class GamePanel extends JPanel implements Runnable {
                     delta-=1;
                     drawCount++;
                 } catch (ArrayIndexOutOfBoundsException e){
-                    failCTR++;
-                    JOptionPane.showMessageDialog(null, "Someone got erased from existence", "Dead Lol", JOptionPane.ERROR_MESSAGE);
-                    if (failCTR == 3){
-                        JOptionPane.showMessageDialog(null, "Game doesn't want you, bro. Peace Out.", "Death Loop", JOptionPane.INFORMATION_MESSAGE);
-                        System.exit(0);
-                    }
                 }
 
             }
@@ -147,6 +141,9 @@ public class GamePanel extends JPanel implements Runnable {
                         entity = null;
                         entityList.remove(entity);
                     }
+                    if(gameState == eventState){
+                        event.updateEvent();
+                    }
                 }
             }
         }
@@ -157,14 +154,13 @@ public class GamePanel extends JPanel implements Runnable {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
 
-
         try {
             InputStream fontStream = getClass().getResourceAsStream("/fonts/font1.ttf");
             assert fontStream != null;
             customFont = Font.createFont(Font.TRUETYPE_FONT, fontStream).deriveFont(20f);
         } catch (Exception e) {
             e.printStackTrace();
-            customFont = new Font("Arial", Font.PLAIN, 40); // Fallback font
+            customFont = new Font("Arial", Font.PLAIN, 40);
         }
 
         g2.setFont(customFont);
@@ -206,14 +202,6 @@ public class GamePanel extends JPanel implements Runnable {
                 }
             }
 
-//            for (Entity[][] entities : new Entity[][][] {livingEntity, objectEntity}) {
-//                for (Entity[] e : entities) {
-//                    if (e != null) {
-//                        entityList.add(e[i]);
-//                    }
-//                }
-//            }
-
 
             entityList.sort(new Comparator<>() {
                 @Override
@@ -230,10 +218,11 @@ public class GamePanel extends JPanel implements Runnable {
 
             map.drawMiniMap(g2);
 
+            if(gameState == eventState){
+                event.draw(g2);
+            }
+
             ui.draw(g2);
-
-//            ui.drawForegroundFoliage();
-
 
             if (keyH.showDebugTest){
                 long drawEnd = System.nanoTime();
@@ -249,12 +238,10 @@ public class GamePanel extends JPanel implements Runnable {
                 g2.drawString("WorldY" + player.worldY, x, y);y += lineHeight;
                 g2.drawString("Col" + (player.worldX+ player.solidArea.x)/tileSize, x, y);y += lineHeight;
                 g2.drawString("Row" + (player.worldY+ player.solidArea.y)/tileSize, x, y);y += lineHeight;
-
+                g2.drawString("Event" + event.eventNum, x, y);y += lineHeight;
                 g2.drawString("Draw Time: " + passed , x, y );
             }
         }
-
-
 
         g2.dispose();
     }

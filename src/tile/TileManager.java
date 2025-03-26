@@ -27,7 +27,9 @@ public class TileManager {
         getTileImage();
         loadMap("/maps/forestIntroMap.txt", 0);
         loadMap("/maps/forestFlatPath.txt", 1);
-        loadMap("/maps/forestUphillPath.txt", 2);
+        loadMap("/maps/forestCatCaveEntrance.txt", 2);
+        loadMap("/maps/forestUphillPath.txt", 3);
+        loadMap("/maps/catCave.txt", 4);
     }
 
     public void getTileImage() {
@@ -36,12 +38,13 @@ public class TileManager {
             setup(2, "waterWow", false);
 
 
-            setup(30, "grassPlain", false);
+            setup(30, "grassPlain2", false);
             setup(31, "grassPlain", false);
             setup(32, "grassNearLedge", false);
             setup(33, "grassLedge", true);
             setup(34, "treeTrunk", true);
             setup(35, "treeLong", true);
+            setup(36, "grassNearLedge", true);
             setup(49, "blk", true);
     }
 

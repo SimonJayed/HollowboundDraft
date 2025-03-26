@@ -63,27 +63,27 @@ public class Map extends TileManager{
         int playerY = (int) (y + gp.player.worldY/scale);
         int playerSize = (int) (gp.tileSize/scale);
 
-        g2.setColor(new Color(68, 255, 202));
+        g2.setColor(new Color(255, 70, 0));
         g2.fillRect(playerX, playerY, playerSize, playerSize);
 
-//        int npcX, npcY;
-//        for (Entity npc : gp.npc) {
-//            npcX = (int) (x + npc.worldX/scale);
-//            npcY = (int) (y + npc.worldY/scale);
-//            if(npc.type == 1){
-//                g2.setColor(new Color(37, 255, 0));
-//                g2.fillRect(npcX, npcY, playerSize, playerSize);
-//                System.out.println("drawn");
-//            }
-//            else{
-//                g2.setColor(new Color(255, 0, 0));
-//                g2.fillRect(npcX, npcY, playerSize, playerSize);
-//            }
-//        }
+        for (Entity entity : gp.livingEntity[gp.currentMap]) {
+            if (entity != null && entity != gp.player && !entity.hasEvent) {
+                int npcX = (int) (x + entity.worldX / scale);
+                int npcY = (int) (y + entity.worldY / scale);
+
+                if (entity.type == 1) {
+                    g2.setColor(new Color(37, 255, 0));
+                } else {
+                    g2.setColor(new Color(255, 0, 0));
+                }
+
+                g2.fillRect(npcX, npcY, playerSize, playerSize);
+            }
+        }
     }
 
-    public void drawMiniMap(Graphics2D g2){
-        if(miniMapOn){
+    public void drawMiniMap(Graphics2D g2) {
+        if (miniMapOn) {
             int width = 200;
             int height = 200;
             int x = gp.screenWidth - width;
@@ -92,13 +92,28 @@ public class Map extends TileManager{
             g2.getComposite();
             g2.drawImage(worldMap[gp.currentMap], x, y, width, height, null);
 
-            double scale = (double) (gp.tileSize * gp.maxWorldCol)/width;
-            int playerX = (int) (x + gp.player.worldX/scale);
-            int playerY = (int) (y + gp.player.worldY/scale);
-            int playerSize = (int) (gp.tileSize/scale);
+            double scale = (double) (gp.tileSize * gp.maxWorldCol) / width;
+            int playerX = (int) (x + gp.player.worldX / scale);
+            int playerY = (int) (y + gp.player.worldY / scale);
+            int playerSize = (int) (gp.tileSize / scale);
 
-            g2.setColor(new Color(68, 255, 202));
+            g2.setColor(new Color(255, 70, 0));
             g2.fillRect(playerX, playerY, playerSize, playerSize);
+
+            for (Entity entity : gp.livingEntity[gp.currentMap]) {
+                if (entity != null && entity != gp.player && !entity.hasEvent) {
+                    int npcX = (int) (x + entity.worldX / scale);
+                    int npcY = (int) (y + entity.worldY / scale);
+
+                    if (entity.type == 1) {
+                        g2.setColor(new Color(37, 255, 0));
+                    } else {
+                        g2.setColor(new Color(255, 0, 0));
+                    }
+
+                    g2.fillRect(npcX, npcY, playerSize, playerSize);
+                }
+            }
         }
     }
 }

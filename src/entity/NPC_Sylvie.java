@@ -19,7 +19,7 @@ public class NPC_Sylvie extends Entity {
 
         getImage("sylvie");
         setDefaultValues(1, 100, 400,3, 7, 5, 19, 5,  9);
-        setDialogue();
+//        setDialogue();
     }
 
     public void setStatIncrements(){
@@ -57,12 +57,11 @@ public class NPC_Sylvie extends Entity {
     }
 
     public void setDialogue(){
-
-        dialogues[0] = "Hello, lad.";
-        dialogues[1] = "You seem lost.";
-        dialogues[2] = "I can fix that.";
-        dialogues[3] = "No. Seriously, dude... \nI can.";
-        dialogues[4] = "Why tf does no one believe what I \nsay?";
+        gp.event.dialogues.add("Hello, lad.");
+//        gp.event.dialogues[1] = "You seem lost.";
+//        gp.event.dialogues[2] = "I can fix that.";
+//        gp.event.dialogues[3] = "No. Seriously, dude... \nI can.";
+//        gp.event.dialogues[4] = "Why tf does no one believe what I \nsay?";
     }
 
     public void speak(){

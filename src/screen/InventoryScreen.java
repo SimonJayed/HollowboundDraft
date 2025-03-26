@@ -7,6 +7,7 @@ import java.awt.*;
 
 public class InventoryScreen implements Screen{
     GamePanel gp;
+    Graphics2D g2;
 
     public int commandNum = 0;
 
@@ -16,6 +17,7 @@ public class InventoryScreen implements Screen{
 
     @Override
     public void draw(Graphics2D g2) {
+        this.g2 = g2;
         //Inventory Frame
         int frameX = gp.tileSize;
         int frameY = gp.tileSize*3;

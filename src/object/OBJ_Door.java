@@ -20,4 +20,8 @@ public class OBJ_Door extends Entity {
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
     }
+
+    public void speak(){
+        dialogues[0] = "\"BEWEARRR!! DANGERRR!!!\"";
+    }
 }

@@ -2,7 +2,6 @@ package entity;
 
 import main.GamePanel;
 import main.KeyHandler;
-import main.MouseHandler;
 
 
 import java.awt.*;
@@ -12,7 +11,6 @@ import java.awt.image.BufferedImage;
 
 public class Player extends Entity{
     KeyHandler keyH;
-    MouseHandler mouseH;
 
     public final int screenX;
     public final int screenY;
@@ -23,16 +21,12 @@ public class Player extends Entity{
 
     public int statPoints = 0;
 
-    public Player(GamePanel gp, KeyHandler keyH, MouseHandler mouseH){
+    public Player(GamePanel gp, KeyHandler keyH){
         super(gp);
         this.keyH = keyH;
-        this.mouseH = mouseH;
 
         screenX = gp.screenWidth/2 - (gp.tileSize/2);
         screenY = gp.screenHeight/2 - (gp.tileSize/2);
-
-        attackArea.width = 36;
-        attackArea.height = 36;
 
         solidArea = new Rectangle();
         this.solidArea.x = 8;
@@ -46,8 +40,8 @@ public class Player extends Entity{
     }
 
     public void setDefaultValues(){
-        worldX = gp.tileSize * 18;
-        worldY = gp.tileSize * 47;
+        worldX = spawnPointX = gp.tileSize * 18;
+        worldY = spawnPointY = gp.tileSize * 47;
         direction = "down";
 
         statPoints = 1;
@@ -115,8 +109,8 @@ public class Player extends Entity{
                 isRunning = true;
 //                running();
                 speed++;
-                if (speed >= tempSpeed + 4) {
-                    speed = tempSpeed + 4;
+                if (speed >= tempSpeed + 6) {
+                    speed = tempSpeed + 6;
                 }
                 if(buffer >= 5){
                     energy--;
@@ -172,13 +166,13 @@ public class Player extends Entity{
 
     public void checkDefeated(){
         if(isDefeated && hollowCounter < 5){
-            buffer++;
+            this.buffer++;
             isIdling = true;
             if(buffer > 150 && !hasEvent){
                 isDefeated = false;
                 hp = maxHP;
                 energy = maxEnergy;
-                buffer = 0;
+                this.buffer = 0;
                 exp = nextLevelExp;
                 int num = 0;
                 while(num <= hollowCounter){
@@ -187,8 +181,8 @@ public class Player extends Entity{
                     num++;
                     System.out.println(getName() + " is being strengthened.");
                 }
-                gp.player.worldX = 5 * gp.tileSize;
-                gp.player.worldY = 9 * gp.tileSize;
+                gp.player.worldX = spawnPointX;
+                gp.player.worldY = spawnPointY;
                 System.out.println(getName() + " has respawned.");
                 System.out.println(getName() + " died " + hollowCounter + " times");
             }
@@ -221,12 +215,7 @@ public class Player extends Entity{
                     gp.gameState = gp.battleState;
                 }
             }
-//            if(keyH.qPressed){
-//                gp.gameState = gp.inventoryState;
-//                gp.ui.drawInventoryScreen(gp.livingEntity[gp.currentMap][i]);
-//            }
         }
-
     }
 
     public void pickUpObject(int i){
@@ -241,14 +230,9 @@ public class Player extends Entity{
                     break;
                 }
                 case "Door":{
-                    if (hasKey > 0) {
-                        gp.objectEntity[gp.currentMap][i] = null;
-                        hasKey--;
-                        gp.ui.addMessage("Door opened");
-                    }
-                    else{
-                        gp.ui.addMessage("Key required");
-                    }
+                    gp.objectEntity[gp.currentMap][i].speak();
+                    gp.gameState = gp.dialogueState;
+
                     break;
                 }
                 case "Boots":{
@@ -271,7 +255,6 @@ public class Player extends Entity{
 
 
     public void draw(Graphics2D g2){
-        BufferedImage image = null;
 
 //        displayEntityStats(g2);
 
@@ -280,109 +263,109 @@ public class Player extends Entity{
 
         switch (direction) {
             case "up": {
-                if(!isDefeated && !isRunning){
+                if(!isDefeated && !isRunning && !isUnconscious){
                     if (spriteNum == 1){
-                        image = up1;
+                        image1 = up1;
                     }
                     if (spriteNum == 2) {
-                        image = up2;
+                        image1 = up2;
                     }
                 }
                 else if(isRunning){
                     if (spriteNum == 1){
-                        image = runUp1;
+                        image1 = runUp1;
                     }
                     if (spriteNum == 2) {
-                        image = runUp2;
+                        image1 = runUp2;
                     }
                 }
                 else{
                     if (spriteNum == 1){
-                        image = defeated1;
+                        image1 = defeated1;
                     }
                     if (spriteNum == 2) {
-                        image = defeated2;
+                        image1 = defeated2;
                     }
                 }
                 break;
             }
             case "down": {
-                if(!isDefeated && !isRunning){
+                if(!isDefeated && !isRunning && !isUnconscious){
                     if (spriteNum == 1){
-                        image = down1;
+                        image1 = down1;
                     }
                     if (spriteNum == 2) {
-                        image = down2;
+                        image1 = down2;
                     }
                 }
                 else if(isRunning){
                     if (spriteNum == 1){
-                        image = runDown1;
+                        image1 = runDown1;
                     }
                     if (spriteNum == 2) {
-                        image = runDown2;
+                        image1 = runDown2;
                     }
                 }
                 else{
                     if (spriteNum == 1){
-                        image = defeated1;
+                        image1 = defeated1;
                     }
                     if (spriteNum == 2) {
-                        image = defeated2;
+                        image1 = defeated2;
                     }
                 }
                 break;
             }
             case "left": {
-                if(!isDefeated && !isRunning){
+                if(!isDefeated && !isRunning && !isUnconscious){
                     if (spriteNum == 1){
-                        image = left1;
+                        image1 = left1;
                     }
                     if (spriteNum == 2) {
-                        image = left2;
+                        image1 = left2;
                     }
                 }
                 else if(isRunning){
                     if (spriteNum == 1){
-                        image = runLeft1;
+                        image1 = runLeft1;
                     }
                     if (spriteNum == 2) {
-                        image = runLeft2;
+                        image1 = runLeft2;
                     }
                 }
                 else{
                     if (spriteNum == 1){
-                        image = defeated1;
+                        image1 = defeated1;
                     }
                     if (spriteNum == 2) {
-                        image = defeated2;
+                        image1 = defeated2;
                     }
                 }
                 break;
             }
             case "right": {
-                if(!isDefeated && !isRunning){
+                if(!isDefeated && !isRunning && !isUnconscious){
                     if (spriteNum == 1){
-                        image = right1;
+                        image1 = right1;
                     }
                     if (spriteNum == 2) {
-                        image = right2;
+                        image1 = right2;
                     }
                 }
                 else if(isRunning){
                     if (spriteNum == 1){
-                        image = runRight1;
+                        image1 = runRight1;
                     }
                     if (spriteNum == 2) {
-                        image = runRight2;
+                        image1 = runRight2;
                     }
                 }
                 else{
                     if (spriteNum == 1){
-                        image = defeated1;
+                        image1 = defeated1;
                     }
                     if (spriteNum == 2) {
-                        image = defeated2;
+                        image1 = defeated2;
                     }
                 }
                 break;
@@ -391,7 +374,7 @@ public class Player extends Entity{
         if (invincible){
             changeAlpha(g2,0.4f);
         }
-        g2.drawImage(image, tempScreenX, tempScreenY, null);
+        g2.drawImage(image1, tempScreenX, tempScreenY, null);
 
         changeAlpha(g2,1f);
 

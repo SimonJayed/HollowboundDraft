@@ -41,10 +41,9 @@ public class NPC_Amaryllis extends Entity {
 //    }
 
     public void setAction() {
-//        System.out.println(getName() + " moves but has been defeated is " + isDefeated );
         actionLockCounter++;
 
-        if (actionLockCounter >= gp.randomize(120, 500)) {
+        if (actionLockCounter >= gp.randomize(120, 250)) {
             int i = gp.randomize(1, 150);
 
             if (i <= 25) {
@@ -67,12 +66,13 @@ public class NPC_Amaryllis extends Entity {
         spriteAnim(2);
     }
 
-    public void setDialogue(){
-        dialogues[0] = "Hello, lad.";
-        dialogues[1] = "You seem lost.";
-        dialogues[2] = "I can fix that.";
-        dialogues[3] = "No. Seriously, dude... \nI can.";
-        dialogues[4] = "Why tf does no one believe what I \nsay?";
+    public void setDialogue() {
+        if (gp.event.eventNum == 0) {
+            System.out.println(getName() + " Dialogues added.");
+            System.out.println("LOLDialogue size: " + gp.event.dialogues.size());
+            gp.event.dialogues.add("Lol, Lmao, lmfao, rofl,, Trial Rani.");
+//            gp.event.dialogues.add("Hello, bum.");
+        }
     }
 
     public void speak(){
