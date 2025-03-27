@@ -67,12 +67,12 @@ public class NPC_Amaryllis extends Entity {
     }
 
     public void setDialogue() {
-        if (gp.event.eventNum == 0) {
-            System.out.println(getName() + " Dialogues added.");
-            System.out.println("LOLDialogue size: " + gp.event.dialogues.size());
-            gp.event.dialogues.add("Lol, Lmao, lmfao, rofl,, Trial Rani.");
-//            gp.event.dialogues.add("Hello, bum.");
-        }
+//        if (gp.event.eventNum == 0) {
+//            System.out.println(getName() + " Dialogues added.");
+//            System.out.println("LOLDialogue size: " + gp.event.dialogues.size());
+//            gp.event.dialogues.add("Lol, Lmao, lmfao, rofl,, Trial Rani.");
+////            gp.event.dialogues.add("Hello, bum.");
+//        }
     }
 
     public void speak(){

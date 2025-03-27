@@ -40,8 +40,9 @@ public class Player extends Entity{
     }
 
     public void setDefaultValues(){
-        worldX = spawnPointX = gp.tileSize * 4;
-        worldY = spawnPointY = gp.tileSize * 3;
+        gp.currentMap = 0;
+        worldX = spawnPointX = gp.tileSize * 2;
+        worldY = spawnPointY = gp.tileSize * 38;
         direction = "down";
 
         statPoints = 1;
@@ -135,22 +136,18 @@ public class Player extends Entity{
             if (!collisionOn) {
                 switch (direction) {
                     case "up": {
-                        gp.ui.darkCounter--;
                         worldY -= speed;
                         break;
                     }
                     case "down": {
-                        gp.ui.darkCounter++;
                         worldY += speed;
                         break;
                     }
                     case "left": {
-                        gp.ui.darkCounter++;
                         worldX -= speed;
                         break;
                     }
                     case "right": {
-                        gp.ui.darkCounter--;
                         worldX += speed;
                         break;
                     }
@@ -234,9 +231,8 @@ public class Player extends Entity{
                     break;
                 }
                 case "Door":{
-                    gp.objectEntity[gp.currentMap][i].speak();
                     gp.gameState = gp.dialogueState;
-
+                    gp.objectEntity[gp.currentMap][i].speak();
                     break;
                 }
                 case "Boots":{

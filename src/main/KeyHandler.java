@@ -44,8 +44,7 @@ public class KeyHandler implements KeyListener {
             }
             if (code == KeyEvent.VK_ENTER || code == KeyEvent.VK_SPACE) {
                 if (gp.ui.commandNum == 0) {
-                    gp.aSetter.setPlayer(0);
-                    gp.gameState = gp.playState;
+                    gp.gameState = gp.characterPickState;
                     System.out.println(gp.gameState);
 //                    gp.playMusic(2);
                     gp.sound.setVolume(-25.0f);
@@ -58,6 +57,43 @@ public class KeyHandler implements KeyListener {
                 }
                 if (gp.ui.commandNum == 3) {
                     System.exit(0);
+                }
+            }
+        }
+        //CHARACTER PICK
+        else if(gp.gameState == gp.characterPickState) {
+            if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
+                gp.pickScreen.commandNum--;
+                System.out.println(gp.pickScreen.commandNum);
+                if (gp.pickScreen.commandNum < 0) {
+                    gp.pickScreen.commandNum = 3;
+                }
+                gp.playSoundEffect(3);
+                gp.sound.setVolume(-20.0f);
+            }
+            if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
+                gp.pickScreen.commandNum++;
+                if (gp.pickScreen.commandNum > 3) {
+                    gp.pickScreen.commandNum = 0;
+                }
+                gp.playSoundEffect(3);
+                gp.sound.setVolume(-20.0f);
+            }
+            if (code == KeyEvent.VK_ESCAPE) {
+                gp.gameState = gp.titleState;
+            }
+            if (code == KeyEvent.VK_ENTER || code == KeyEvent.VK_SPACE) {
+                if (gp.pickScreen.commandNum == 0) {
+                    gp.aSetter.setPlayer(0);
+                    gp.gameState = gp.playState;
+                }
+                if (gp.pickScreen.commandNum == 1) {
+                    gp.aSetter.setPlayer(1);
+                    gp.gameState = gp.playState;
+                }
+                if (gp.pickScreen.commandNum == 2) {
+                    gp.aSetter.setPlayer(2);
+                    gp.gameState = gp.playState;
                 }
             }
         }

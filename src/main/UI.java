@@ -86,7 +86,7 @@ public class UI {
             drawSettingsScreen();
         }
         else if (gp.gameState == gp.characterPickState) {
-            drawCharacterPickScreen();
+            gp.pickScreen.draw(g2);
         }
         else if (gp.gameState == gp.dialogueState) {
             drawPlayerLife();
@@ -218,7 +218,7 @@ public class UI {
         g2.drawImage(titleBackground, x, y, gp.screenWidth, gp.screenHeight, null);
 
         g2.setFont(g2.getFont().deriveFont(50f));
-        String text = "Hollowbound";
+        String text = "HollowBound";
         x = getXforCenteredText(g2, text);
         y = gp.screenHeight/5;
 

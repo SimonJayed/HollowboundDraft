@@ -57,7 +57,7 @@ public class EventHandler{
             //GOING TO MAP 1 (Forest Path)
             if (hit(0,48, 42, "right") || hit(0,48, 43, "right") || hit(0,48, 43, "right") || hit(0,48, 44, "right") || hit(0,48, 45, "right") || hit(0,48, 46, "right")){
                 teleport(gp.playState, 2, 45, "right");
-                if(gp.event.eventNum == 0){
+                if(!gp.event.event0Flag){
                     System.out.println("Event 0 played");
                     gp.event.playEvent0();
                 }
@@ -100,7 +100,9 @@ public class EventHandler{
             if (hit(2,21, 21, "up") || hit(2,22, 21, "up") || hit(2,22, 22, "up") || hit(2,23, 20, "up") || hit(2,24, 20, "up") || hit(2,25, 20, "up") || hit(2,26, 20, "up") || hit(2,27, 20, "up") || hit(2,28, 20, "up") || hit(2,29, 21, "up") || hit(2,30, 22, "up")){
                 teleport(gp.playState, 24, 37, "up");
                 gp.ui.addMessage("Went into Cat Cave");
-
+                if(!gp.event.event1Flag && !gp.event.event2Flag){
+                    gp.event.playEvent1();
+                }
             }
 
             //GOING TO MAP 3 (Forest Path Near Village)
@@ -117,16 +119,16 @@ public class EventHandler{
                 teleport(gp.playState, 48, 36, "left");
             }
 
-            //GOING TO MAP 7 (Village)
+            //GOING TO MAP 5 (Graveyard)
             if (hit(3,48, 38, "right") || hit(3,48, 39, "right") || hit(3,48, 40, "right") || hit(3,48, 41, "right")){
-//                teleport(gp.playState, 2, 41, "right");
-                gp.ui.addMessage("Went to Village");
+                teleport(gp.playState, 2, 19, "right");
+                gp.ui.addMessage("Went to Graveyard");
             }
 
             //ENCOUNTERS
             if (hit(3,28, 39, "right") || hit(2,28, 40, "right") || hit(2,28, 41, "right") || hit(2,28, 42, "right")){
                 gp.ui.addMessage("Ambushed by Mama Pussicles");
-                if(gp.event.eventNum == 1){
+                if(!gp.event.event2Flag){
                     gp.ui.startFadeIn();
                     System.out.println("Event 2 played");
                     gp.event.playEvent2();
@@ -141,6 +143,21 @@ public class EventHandler{
             }
 
             //GOING TO MAP 5
+            if (hit(4,11, 13, "up")){
+//                teleport(gp.playState, 2, 41, "right");
+                gp.ui.addMessage("Went to Old Man's Forest");
+            }
+
+            //ENCOUNTERS
+        }
+        //MAP 5 (Graveyard) EVENTS
+        if (canTouchEvent && gp.currentMap == 4){
+            //GOING BACK TO MAP 4
+            if (hit(4,20, 37, "down") || hit(3,21, 37, "down")  || hit(3,22, 38, "down") || hit(3,23, 38, "down") || hit(3,24, 38, "down")  || hit(3,25, 38, "down")  || hit(3,26, 38, "down")  || hit(3,27, 38, "down") || hit(3,28, 39, "down")){
+                teleport(gp.playState, 25, 20, "down");
+            }
+
+            //GOING TO MAP 7
             if (hit(4,11, 13, "up")){
 //                teleport(gp.playState, 2, 41, "right");
                 gp.ui.addMessage("Went to Old Man's Forest");

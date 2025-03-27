@@ -16,11 +16,11 @@ public class AssetSetter {
     public void setPlayer(int choice){
         switch(choice){
             case 0:{
-                gp.player.playing = "fort";
+                gp.player.playing = "amaryllis";
                 break;
             }
             case 1:{
-                gp.player.playing = "amaryllis";
+                gp.player.playing = "fort";
                 break;
             }
             case 2: {

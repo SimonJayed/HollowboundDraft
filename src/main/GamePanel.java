@@ -6,6 +6,7 @@ import misc.AssetSetter;
 import misc.CollisionChecker;
 import misc.EventHandler;
 import screen.BattleScreen;
+import screen.CharacterPickScreen;
 import screen.EventScenes;
 import screen.InventoryScreen;
 import tile.Map;
@@ -69,6 +70,7 @@ public class GamePanel extends JPanel implements Runnable {
     public final int mapState = 9;
     public final int eventState = 10;
 
+    public CharacterPickScreen pickScreen = new CharacterPickScreen(this);
     public BattleScreen battleScreen = new BattleScreen(this);
     public InventoryScreen inventoryScreen = new InventoryScreen(this);
 

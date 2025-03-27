@@ -58,18 +58,6 @@ public class NPC_MamaPausy extends Entity {
     }
 
     public void setDialogue() {
-        if(gp.event.eventNum == 1){
-            System.out.println(getName() + " Dialogues added.");
-            gp.event.dialogues.add("MEOWR!!!");
-            gp.event.dialogues.add("Meowr");
-            gp.event.dialogues.add("Moewr?");
-            gp.event.dialogues.add("HHIIISSS!!");
-            gp.event.dialogues.add("Grrrrrrrrrr!!!");
-            gp.event.dialogues.add("MEOWR!!!");
-            gp.event.dialogues.add("HHIIISSS!!");
-            gp.event.dialogues.add("Moewr?");
-        }
-
     }
 
     public void speak(){

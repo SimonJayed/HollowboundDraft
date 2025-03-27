@@ -30,22 +30,37 @@ public class TileManager {
         loadMap("/maps/forestCatCaveEntrance.txt", 2);
         loadMap("/maps/forestUphillPath.txt", 3);
         loadMap("/maps/catCave.txt", 4);
+        loadMap("/maps/graveyard.txt", 5);
     }
 
     public void getTileImage() {
-            setup(0, "grass1", false);
-            setup(1, "tree", true);
-            setup(2, "waterWow", false);
+        setup(0, "grass1", false);
+        setup(1, "tree", true);
+        setup(2, "waterWow", false);
 
 
-            setup(30, "grassPlain2", false);
-            setup(31, "grassPlain", false);
-            setup(32, "grassNearLedge", false);
-            setup(33, "grassLedge", true);
-            setup(34, "treeTrunk", true);
-            setup(35, "treeLong", true);
-            setup(36, "grassNearLedge", true);
-            setup(49, "blk", true);
+        setup(30, "grassPlain2", false);
+        setup(31, "grassPlain", false);
+        setup(32, "grassNearLedge", false);
+        setup(33, "grassLedge", true);
+        setup(34, "treeTrunk", true);
+        setup(35, "treeLong", true);
+        setup(36, "grassNearLedge", true);
+        setup(49, "blk", true);
+
+//        setup(0, "grass1", false);
+//        setup(1, "tree", false);
+//        setup(2, "waterWow", false);
+//
+//
+//        setup(30, "grassPlain2", false);
+//        setup(31, "grassPlain", false);
+//        setup(32, "grassNearLedge", false);
+//        setup(33, "grassLedge", false);
+//        setup(34, "treeTrunk", false);
+//        setup(35, "treeLong", false);
+//        setup(36, "grassNearLedge", false);
+//        setup(49, "blk", false);
     }
 
     public void setup(int index, String imageName, boolean collision){
