@@ -62,7 +62,7 @@ public class KeyHandler implements KeyListener {
         }
         //CHARACTER PICK
         else if(gp.gameState == gp.characterPickState) {
-            if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
+            if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP || code == KeyEvent.VK_A) {
                 gp.pickScreen.commandNum--;
                 System.out.println(gp.pickScreen.commandNum);
                 if (gp.pickScreen.commandNum < 0) {
@@ -71,7 +71,7 @@ public class KeyHandler implements KeyListener {
                 gp.playSoundEffect(3);
                 gp.sound.setVolume(-20.0f);
             }
-            if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
+            if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN || code == KeyEvent.VK_D) {
                 gp.pickScreen.commandNum++;
                 if (gp.pickScreen.commandNum > 3) {
                     gp.pickScreen.commandNum = 0;

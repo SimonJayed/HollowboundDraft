@@ -101,6 +101,8 @@ public class EventHandler{
                 teleport(gp.playState, 24, 37, "up");
                 gp.ui.addMessage("Went into Cat Cave");
                 if(!gp.event.event1Flag && !gp.event.event2Flag){
+                    gp.event.eventNum = 1;
+                    gp.gameState = gp.eventState;
                     gp.event.playEvent1();
                 }
             }
@@ -129,6 +131,8 @@ public class EventHandler{
             if (hit(3,28, 39, "right") || hit(2,28, 40, "right") || hit(2,28, 41, "right") || hit(2,28, 42, "right")){
                 gp.ui.addMessage("Ambushed by Mama Pussicles");
                 if(!gp.event.event2Flag){
+                    gp.event.eventNum = 2;
+                    gp.gameState = gp.eventState;
                     gp.ui.startFadeIn();
                     System.out.println("Event 2 played");
                     gp.event.playEvent2();

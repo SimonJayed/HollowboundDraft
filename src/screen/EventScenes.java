@@ -103,9 +103,8 @@ public class EventScenes implements Screen{
                     if(!entitySet){
                         //SET ENTITIES
                         dialogues.clear();
-                        gp.livingEntity[3][0].setEvent("left", 46, 40, 50, 1, true);
+                        gp.livingEntity[3][0].setEvent("left", 46, 39, 50, 1, true);
                         gp.livingEntity[3][0].setLevel(60);
-                        gp.livingEntity[3][0].hasEvent = true;
 
                         //SET PLAYER
                         gp.player.isRunning = false;
@@ -244,16 +243,15 @@ public class EventScenes implements Screen{
             System.out.println(gp.player.worldX);
         }
 
-        if(sequenceCheck == 2){
+        if(sequenceCheck == 1){
+            dialogueOn = true;
             System.out.println("Sequence: " + sequenceCheck);
-            gp.player.draw(g2);
             gp.player.isUnconscious = true;
             gp.ui.startFadeOut();
         }
         if(sequenceCheck == 3){
             sceneBackground = setBackground("nightmareScene1");
             gp.player.isUnconscious = true;
-            gp.player.draw(g2);
         }
         if(sequenceCheck == 4){
             sceneBackground = setBackground("nightmareScene2");
@@ -273,10 +271,11 @@ public class EventScenes implements Screen{
         }
 
         if(sequenceCheck == sequenceLimit) {
-            if(buffer > 100){
+            if(buffer > 150){
                 eventFinished = true;
                 event2Flag = true;
 
+                gp.ui.addMessage("Invoked");
                 gp.player.isUnconscious = true;
                 gp.ui.startFadeOut();
                 gp.currentMap = 4;
