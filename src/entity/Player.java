@@ -40,8 +40,8 @@ public class Player extends Entity{
     }
 
     public void setDefaultValues(){
-        worldX = spawnPointX = gp.tileSize * 18;
-        worldY = spawnPointY = gp.tileSize * 47;
+        worldX = spawnPointX = gp.tileSize * 4;
+        worldY = spawnPointY = gp.tileSize * 3;
         direction = "down";
 
         statPoints = 1;
@@ -135,18 +135,22 @@ public class Player extends Entity{
             if (!collisionOn) {
                 switch (direction) {
                     case "up": {
+                        gp.ui.darkCounter--;
                         worldY -= speed;
                         break;
                     }
                     case "down": {
+                        gp.ui.darkCounter++;
                         worldY += speed;
                         break;
                     }
                     case "left": {
+                        gp.ui.darkCounter++;
                         worldX -= speed;
                         break;
                     }
                     case "right": {
+                        gp.ui.darkCounter--;
                         worldX += speed;
                         break;
                     }

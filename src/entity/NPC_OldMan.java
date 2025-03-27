@@ -1,10 +1,9 @@
 package entity;
 
 import main.GamePanel;
-import misc.QuestGiver;
 
 
-public class NPC_OldMan extends Entity implements QuestGiver {
+public class NPC_OldMan extends Entity{
 
     public NPC_OldMan(GamePanel gp) {
         super(gp);
@@ -62,10 +61,5 @@ public class NPC_OldMan extends Entity implements QuestGiver {
 //        gp.event.dialogues[0] = "You think it favors you? Ha... \nIt only watches.";
 //        gp.event.dialogues[1] = "I had everything once... Then \nit yawned.";
 //        gp.event.dialogues[2] = "Don't bore it... Or do. Maybe it'll \nbe kinder to you.";
-    }
-
-    @Override
-    public void giveQuest() {
-
     }
 }

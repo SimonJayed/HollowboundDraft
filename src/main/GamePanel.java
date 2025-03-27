@@ -216,6 +216,7 @@ public class GamePanel extends JPanel implements Runnable {
 
             entityList.clear();
 
+            ui.drawDarkness(g2);
             map.drawMiniMap(g2);
 
             if(gameState == eventState){

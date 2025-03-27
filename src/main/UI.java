@@ -29,6 +29,8 @@ public class UI {
 
     public boolean toggleTime = true;
 
+    public int darkCounter = 0;
+
     public int fadeAlpha = 0;
     public boolean fading = false;
     public boolean fadeIn = false;
@@ -365,6 +367,15 @@ public class UI {
     public int getXforCenteredText(Graphics2D g2, String text){
         int length = (int)g2.getFontMetrics().getStringBounds(text, g2).getWidth();
         return gp.screenWidth/2 - length/2;
+    }
+
+    public void drawDarkness(Graphics2D g2){
+        this.g2=g2;
+        int x = 0;
+        int y = 0;
+        g2.setColor(new Color(21, 0, 29, 0+(Math.abs(darkCounter/20))));
+//        g2.setColor(new Color(21, 0, 29, 0);
+        g2.fillRect(x,y,gp.screenWidth,gp.screenHeight);
     }
 
     public void drawSubWindow(int x, int y, int width, int height){
