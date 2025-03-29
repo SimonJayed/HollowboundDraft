@@ -155,14 +155,14 @@ public class EventHandler{
             //ENCOUNTERS
         }
         //MAP 5 (Graveyard) EVENTS
-        if (canTouchEvent && gp.currentMap == 4){
-            //GOING BACK TO MAP 4
-            if (hit(4,20, 37, "down") || hit(3,21, 37, "down")  || hit(3,22, 38, "down") || hit(3,23, 38, "down") || hit(3,24, 38, "down")  || hit(3,25, 38, "down")  || hit(3,26, 38, "down")  || hit(3,27, 38, "down") || hit(3,28, 39, "down")){
-                teleport(gp.playState, 25, 20, "down");
+        if (canTouchEvent && gp.currentMap == 5){
+            //GOING BACK TO MAP 3
+            if (hit(5,1, 17, "left") || hit(5,1, 18, "left")  || hit(5,1, 19, "left") || hit(5,1, 20, "left")){
+                teleport(gp.playState, 47, 38, "left");
             }
 
             //GOING TO MAP 7
-            if (hit(4,11, 13, "up")){
+            if (hit(4,11, 13, "down")){
 //                teleport(gp.playState, 2, 41, "right");
                 gp.ui.addMessage("Went to Old Man's Forest");
             }
@@ -174,8 +174,8 @@ public class EventHandler{
     public boolean hit(int map, int col, int row, String reqDirection) {
         boolean hit = false;
 
-        gp.player.solidArea.x = gp.player.worldX + gp.player.solidArea.x;
-        gp.player.solidArea.y = gp.player.worldY + gp.player.solidArea.y;
+        gp.player.solidArea.x = gp.player.worldX;
+        gp.player.solidArea.y = gp.player.worldY;
         eventRect[map][col][row].x = col * gp.tileSize + eventRect[map][col][row].x;
         eventRect[map][col][row].y = row * gp.tileSize + eventRect[map][col][row].y;
 
@@ -193,8 +193,6 @@ public class EventHandler{
         eventRect[map][col][row].x = eventRect[map][col][row].eventRectDefaultX;
         eventRect[map][col][row].y = eventRect[map][col][row].eventRectDefaultY;
 
-
-        canTouchEvent = false;
         return hit;
     }
 
@@ -241,6 +239,15 @@ public class EventHandler{
                 if(reqDirection.equals("down")){
                     gp.currentMap = 2;
                 }if(reqDirection.equals("up")){
+                    gp.currentMap = 6;
+                    System.out.println("Next Map");
+                }
+                break;
+            }
+            case 5:{
+                if(reqDirection.equals("left")){
+                    gp.currentMap = 3;
+                }if(reqDirection.equals("down")){
                     gp.currentMap = 6;
                     System.out.println("Next Map");
                 }

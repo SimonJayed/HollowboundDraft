@@ -62,19 +62,25 @@ public class KeyHandler implements KeyListener {
         }
         //CHARACTER PICK
         else if(gp.gameState == gp.characterPickState) {
-            if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP || code == KeyEvent.VK_A) {
+            if(code == KeyEvent.VK_W){
+                gp.pickScreen.commandNum = 3;
+            }
+            else if(code == KeyEvent.VK_S){
+                gp.pickScreen.commandNum = 0;
+            }
+            else if (code == KeyEvent.VK_A) {
                 gp.pickScreen.commandNum--;
                 System.out.println(gp.pickScreen.commandNum);
                 if (gp.pickScreen.commandNum < 0) {
-                    gp.pickScreen.commandNum = 3;
+                    gp.pickScreen.commandNum = 0;
                 }
                 gp.playSoundEffect(3);
                 gp.sound.setVolume(-20.0f);
             }
-            if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN || code == KeyEvent.VK_D) {
+            else if (code == KeyEvent.VK_D) {
                 gp.pickScreen.commandNum++;
-                if (gp.pickScreen.commandNum > 3) {
-                    gp.pickScreen.commandNum = 0;
+                if (gp.pickScreen.commandNum > 2) {
+                    gp.pickScreen.commandNum = 2;
                 }
                 gp.playSoundEffect(3);
                 gp.sound.setVolume(-20.0f);
@@ -94,6 +100,9 @@ public class KeyHandler implements KeyListener {
                 if (gp.pickScreen.commandNum == 2) {
                     gp.aSetter.setPlayer(2);
                     gp.gameState = gp.playState;
+                }
+                if (gp.pickScreen.commandNum == 3) {
+                    gp.gameState = gp.titleState;
                 }
             }
         }

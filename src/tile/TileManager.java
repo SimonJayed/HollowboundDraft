@@ -76,7 +76,6 @@ public class TileManager {
             e.printStackTrace();
             JOptionPane.showMessageDialog(null, "Tile map missing", "Tile Error", JOptionPane.ERROR_MESSAGE);
             System.exit(0);
-
         }
     }
 

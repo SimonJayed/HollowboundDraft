@@ -42,6 +42,7 @@ public class GamePanel extends JPanel implements Runnable {
     int failCTR = 0;
 
     public TileManager tileM = new TileManager(this);
+//    public ForegroundManager foreM = new ForegroundManager(this);
     public KeyHandler keyH = new KeyHandler(this);
     public Sound sound = new Sound();
     public CollisionChecker cChecker = new CollisionChecker(this);
@@ -217,6 +218,8 @@ public class GamePanel extends JPanel implements Runnable {
             }
 
             entityList.clear();
+
+//            foreM.draw(g2);
 
             ui.drawDarkness(g2);
             map.drawMiniMap(g2);

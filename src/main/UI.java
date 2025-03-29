@@ -297,9 +297,6 @@ public class UI {
     public void drawSettingsScreen(){
 
     }
-    public void drawCharacterPickScreen(){
-
-    }
 
     public void drawDialogueScreen() {
         int width = gp.screenWidth - (gp.tileSize * 2);
