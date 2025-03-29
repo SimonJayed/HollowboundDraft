@@ -33,16 +33,16 @@ public class Player extends Entity{
         this.solidArea.y = 16;
         this.solidAreaDefaultX = this.solidArea.x;
         this.solidAreaDefaultY = this.solidArea.y;
-        this.solidArea.width = 32;
-        this.solidArea.height = 32;
+        this.solidArea.width = 31;
+        this.solidArea.height = 33;
 
         buffer = 0;
     }
 
     public void setDefaultValues(){
         gp.currentMap = 0;
-        worldX = spawnPointX = gp.tileSize * 2;
-        worldY = spawnPointY = gp.tileSize * 38;
+        worldX = spawnPointX = gp.tileSize * 44;
+        worldY = spawnPointY = gp.tileSize * 44;
         direction = "down";
 
         statPoints = 1;
@@ -167,13 +167,13 @@ public class Player extends Entity{
 
     public void checkDefeated(){
         if(isDefeated && hollowCounter < 5){
-            this.buffer++;
+            this.deathCounter++;
             isIdling = true;
-            if(buffer > 150 && !hasEvent){
+            if(deathCounter > 150 && !hasEvent){
                 isDefeated = false;
                 hp = maxHP;
                 energy = maxEnergy;
-                this.buffer = 0;
+                this.deathCounter = 0;
                 exp = nextLevelExp;
                 int num = 0;
                 while(num <= hollowCounter){

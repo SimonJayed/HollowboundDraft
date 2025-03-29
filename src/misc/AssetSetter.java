@@ -4,6 +4,8 @@ import entity.*;
 import main.GamePanel;
 import object.*;
 
+import java.awt.image.VolatileImage;
+
 public class AssetSetter {
     GamePanel gp;
 
@@ -39,11 +41,62 @@ public class AssetSetter {
         gp.objectEntity[0][i].worldY = 10 * gp.tileSize;
         i++;
 
-        //MAP2
-        gp.objectEntity[2][i] = new OBJ_Door(gp);
-        gp.objectEntity[2][i].worldX = 29 * gp.tileSize;
-        gp.objectEntity[2][i].worldY = 22 * gp.tileSize;
+        //MAP1
+        i = 0;
+//        gp.foreground[1][i] = new OBJ_Tree3(gp);
+//        gp.foreground[1][i].worldX = 0;
+//        gp.foreground[1][i].worldY = 45 * gp.tileSize;
+//        i++;
+        gp.foreground[1][i] = new OBJ_Tree2(gp);
+        gp.foreground[1][i].worldX = 0;
+        gp.foreground[1][i].worldY = 46 * gp.tileSize;
         i++;
+        gp.foreground[1][i] = new OBJ_Tree2(gp);
+        gp.foreground[1][i].worldX = 3 * gp.tileSize;
+        gp.foreground[1][i].worldY = 45 * gp.tileSize;
+        i++;
+        gp.foreground[1][i] = new OBJ_Tree3(gp);
+        gp.foreground[1][i].worldX = 16 * gp.tileSize;
+        gp.foreground[1][i].worldY = 45 * gp.tileSize;
+        i++;
+        gp.foreground[1][i] = new OBJ_Tree2(gp);
+        gp.foreground[1][i].worldX = 11 * gp.tileSize;
+        gp.foreground[1][i].worldY = 46 * gp.tileSize;
+        i++;
+
+
+        //MAP2
+        gp.foreground[2][i] = new OBJ_Door(gp);
+        gp.foreground[2][i].worldX = 29 * gp.tileSize;
+        gp.foreground[2][i].worldY = 22 * gp.tileSize;
+
+        //MAP 8
+        i = 0;
+        gp.objectEntity[8][i] = new OBJ_House1(gp);
+        gp.objectEntity[8][i].worldX = 8 * gp.tileSize;
+        gp.objectEntity[8][i].worldY = 11 * gp.tileSize;
+        i++;
+        gp.objectEntity[8][i] = new OBJ_House2(gp);
+        gp.objectEntity[8][i].worldX = 34 * gp.tileSize;
+        gp.objectEntity[8][i].worldY = 8 * gp.tileSize;
+        i++;
+        gp.objectEntity[8][i] = new OBJ_House3(gp);
+        gp.objectEntity[8][i].worldX = 41 * gp.tileSize;
+        gp.objectEntity[8][i].worldY = 9 * gp.tileSize;
+        i++;
+        gp.objectEntity[8][i] = new OBJ_House3(gp);
+        gp.objectEntity[8][i].worldX = 3 * gp.tileSize;
+        gp.objectEntity[8][i].worldY = 31 * gp.tileSize;
+        i++;
+        gp.objectEntity[8][i] = new OBJ_House2(gp);
+        gp.objectEntity[8][i].worldX = 10 * gp.tileSize;
+        gp.objectEntity[8][i].worldY = 35 * gp.tileSize;
+        i++;
+        gp.objectEntity[8][i] = new OBJ_House1(gp);
+        gp.objectEntity[8][i].worldX = 26 * gp.tileSize;
+        gp.objectEntity[8][i].worldY = 35 * gp.tileSize;
+        i++;
+
     }
 
     public void setLivingEntity(){
@@ -148,6 +201,18 @@ public class AssetSetter {
         gp.livingEntity[4][i] = new NPC_Miming(gp);
         gp.livingEntity[4][i].worldX = gp.livingEntity[4][i].spawnPointX = 36 * gp.tileSize;
         gp.livingEntity[4][i].worldY = gp.livingEntity[4][i].spawnPointY = 31 * gp.tileSize;
+        i++;
+
+
+        //MAP 8
+        i = 0;
+        gp.livingEntity[8][i] = new NPC_VillagerSynthia(gp);
+        gp.livingEntity[8][i].worldX = gp.livingEntity[8][i].spawnPointX = 7 * gp.tileSize;
+        gp.livingEntity[8][i].worldY = gp.livingEntity[8][i].spawnPointY = 36 * gp.tileSize;
+        i++;
+        gp.livingEntity[8][i] = new NPC_VillagerOldMan(gp);
+        gp.livingEntity[8][i].worldX = gp.livingEntity[8][i].spawnPointX = 38 * gp.tileSize;
+        gp.livingEntity[8][i].worldY = gp.livingEntity[8][i].spawnPointY = 13 * gp.tileSize;
         i++;
     }
 

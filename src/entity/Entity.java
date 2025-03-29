@@ -42,7 +42,6 @@ public abstract class Entity {
     public int hollowCounter = 0;
 
     public BufferedImage up1, up2, down1, down2, left1, left2, right1, right2;
-    public BufferedImage attackUp1, attackUp2, attackDown1, attackDown2, attackLeft1, attackLeft2, attackRight1, attackRight2;
     public BufferedImage runUp1, runUp2, runDown1, runDown2, runLeft1, runLeft2, runRight1, runRight2;
     public BufferedImage defeated1, defeated2;
     public BufferedImage image1, image2, image3, image4;
@@ -73,6 +72,7 @@ public abstract class Entity {
     public int invincibleCounter = 0;
     public int dyingCounter = 0;
     public int hpBarCounter = 0;
+    public int deathCounter = 0;
 
     public int buffer = 0;
 
@@ -289,9 +289,9 @@ public abstract class Entity {
     }
     public void checkDefeated(){
         if(isDefeated && hollowCounter < 5){
-            this.buffer++;
+            this.deathCounter++;
             isIdling = true;
-            if(this.buffer > 1500 && !hasEvent){
+            if(this.deathCounter > 1500 && !hasEvent){
                 isDefeated = false;
                 hp = maxHP;
                 energy = maxEnergy;
@@ -303,7 +303,7 @@ public abstract class Entity {
                     num++;
                     System.out.println(getName() + " is being strengthened.");
                 }
-                this.buffer = 0;
+                this.deathCounter = 0;
                 this.worldX = this.spawnPointX;
                 this.worldY = this.spawnPointY;
                 System.out.println(getName() + " has respawned.");
@@ -374,7 +374,10 @@ public abstract class Entity {
         if (worldX + gp.tileSize > gp.player.worldX - gp.player.screenX &&
                 worldX - gp.tileSize < gp.player.worldX + gp.player.screenX &&
                 worldY + gp.tileSize > gp.player.worldY - gp.player.screenY &&
-                worldY - gp.tileSize < gp.player.worldY + gp.player.screenY){
+                worldY - gp.tileSize < gp.player.worldY + gp.player.screenY || worldX + gp.tileSize*6 > gp.player.worldX - gp.player.screenX &&
+                worldX - gp.tileSize*6 < gp.player.worldX + gp.player.screenX &&
+                worldY + gp.tileSize*6 > gp.player.worldY - gp.player.screenY &&
+                worldY - gp.tileSize*6 < gp.player.worldY + gp.player.screenY){
             switch (direction) {
                 case "up": {
                     if(!isDefeated && !isUnconscious){

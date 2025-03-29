@@ -38,6 +38,7 @@ public class TitleScreen implements Screen{
 
         g2.drawImage(background, x, y, gp.screenWidth, gp.screenHeight, null);
 
+        g2.setColor(Color.white);
         g2.setFont(g2.getFont().deriveFont(50f));
         String text = "HollowBound";
         x = gp.ui.getXforCenteredText(g2, text);

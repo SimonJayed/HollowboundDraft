@@ -39,11 +39,6 @@ public class UI {
 
     public UI(GamePanel gp){
         this.gp = gp;
-//        Entity heart = new OBJ_Heart(gp);
-//
-//        heart_full = heart.image1;
-//        heart_half = heart.image2;
-//        heart_blank = heart.image3;
     }
 
     public void addMessage(String text){
@@ -65,9 +60,6 @@ public class UI {
             gp.map.miniMapOn = true;
             playTime += (double) 1 / 60;
             drawMessage();
-        }
-        else if (gp.gameState == gp.titleState) {
-            gp.titleScreen.draw(g2);
         }
         else if(gp.gameState == gp.inventoryState){
             gp.map.miniMapOn = true;

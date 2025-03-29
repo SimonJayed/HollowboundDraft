@@ -158,13 +158,28 @@ public class EventHandler{
         if (canTouchEvent && gp.currentMap == 5){
             //GOING BACK TO MAP 3
             if (hit(5,1, 17, "left") || hit(5,1, 18, "left")  || hit(5,1, 19, "left") || hit(5,1, 20, "left")){
-                teleport(gp.playState, 47, 38, "left");
+                teleport(gp.playState, 47, 39, "left");
             }
 
-            //GOING TO MAP 7
-            if (hit(4,11, 13, "down")){
+            //GOING TO MAP 8
+            if (hit(5,31, 48, "down") || hit(5,32, 48, "down") || hit(5,33, 48, "down")){
+                teleport(gp.playState, 28, 3, "down");
+                gp.ui.addMessage("Went to Village");
+            }
+
+            //ENCOUNTERS
+        }
+        //MAP 8 (Village) EVENTS
+        if (canTouchEvent && gp.currentMap == 8){
+            //GOING BACK TO MAP 7
+            if (hit(8,27, 1, "up") || hit(8,28, 1, "up")  || hit(8,29, 1, "up")){
+                teleport(gp.playState, 32, 48, "up");
+            }
+
+            //GOING TO MAP 9
+            if (hit(8,11, 13, "down")){
 //                teleport(gp.playState, 2, 41, "right");
-                gp.ui.addMessage("Went to Old Man's Forest");
+                gp.ui.addMessage("Went to Village");
             }
 
             //ENCOUNTERS
@@ -239,7 +254,7 @@ public class EventHandler{
                 if(reqDirection.equals("down")){
                     gp.currentMap = 2;
                 }if(reqDirection.equals("up")){
-                    gp.currentMap = 6;
+                    gp.currentMap = 5;
                     System.out.println("Next Map");
                 }
                 break;
@@ -248,7 +263,16 @@ public class EventHandler{
                 if(reqDirection.equals("left")){
                     gp.currentMap = 3;
                 }if(reqDirection.equals("down")){
-                    gp.currentMap = 6;
+                    gp.currentMap = 8;
+                    System.out.println("Next Map");
+                }
+                break;
+            }
+            case 8:{
+                if(reqDirection.equals("up")){
+                    gp.currentMap = 5;
+                }if(reqDirection.equals("right")){
+                    gp.currentMap = 9;
                     System.out.println("Next Map");
                 }
                 break;

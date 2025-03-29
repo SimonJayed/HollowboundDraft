@@ -31,12 +31,17 @@ public class TileManager {
         loadMap("/maps/forestUphillPath.txt", 3);
         loadMap("/maps/catCave.txt", 4);
         loadMap("/maps/graveyard.txt", 5);
+        loadMap("/maps/village.txt", 8);
     }
 
     public void getTileImage() {
         setup(0, "grass1", false);
         setup(1, "tree", true);
         setup(2, "waterWow", false);
+        setup(3, "waterWow", true);
+
+        setup(10, "blk", false);
+        setup(11, "grassPlain", true);
 
 
         setup(30, "grassPlain2", false);

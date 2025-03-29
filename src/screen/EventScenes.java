@@ -337,9 +337,9 @@ public class EventScenes implements Screen{
             g2.drawImage(sceneBackground, x, y,gp.screenWidth, gp.screenHeight, null);
         }
 
-        g2.setColor(Color.black);
-        g2.fillRect(x, y, gp.screenWidth, gp.tileSize*2);
-        g2.fillRect(x, gp.screenHeight-gp.tileSize*2, gp.screenWidth, gp.tileSize*2);
+//        g2.setColor(Color.black);
+//        g2.fillRect(x, y, gp.screenWidth, gp.tileSize*2);
+//        g2.fillRect(x, gp.screenHeight-gp.tileSize*2, gp.screenWidth, gp.tileSize*2);
 
         int width = gp.screenWidth - (gp.tileSize * 2);
         int height = gp.tileSize * 4;

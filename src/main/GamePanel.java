@@ -50,7 +50,8 @@ public class GamePanel extends JPanel implements Runnable {
     public Thread gameThread;
 
     public Player player = new Player(this, keyH);
-    public Entity objectEntity[][] = new Entity[maxMap][10];
+    public Entity objectEntity[][] = new Entity[maxMap][30];
+    public Entity foreground[][] = new Entity[maxMap][30];
     public Entity livingEntity[][] = new Entity[maxMap][20];
     public ArrayList <Entity> entityList = new ArrayList<>();
 
@@ -169,8 +170,8 @@ public class GamePanel extends JPanel implements Runnable {
         if (keyH.showDebugTest){
             drawStart = System.nanoTime();
         }
-        else if(gameState == newGameState){
-            ui.draw(g2);
+        if(gameState == titleState){
+            titleScreen.draw(g2);
         }
         else if(gameState == loadGameState){
             ui.draw(g2);
@@ -197,12 +198,19 @@ public class GamePanel extends JPanel implements Runnable {
             }
 
 
+
             entityList.sort(new Comparator<>() {
                 @Override
                 public int compare(Entity e1, Entity e2) {
                     return Integer.compare(e1.worldY, e2.worldY);
                 }
             });
+
+            for(int i = 0; i < foreground[1].length; i++) {
+                if (foreground[currentMap][i] != null) {
+                    entityList.add(foreground[currentMap][i]);
+                }
+            }
 
             for (Entity entity : entityList) {
                 entity.draw(g2);
@@ -218,24 +226,23 @@ public class GamePanel extends JPanel implements Runnable {
 
             ui.draw(g2);
 
+            if (keyH.showDebugTest){
+                long drawEnd = System.nanoTime();
+                long passed = drawEnd - drawStart;
 
-        }
-        if (keyH.showDebugTest){
-            long drawEnd = System.nanoTime();
-            long passed = drawEnd - drawStart;
+                g2.setFont(g2.getFont().deriveFont(23f));
+                g2.setColor(Color.white);
+                int x = 10;
+                int y = 400;
+                int lineHeight = 20;
 
-            g2.setFont(g2.getFont().deriveFont(23f));
-            g2.setColor(Color.white);
-            int x = 10;
-            int y = 400;
-            int lineHeight = 20;
-
-            g2.drawString("WorldX" + player.worldX, x, y);y += lineHeight;
-            g2.drawString("WorldY" + player.worldY, x, y);y += lineHeight;
-            g2.drawString("Col" + (player.worldX+ player.solidArea.x)/tileSize, x, y);y += lineHeight;
-            g2.drawString("Row" + (player.worldY+ player.solidArea.y)/tileSize, x, y);y += lineHeight;
-            g2.drawString("Event" + event.eventNum, x, y);y += lineHeight;
-            g2.drawString("Draw Time: " + passed , x, y );y += lineHeight;
+                g2.drawString("WorldX" + player.worldX, x, y);y += lineHeight;
+                g2.drawString("WorldY" + player.worldY, x, y);y += lineHeight;
+                g2.drawString("Col" + (player.worldX+ player.solidArea.x)/tileSize, x, y);y += lineHeight;
+                g2.drawString("Row" + (player.worldY+ player.solidArea.y)/tileSize, x, y);y += lineHeight;
+                g2.drawString("Event" + event.eventNum, x, y);y += lineHeight;
+                g2.drawString("Draw Time: " + passed , x, y );
+            }
         }
 
         g2.dispose();

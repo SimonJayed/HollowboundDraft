@@ -45,10 +45,10 @@ public class KeyHandler implements KeyListener {
             if (code == KeyEvent.VK_ENTER || code == KeyEvent.VK_SPACE) {
                 if (gp.titleScreen.commandNum == 0) {
                     System.out.println("NEW GAME");
+                    gp.pickScreen.loadImages();
                     gp.ui.startFadeIn();
                     gp.gameState = gp.characterPickState;
                     gp.titleScreen.emptyImages();
-                    System.out.println(gp.gameState);
 //                    gp.playMusic(2);
                     gp.sound.setVolume(-25.0f);
                 }
@@ -89,6 +89,8 @@ public class KeyHandler implements KeyListener {
                 gp.sound.setVolume(-20.0f);
             }
             if (code == KeyEvent.VK_ESCAPE) {
+                gp.titleScreen.loadImages();
+                gp.ui.startFadeOut();
                 gp.gameState = gp.titleState;
             }
             if (code == KeyEvent.VK_ENTER || code == KeyEvent.VK_SPACE) {
@@ -109,6 +111,7 @@ public class KeyHandler implements KeyListener {
                 }
                 if (gp.pickScreen.commandNum == 3) {
                     gp.ui.startFadeIn();
+                    gp.titleScreen.loadImages();
                     gp.gameState = gp.titleState;
                 }
                 gp.pickScreen.emptyImages();

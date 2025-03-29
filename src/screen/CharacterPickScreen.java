@@ -16,7 +16,6 @@ public class CharacterPickScreen implements Screen{
 
     public CharacterPickScreen(GamePanel gp) {
         this.gp = gp;
-        loadImages();
     }
 
     public void loadImages() {

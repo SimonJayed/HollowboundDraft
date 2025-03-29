@@ -13,6 +13,8 @@ import java.util.Objects;
 public class BattleScreen implements Screen{
     GamePanel gp;
 
+    BufferedImage background = null;
+
     public Entity currentEnemy;
     public int commandNum = 0;
 
@@ -23,16 +25,29 @@ public class BattleScreen implements Screen{
         this.gp = gp;
     }
 
+    public void loadImages(){
+        try {
+            if(gp.currentMap == 0){
+                background = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/background/battle/forestIntro.png")));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void emptyImages(){
+        background = null;
+    }
+
     @Override
     public void draw(Graphics2D g2){
         int x = 0;
         int y = 0;
 
-        g2.setColor(Color.white);
-        g2.fillRect(x,y,gp.screenWidth, gp.screenHeight);
+        loadImages();
 
-//        x = gp.screenWidth/2 - gp.tileSize;
-//        y = gp.tileSize*2;
+        g2.setColor(Color.white);
+        g2.drawImage(background, x, y, gp.screenWidth, gp.screenHeight, null);
 
         gp.ui.drawMessage();
 
@@ -298,7 +313,6 @@ public class BattleScreen implements Screen{
     }
 
     public void endBattle(){
-        double levelDifference = gp.player.level-currentEnemy.level;
         double expGain = currentEnemy.nextLevelExp/2;
 
         gp.player.exp += expGain;
@@ -319,6 +333,7 @@ public class BattleScreen implements Screen{
         System.out.println(gp.player.getName() + " has died " + gp.player.hollowCounter + " times");
         gp.gameState = gp.playState;
         System.out.println("Battle finished.");
+        emptyImages();
     }
     public void eventEndBattle(){
         double expGain = gp.player.nextLevelExp;
@@ -329,6 +344,7 @@ public class BattleScreen implements Screen{
         gp.gameState = gp.eventState;
         gp.event.sequenceCheck++;
         System.out.println("Battle finished.");
+        emptyImages();
     }
 
     public void enemyTurn(){
