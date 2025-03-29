@@ -174,8 +174,8 @@ public class EventHandler{
     public boolean hit(int map, int col, int row, String reqDirection) {
         boolean hit = false;
 
-        gp.player.solidArea.x = gp.player.worldX;
-        gp.player.solidArea.y = gp.player.worldY;
+        gp.player.solidArea.x = gp.player.worldX + gp.player.solidArea.x;
+        gp.player.solidArea.y = gp.player.worldY + gp.player.solidArea.y + 5;
         eventRect[map][col][row].x = col * gp.tileSize + eventRect[map][col][row].x;
         eventRect[map][col][row].y = row * gp.tileSize + eventRect[map][col][row].y;
 

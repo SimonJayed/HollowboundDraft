@@ -5,10 +5,7 @@ import entity.Player;
 import misc.AssetSetter;
 import misc.CollisionChecker;
 import misc.EventHandler;
-import screen.BattleScreen;
-import screen.CharacterPickScreen;
-import screen.EventScenes;
-import screen.InventoryScreen;
+import screen.*;
 import tile.Map;
 import tile.TileManager;
 
@@ -42,7 +39,6 @@ public class GamePanel extends JPanel implements Runnable {
     int failCTR = 0;
 
     public TileManager tileM = new TileManager(this);
-//    public ForegroundManager foreM = new ForegroundManager(this);
     public KeyHandler keyH = new KeyHandler(this);
     public Sound sound = new Sound();
     public CollisionChecker cChecker = new CollisionChecker(this);
@@ -71,6 +67,7 @@ public class GamePanel extends JPanel implements Runnable {
     public final int mapState = 9;
     public final int eventState = 10;
 
+    public TitleScreen titleScreen = new TitleScreen(this);
     public CharacterPickScreen pickScreen = new CharacterPickScreen(this);
     public BattleScreen battleScreen = new BattleScreen(this);
     public InventoryScreen inventoryScreen = new InventoryScreen(this);
@@ -172,9 +169,6 @@ public class GamePanel extends JPanel implements Runnable {
         if (keyH.showDebugTest){
             drawStart = System.nanoTime();
         }
-        if(gameState == titleState){
-            ui.draw(g2);
-        }
         else if(gameState == newGameState){
             ui.draw(g2);
         }
@@ -182,9 +176,6 @@ public class GamePanel extends JPanel implements Runnable {
             ui.draw(g2);
         }
         else if(gameState == settingsState){
-            ui.draw(g2);
-        }
-        else if(gameState == characterPickState){
             ui.draw(g2);
         }
         else{
@@ -219,9 +210,6 @@ public class GamePanel extends JPanel implements Runnable {
 
             entityList.clear();
 
-//            foreM.draw(g2);
-
-            ui.drawDarkness(g2);
             map.drawMiniMap(g2);
 
             if(gameState == eventState){
@@ -230,23 +218,24 @@ public class GamePanel extends JPanel implements Runnable {
 
             ui.draw(g2);
 
-            if (keyH.showDebugTest){
-                long drawEnd = System.nanoTime();
-                long passed = drawEnd - drawStart;
 
-                g2.setFont(g2.getFont().deriveFont(23f));
-                g2.setColor(Color.white);
-                int x = 10;
-                int y = 400;
-                int lineHeight = 20;
+        }
+        if (keyH.showDebugTest){
+            long drawEnd = System.nanoTime();
+            long passed = drawEnd - drawStart;
 
-                g2.drawString("WorldX" + player.worldX, x, y);y += lineHeight;
-                g2.drawString("WorldY" + player.worldY, x, y);y += lineHeight;
-                g2.drawString("Col" + (player.worldX+ player.solidArea.x)/tileSize, x, y);y += lineHeight;
-                g2.drawString("Row" + (player.worldY+ player.solidArea.y)/tileSize, x, y);y += lineHeight;
-                g2.drawString("Event" + event.eventNum, x, y);y += lineHeight;
-                g2.drawString("Draw Time: " + passed , x, y );
-            }
+            g2.setFont(g2.getFont().deriveFont(23f));
+            g2.setColor(Color.white);
+            int x = 10;
+            int y = 400;
+            int lineHeight = 20;
+
+            g2.drawString("WorldX" + player.worldX, x, y);y += lineHeight;
+            g2.drawString("WorldY" + player.worldY, x, y);y += lineHeight;
+            g2.drawString("Col" + (player.worldX+ player.solidArea.x)/tileSize, x, y);y += lineHeight;
+            g2.drawString("Row" + (player.worldY+ player.solidArea.y)/tileSize, x, y);y += lineHeight;
+            g2.drawString("Event" + event.eventNum, x, y);y += lineHeight;
+            g2.drawString("Draw Time: " + passed , x, y );y += lineHeight;
         }
 
         g2.dispose();

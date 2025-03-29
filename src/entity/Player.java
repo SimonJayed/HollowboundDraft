@@ -110,8 +110,8 @@ public class Player extends Entity{
                 isRunning = true;
 //                running();
                 speed++;
-                if (speed >= tempSpeed + 6) {
-                    speed = tempSpeed + 6;
+                if (speed >= tempSpeed + 3) {
+                    speed = tempSpeed + 3;
                 }
                 if(buffer >= 50){
                     energy--;

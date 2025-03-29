@@ -29,8 +29,6 @@ public class UI {
 
     public boolean toggleTime = true;
 
-    public int darkCounter = 0;
-
     public int fadeAlpha = 0;
     public boolean fading = false;
     public boolean fadeIn = false;
@@ -69,7 +67,7 @@ public class UI {
             drawMessage();
         }
         else if (gp.gameState == gp.titleState) {
-            drawTitleScreen();
+            gp.titleScreen.draw(g2);
         }
         else if(gp.gameState == gp.inventoryState){
             gp.map.miniMapOn = true;
@@ -206,88 +204,6 @@ public class UI {
             }
         }
     }
-
-    public void drawTitleScreen(){
-
-        Entity background = new OBJ_Image(gp);
-        titleBackground = background.image1;
-
-        int x = 0;
-        int y = 0;
-
-        g2.drawImage(titleBackground, x, y, gp.screenWidth, gp.screenHeight, null);
-
-        g2.setFont(g2.getFont().deriveFont(50f));
-        String text = "HollowBound";
-        x = getXforCenteredText(g2, text);
-        y = gp.screenHeight/5;
-
-        g2.drawString(text, x, y);
-
-
-        x = gp.screenWidth/2 - gp.tileSize;
-
-        text = "NEW GAME";
-        g2.setFont(g2.getFont().deriveFont(40f));
-        g2.setColor(Color.black);
-        x = getXforCenteredText(g2, text);
-        y += gp.tileSize*6;
-        g2.drawString(text, x, y);
-
-        g2.setColor(Color.white);
-        if(commandNum == 0){
-            g2.drawString(">", x-gp.tileSize+10, y);
-        }
-
-
-        g2.drawString(text, x-3, y-3);
-
-
-        text = "LOAD GAME";
-        g2.setFont(g2.getFont().deriveFont(40f));
-        g2.setColor(Color.black);
-        x = getXforCenteredText(g2, text);
-        y += gp.tileSize+5;
-        g2.drawString(text, x, y);
-
-        g2.setColor(Color.white);
-        if(commandNum == 1){
-            g2.drawString(">", x-gp.tileSize+10, y);
-        }
-
-
-        g2.drawString(text, x-3, y-3);
-
-        text = "SETTINGS";
-        g2.setFont(g2.getFont().deriveFont(40f));
-        g2.setColor(Color.black);
-        x = getXforCenteredText(g2, text);
-        y += gp.tileSize+5;
-        g2.drawString(text, x, y);
-
-        g2.setColor(Color.white);
-        if(commandNum == 2){
-            g2.drawString(">", x-gp.tileSize+10, y);
-        }
-
-
-        g2.drawString(text, x-3, y-3);
-
-        text = "QUIT GAME";
-        g2.setFont(g2.getFont().deriveFont(40f));
-        g2.setColor(Color.black);
-        x = getXforCenteredText(g2, text);
-        y += gp.tileSize+5;
-        g2.drawString(text, x, y);
-
-        g2.setColor(Color.white);
-        if(commandNum == 3){
-            g2.drawString(">", x-gp.tileSize+10, y);
-        }
-
-
-        g2.drawString(text, x-3, y-3);
-    }
     public void drawNewGameScreen(){
 
     }
@@ -344,13 +260,21 @@ public class UI {
         if (!fading) return;
 
         if (fadeOut) {
-            fadeAlpha += 50;
+            if(gp.gameState == gp.titleState){
+                fadeAlpha += 85;
+            }else{
+                fadeAlpha += 50;
+            }
             if (fadeAlpha >= 255) {
                 fadeAlpha = 255;
                 fading = false;
             }
         } else if (fadeIn) {
-            fadeAlpha -= 10;
+            if(gp.gameState == gp.titleState){
+                fadeAlpha -= 85;
+            }else {
+                fadeAlpha -= 10;
+            }
             if (fadeAlpha <= 0) {
                 fadeAlpha = 0;
                 fading = false;
@@ -364,15 +288,6 @@ public class UI {
     public int getXforCenteredText(Graphics2D g2, String text){
         int length = (int)g2.getFontMetrics().getStringBounds(text, g2).getWidth();
         return gp.screenWidth/2 - length/2;
-    }
-
-    public void drawDarkness(Graphics2D g2){
-        this.g2=g2;
-        int x = 0;
-        int y = 0;
-        g2.setColor(new Color(21, 0, 29, 0+(Math.abs(darkCounter/20))));
-//        g2.setColor(new Color(21, 0, 29, 0);
-        g2.fillRect(x,y,gp.screenWidth,gp.screenHeight);
     }
 
     public void drawSubWindow(int x, int y, int width, int height){

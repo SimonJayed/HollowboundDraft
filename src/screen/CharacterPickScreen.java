@@ -9,14 +9,33 @@ import java.util.Objects;
 
 public class CharacterPickScreen implements Screen{
     GamePanel gp;
-    Graphics2D g2;
 
     BufferedImage background, selectFort, selectSylvie, selectAmaryllis;
 
     public int commandNum = 1;
 
-    public CharacterPickScreen(GamePanel gp){
+    public CharacterPickScreen(GamePanel gp) {
         this.gp = gp;
+        loadImages();
+    }
+
+    public void loadImages() {
+        try {
+            background = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/background/titleBackground2.png")));
+            selectAmaryllis = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/background/pick/amaryllisPick2.png")));
+            selectFort = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/background/pick/fortPick2.png")));
+            selectSylvie = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/background/pick/sylviePick2.png")));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void emptyImages(){
+        System.out.println("Title Images Unloaded");
+        background = null;
+        selectSylvie = null;
+        selectFort = null;
+        selectAmaryllis = null;
     }
 
     @Override
@@ -26,15 +45,6 @@ public class CharacterPickScreen implements Screen{
 
         int x = 0;
         int y = 0;
-
-        try{
-            background = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/background/titleBackground2.png")));
-            selectAmaryllis = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/background/pick/amaryllisPick2.png")));
-            selectFort = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/background/pick/fortPick2.png")));
-            selectSylvie = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/background/pick/sylviePick2.png")));
-        }catch(Exception e){
-            e.printStackTrace();
-        }
 
         g2.drawImage(background, x, y,gp.screenWidth, gp. screenHeight, null);
 
@@ -66,7 +76,5 @@ public class CharacterPickScreen implements Screen{
             g2.setFont(g2.getFont().deriveFont(Font.BOLD,9f));
             g2.drawString("ESC", gp.tileSize/2, gp.tileSize-10);
         }
-
-
     }
 }

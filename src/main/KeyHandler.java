@@ -27,35 +27,38 @@ public class KeyHandler implements KeyListener {
         //TITLESTATE
         if (gp.gameState == gp.titleState) {
             if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
-                gp.ui.commandNum--;
-                if (gp.ui.commandNum < 0) {
-                    gp.ui.commandNum = 3;
+                gp.titleScreen.commandNum--;
+                if (gp.titleScreen.commandNum < 0) {
+                    gp.titleScreen.commandNum = 3;
                 }
                 gp.playSoundEffect(3);
                 gp.sound.setVolume(-20.0f);
             }
             if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
-                gp.ui.commandNum++;
-                if (gp.ui.commandNum > 3) {
-                    gp.ui.commandNum = 0;
+                gp.titleScreen.commandNum++;
+                if (gp.titleScreen.commandNum > 3) {
+                    gp.titleScreen.commandNum = 0;
                 }
                 gp.playSoundEffect(3);
                 gp.sound.setVolume(-20.0f);
             }
             if (code == KeyEvent.VK_ENTER || code == KeyEvent.VK_SPACE) {
-                if (gp.ui.commandNum == 0) {
+                if (gp.titleScreen.commandNum == 0) {
+                    System.out.println("NEW GAME");
+                    gp.ui.startFadeIn();
                     gp.gameState = gp.characterPickState;
+                    gp.titleScreen.emptyImages();
                     System.out.println(gp.gameState);
 //                    gp.playMusic(2);
                     gp.sound.setVolume(-25.0f);
                 }
-                if (gp.ui.commandNum == 1) {
+                if (gp.titleScreen.commandNum == 1) {
 
                 }
-                if (gp.ui.commandNum == 2) {
+                if (gp.titleScreen.commandNum == 2) {
 
                 }
-                if (gp.ui.commandNum == 3) {
+                if (gp.titleScreen.commandNum == 3) {
                     System.exit(0);
                 }
             }
@@ -91,19 +94,24 @@ public class KeyHandler implements KeyListener {
             if (code == KeyEvent.VK_ENTER || code == KeyEvent.VK_SPACE) {
                 if (gp.pickScreen.commandNum == 0) {
                     gp.aSetter.setPlayer(0);
+                    gp.ui.startFadeIn();
                     gp.gameState = gp.playState;
                 }
                 if (gp.pickScreen.commandNum == 1) {
                     gp.aSetter.setPlayer(1);
+                    gp.ui.startFadeIn();
                     gp.gameState = gp.playState;
                 }
                 if (gp.pickScreen.commandNum == 2) {
                     gp.aSetter.setPlayer(2);
+                    gp.ui.startFadeIn();
                     gp.gameState = gp.playState;
                 }
                 if (gp.pickScreen.commandNum == 3) {
+                    gp.ui.startFadeIn();
                     gp.gameState = gp.titleState;
                 }
+                gp.pickScreen.emptyImages();
             }
         }
         //BATTLESTATE
