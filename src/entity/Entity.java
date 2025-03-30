@@ -72,9 +72,9 @@ public abstract class Entity {
     public int invincibleCounter = 0;
     public int dyingCounter = 0;
     public int hpBarCounter = 0;
-    public int deathCounter = 0;
 
     public int buffer = 0;
+    public int deathBuffer = 0;
 
 
     public Entity(GamePanel gp){
@@ -288,9 +288,9 @@ public abstract class Entity {
     }
     public void checkDefeated(){
         if(isDefeated && hollowCounter < 5){
-            this.deathCounter++;
+            this.deathBuffer++;
             isIdling = true;
-            if(this.deathCounter > 1500 && !hasEvent){
+            if(this.deathBuffer > 250 && !hasEvent){
                 isDefeated = false;
                 hp = maxHP;
                 energy = maxEnergy;
@@ -302,7 +302,7 @@ public abstract class Entity {
                     num++;
                     System.out.println(getName() + " is being strengthened.");
                 }
-                this.deathCounter = 0;
+                this.deathBuffer = 0;
                 this.worldX = this.spawnPointX;
                 this.worldY = this.spawnPointY;
                 System.out.println(getName() + " has respawned.");

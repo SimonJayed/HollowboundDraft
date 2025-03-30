@@ -166,13 +166,13 @@ public class Player extends Entity{
 
     public void checkDefeated(){
         if(isDefeated && hollowCounter < 5){
-            this.deathCounter++;
+            this.deathBuffer++;
             isIdling = true;
-            if(deathCounter > 150 && !hasEvent){
+            if(deathBuffer > 150 && !hasEvent){
                 isDefeated = false;
                 hp = maxHP;
                 energy = maxEnergy;
-                this.deathCounter = 0;
+                this.deathBuffer = 0;
                 exp = nextLevelExp;
                 int num = 0;
                 while(num <= hollowCounter){
