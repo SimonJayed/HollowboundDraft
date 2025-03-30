@@ -5,6 +5,7 @@ import misc.KeyHandler;
 
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 
 public class Player extends Entity{
@@ -18,6 +19,8 @@ public class Player extends Entity{
     public String playing = "";
 
     public int statPoints = 0;
+
+    public BufferedImage attack1, attack2;
 
     public Player(GamePanel gp, KeyHandler keyH){
         super(gp);
@@ -49,6 +52,7 @@ public class Player extends Entity{
                 setName("Fort");
                 getImage("fort");
                 setDefaultValues(1, 400, 100,4, 15, 6, 4, 5,  15);
+                getCombatImages("fort");
                 break;
             }
             case "amaryllis":{
@@ -64,6 +68,11 @@ public class Player extends Entity{
                 break;
             }
         }
+    }
+
+    public void getCombatImages(String filename){
+        attack1 = setup("/sprites/" + filename + "/combat/hands1", gp.screenWidth, gp.screenHeight);
+        attack2 = setup("/sprites/" + filename + "/combat/hands2", gp.screenWidth, gp.screenHeight);
     }
 
     public void calculateStats(){

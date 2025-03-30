@@ -67,71 +67,54 @@ public class KeyHandler implements KeyListener {
             }
             //CHARACTER PICK
             else if(gp.gameState == gp.characterPickState) {
-                if(!gp.pickScreen.isPicking){
-                    if(code == KeyEvent.VK_W){
-                        gp.pickScreen.commandNum = 3;
-                    }
-                    else if(code == KeyEvent.VK_S){
+                if(code == KeyEvent.VK_W){
+                    gp.pickScreen.commandNum = 3;
+                }
+                else if(code == KeyEvent.VK_S){
+                    gp.pickScreen.commandNum = 0;
+                }
+                else if (code == KeyEvent.VK_A) {
+                    gp.pickScreen.commandNum--;
+                    System.out.println(gp.pickScreen.commandNum);
+                    if (gp.pickScreen.commandNum < 0) {
                         gp.pickScreen.commandNum = 0;
                     }
-                    else if (code == KeyEvent.VK_A) {
-                        gp.pickScreen.commandNum--;
-                        System.out.println(gp.pickScreen.commandNum);
-                        if (gp.pickScreen.commandNum < 0) {
-                            gp.pickScreen.commandNum = 0;
-                        }
-                        gp.playSoundEffect(3);
-                        gp.sound.setVolume(-20.0f);
-                    }
-                    else if (code == KeyEvent.VK_D) {
-                        gp.pickScreen.commandNum++;
-                        if (gp.pickScreen.commandNum > 2) {
-                            gp.pickScreen.commandNum = 2;
-                        }
-                        gp.playSoundEffect(3);
-                        gp.sound.setVolume(-20.0f);
-                    }
-                    if (code == KeyEvent.VK_ESCAPE) {
-                        gp.ui.startFadeIn();
-                        gp.gameState = gp.titleState;
-                    }
+                    gp.playSoundEffect(3);
+                    gp.sound.setVolume(-20.0f);
                 }
-                else{
-                    if(code == KeyEvent.VK_W){
-                        gp.pickScreen.commandNum = 3;
+                else if (code == KeyEvent.VK_D) {
+                    gp.pickScreen.commandNum++;
+                    if (gp.pickScreen.commandNum > 2) {
+                        gp.pickScreen.commandNum = 2;
                     }
-                    if (code == KeyEvent.VK_ESCAPE) {
-                        gp.ui.startFadeIn();
-                        gp.pickScreen.isPicking = false;
-                    }
+                    gp.playSoundEffect(3);
+                    gp.sound.setVolume(-20.0f);
+                }
+                if (code == KeyEvent.VK_ESCAPE) {
+                    gp.ui.startFadeIn();
+                    gp.gameState = gp.titleState;
                 }
                 if (code == KeyEvent.VK_ENTER || code == KeyEvent.VK_SPACE) {
-                    if(gp.pickScreen.isPicking){
-                        if (gp.pickScreen.commandNum == 0) {
-                            gp.aSetter.setPlayer(0);
-                            gp.ui.startFadeIn();
-                            gp.gameState = gp.playState;
-                        }
-                        if (gp.pickScreen.commandNum == 1) {
-                            gp.aSetter.setPlayer(1);
-                            gp.ui.startFadeIn();
-                            gp.gameState = gp.playState;
-                        }
-                        if (gp.pickScreen.commandNum == 2) {
-                            gp.aSetter.setPlayer(2);
-                            gp.ui.startFadeIn();
-                            gp.gameState = gp.playState;
-                        }
-                        gp.pickScreen.emptyImages();
+                    if (gp.pickScreen.commandNum == 0) {
+                        gp.aSetter.setPlayer(0);
+                        gp.ui.startFadeIn();
+                        gp.gameState = gp.playState;
                     }
-                    else{
-                        gp.pickScreen.isPicking = true;
-                        if (gp.pickScreen.commandNum == 3) {
-                            gp.ui.startFadeOut();
-                            gp.gameState = gp.titleState;
-                        }
+                    if (gp.pickScreen.commandNum == 1) {
+                        gp.aSetter.setPlayer(1);
+                        gp.ui.startFadeIn();
+                        gp.gameState = gp.playState;
                     }
-
+                    if (gp.pickScreen.commandNum == 2) {
+                        gp.aSetter.setPlayer(2);
+                        gp.ui.startFadeIn();
+                        gp.gameState = gp.playState;
+                    }
+                    if (gp.pickScreen.commandNum == 3) {
+                        gp.ui.startFadeOut();
+                        gp.gameState = gp.titleState;
+                    }
+                    gp.pickScreen.emptyImages();
                 }
             }
             //BATTLESTATE

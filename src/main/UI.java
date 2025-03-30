@@ -85,6 +85,7 @@ public class UI {
             drawDialogueScreen();
         }
         else if (gp.gameState == gp.battleState) {
+            gp.battleScreen.loadImages();
             gp.battleScreen.draw(g2);
         }
         else if(gp.gameState == gp.mapState){

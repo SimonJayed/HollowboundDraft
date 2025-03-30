@@ -14,9 +14,14 @@ public class BattleScreen implements Screen{
     GamePanel gp;
 
     BufferedImage background = null;
+    BufferedImage attack = null;
+    BufferedImage enemy = null;
 
     public Entity currentEnemy;
     public int commandNum = 0;
+
+    public int spriteNum = 1;
+    public int spriteCounter = 0;
 
     public boolean isAttacking = false;
     public boolean canEscape = true;
@@ -39,19 +44,58 @@ public class BattleScreen implements Screen{
         background = null;
     }
 
+    public void drawAttack(Graphics2D g2){
+        int x = gp.screenHeight/2 - gp.tileSize/2;
+        int y = gp.screenHeight/3 - gp.tileSize;
+        spriteCounter++;
+        if (spriteNum == 1){
+            attack = gp.player.attack1;
+            enemy = currentEnemy.down1;
+        }
+        else{
+            attack = gp.player.attack2;
+            enemy = currentEnemy.defeated1;
+            if(spriteCounter >= 40){
+                spriteNum = 1;
+                spriteCounter = 0;
+            }
+        }
+
+        g2.drawImage(enemy, x, y, gp.tileSize*5, gp.tileSize*5, null);
+        g2.drawImage(attack, 0, 0, gp.screenWidth, gp.screenHeight, null);
+    }
+
     @Override
     public void draw(Graphics2D g2){
         int x = 0;
         int y = 0;
-
-        loadImages();
 
         g2.setColor(Color.white);
         g2.drawImage(background, x, y, gp.screenWidth, gp.screenHeight, null);
 
         gp.ui.drawMessage();
 
-        //ENEMYBAR
+        //ENEMYBAR && PLAYERBAR
+        drawBar(g2);
+
+        drawAttack(g2);
+
+        x = gp.tileSize/2;
+        y = gp.tileSize*9 + (gp.tileSize/2);
+        g2.setColor(new Color(0,0,0, 200));
+        g2.fillRoundRect(x, y, gp.tileSize*5, gp.tileSize*4, 20, 20);
+
+        x += gp.tileSize*5 + gp.tileSize;
+        g2.setColor(new Color(0,0,0, 200));
+        g2.fillRoundRect(x, y, gp.tileSize*11, gp.tileSize*4, 20, 20);
+
+        battleMenu(g2);
+
+    }
+
+    public void drawBar(Graphics2D g2){
+        int x = 0;
+        int y = 0;
         double oneScale = gp.screenWidth/currentEnemy.maxHP;
         double hpBarValue = oneScale * currentEnemy.hp;
 
@@ -86,9 +130,6 @@ public class BattleScreen implements Screen{
         g2.drawString(text, gp.ui.getXforCenteredText(g2, text), y+12);
 
 
-
-        //PLAYERBAR
-
         y = (gp.screenHeight/2)+gp.tileSize*2-8;
         double oneScale3 = gp.screenWidth/gp.player.maxHP;
         double hpBarValue2 = oneScale3 * gp.player.hp;
@@ -122,23 +163,12 @@ public class BattleScreen implements Screen{
         y += gp.tileSize*4;
         text = "Level: " + gp.player.level;
         g2.drawString(text, gp.ui.getXforCenteredText(g2, text), y+12);
+    }
 
-
-
-        x = gp.screenHeight/2 - gp.tileSize/2;
-        y = gp.screenHeight/3 - gp.tileSize;
-
-        g2.drawImage(currentEnemy.down1, x, y, gp.tileSize*5, gp.tileSize*5, null);
-
-        x = gp.tileSize/2;
-        y = gp.tileSize*9 + (gp.tileSize/2);
-        g2.setColor(new Color(0,0,0, 200));
-        g2.fillRoundRect(x, y, gp.tileSize*5, gp.tileSize*4, 20, 20);
-
-        x += gp.tileSize*5 + gp.tileSize;
-        g2.setColor(new Color(0,0,0, 200));
-        g2.fillRoundRect(x, y, gp.tileSize*11, gp.tileSize*4, 20, 20);
-
+    public void battleMenu(Graphics2D g2){
+        String text = "";
+        int x = 0;
+        int y = 0;
         if(!isAttacking){
             text = "ATTACK";
             g2.setFont(g2.getFont().deriveFont(25f));
@@ -162,16 +192,6 @@ public class BattleScreen implements Screen{
                 g2.drawString("SKILL", x, y);
             }
 
-            text = "INVENTORY";
-            g2.setFont(g2.getFont().deriveFont(25f));
-            g2.setColor(Color.white);
-            y += gp.tileSize;
-            g2.drawString(text, x, y);
-            if(commandNum == 2  && !isAttacking){
-                g2.setColor(new Color(255, 0, 0));
-                g2.drawString("INVENTORY", x, y);
-            }
-
             text = "FLEE";
             g2.setFont(g2.getFont().deriveFont(25f));
             g2.setColor(Color.white);
@@ -183,7 +203,6 @@ public class BattleScreen implements Screen{
             }
         }
         else{
-
             g2.setFont(g2.getFont().deriveFont(25f));
             x = gp.tileSize/2+5;
             y = gp.tileSize*10+5;
@@ -215,9 +234,7 @@ public class BattleScreen implements Screen{
             }
         }
 
-
     }
-
 
     public void attack() {
         isAttacking = true;
@@ -242,12 +259,6 @@ public class BattleScreen implements Screen{
                 hitChance = (int)(85 + (luckFactor * 100));
                 damageMultiplier = 1.0;
                 break;
-            case "LEGS":
-                hitChance = (int)(65 + (luckFactor * 100));
-                damageMultiplier = 1.0;
-
-                currentEnemy.speed -= 1;
-                break;
         }
 
         if (hitRoll <= hitChance) {
@@ -257,9 +268,7 @@ public class BattleScreen implements Screen{
             if(currentEnemy.hp < 0){
                 currentEnemy.hp = 0;
             }
-//            gp.ui.addMessage("Hit!" + gp.player.getName() + " deals " + damage + " damage to " + currentEnemy.getName());
-        } else {
-//            gp.ui.addMessage(gp.player.getName() + " missed!");
+            spriteNum = 2;
         }
 
         if(currentEnemy.hp == 0){
