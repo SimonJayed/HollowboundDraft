@@ -71,7 +71,7 @@ public class CollisionChecker {
         int index = 999;
 
         for (int i = 0; i < gp.objectEntity[1].length; i++){
-            if (gp.objectEntity[gp.currentMap][i] != null){
+            if (gp.objectEntity[gp.currentMap][i] != null && gp.objectEntity[gp.currentMap][i] != gp.foreground[gp.currentMap][i]){
                 entity.solidArea.x = entity.worldX + entity.solidArea.x;
                 entity.solidArea.y = entity.worldY + entity.solidArea.y;
 
@@ -119,7 +119,7 @@ public class CollisionChecker {
         int index = 999;
 
         for (int i = 0; i < target[1].length; i++){
-            if (target[gp.currentMap][i] != null){
+            if (target[gp.currentMap][i] != null && target[gp.currentMap][i] != gp.foreground[gp.currentMap][i]){
                 entity.solidArea.x = entity.worldX + entity.solidArea.x;
                 entity.solidArea.y = entity.worldY + entity.solidArea.y;
 

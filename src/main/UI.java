@@ -66,8 +66,9 @@ public class UI {
             drawPlayerLife();
             gp.inventoryScreen.draw(g2);
         }
-        else if (gp.gameState == gp.newGameState) {
-            drawNewGameScreen();
+        else if (gp.gameState == gp.titleState) {
+            gp.titleScreen.loadImages();
+            gp.titleScreen.draw(g2);
         }
         else if (gp.gameState == gp.loadGameState) {
             drawLoadGameScreen();
@@ -76,6 +77,7 @@ public class UI {
             drawSettingsScreen();
         }
         else if (gp.gameState == gp.characterPickState) {
+            gp.pickScreen.loadImages();
             gp.pickScreen.draw(g2);
         }
         else if (gp.gameState == gp.dialogueState) {
@@ -89,6 +91,7 @@ public class UI {
             gp.map.drawFullMapScreen(g2);
         }
         else if(gp.gameState == gp.eventState){
+            gp.event.draw(g2);
             gp.map.miniMapOn = false;
         }
         fadeToBlack(g2);
@@ -252,7 +255,7 @@ public class UI {
         if (!fading) return;
 
         if (fadeOut) {
-            if(gp.gameState == gp.titleState){
+            if(gp.gameState != gp.playState){
                 fadeAlpha += 85;
             }else{
                 fadeAlpha += 50;
@@ -262,7 +265,7 @@ public class UI {
                 fading = false;
             }
         } else if (fadeIn) {
-            if(gp.gameState == gp.titleState){
+            if(gp.gameState != gp.playState && gp.gameState != gp.eventState){
                 fadeAlpha -= 85;
             }else {
                 fadeAlpha -= 10;

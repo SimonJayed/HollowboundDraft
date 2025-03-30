@@ -52,7 +52,7 @@ public class EventScenes implements Screen{
                         //SET ENTITIES
                         dialogues.clear();
                         gp.livingEntity[1][1] = gp.livingEntity[0][3];
-                        gp.livingEntity[1][1].setEvent("left", 5, 45, 2, 1, false);
+                        gp.livingEntity[1][1].setEvent("left", 7, 45, 2, 1, true);
 
 
                         //SET PLAYER
@@ -61,6 +61,7 @@ public class EventScenes implements Screen{
                         //SET DIALOGUE
                         gp.event.dialogues.add("Lol, Lmao, lmfao, rofl,, Trial Rani.");
                         gp.event.dialogues.add("Hello, bum.");
+                        gp.event.dialogues.add("lolzies.");
                         currentDialogue = dialogues.get(dialogueIndex);
 
                         entitySet = true;
@@ -135,51 +136,52 @@ public class EventScenes implements Screen{
     }
 
     public void playEvent0(){
-        eventNum = 0;
-        int sequenceLimit = dialogues.size();
-        System.out.println("Dialogue size: " + dialogues.size());
-        System.out.println("Entityet: " + entitySet);
-        gp.gameState = gp.eventState;
-        buffer++;
+        if(!gp.ui.fading){
+            eventNum = 0;
+            int sequenceLimit = dialogues.size();
+            System.out.println("Dialogue size: " + dialogues.size());
+            System.out.println("Entityet: " + entitySet);
+            buffer++;
 
 
-        if (gp.livingEntity[0][3] != null) {
-            gp.livingEntity[1][1] = gp.livingEntity[0][3];
-        }
+            if (gp.livingEntity[0][3] != null) {
+                gp.livingEntity[1][1] = gp.livingEntity[0][3];
+            }
 
-        if (gp.livingEntity[1][1].collisionOn && sequenceCheck == 0 && buffer > 250) {
-            System.out.println("Sequence: " + sequenceCheck);
-            buffer = 0;
-        }
+            if(sequenceCheck == 0 && buffer > 20){
+                gp.livingEntity[1][1].isIdling = false;
+            }
 
-        if (sequenceCheck == 1) {
-            System.out.println("Sequence: " + sequenceCheck);
-            sceneBackground = setBackground("catCaveScene1");
-        }
-        if (sequenceCheck == 2) {
-            System.out.println("Sequence: " + sequenceCheck);
-            sceneBackground = setBackground("catCaveScene1");
-
-        }
-        if (sequenceCheck == 3) {
-            System.out.println("Sequence: " + sequenceCheck);
-            sceneBackground = setBackground("catCaveScene1");
-            gp.ui.startFadeOut();
-        }
-
-        if (sequenceCheck == sequenceLimit) {
-            if(buffer > 100){
-                eventFinished = true;
-                Entity entity = gp.livingEntity[1][1];
+            if (gp.livingEntity[1][1].collisionOn && sequenceCheck == 1) {
                 System.out.println("Sequence: " + sequenceCheck);
-                if (entity != null) {
-                    gp.livingEntity[1][1] = null;
-                    gp.entityList.remove(entity);
-                    gp.livingEntity[0][3] = entity;
-                    entity.worldX = entity.spawnPointX = 8 * gp.tileSize;
-                    entity.worldY = entity.spawnPointY = 10 * gp.tileSize;
+                buffer = 0;
+            }
+
+            if (sequenceCheck == 2) {
+                System.out.println("Sequence: " + sequenceCheck);
+//                sceneBackground = setBackground("catCaveScene1");
+            }
+            if (sequenceCheck == 3) {
+                System.out.println("Sequence: " + sequenceCheck);
+            }
+
+            if (sequenceCheck == sequenceLimit) {
+                if(buffer > 50){
+                    eventFinished = true;
+                    event0Flag = true;
+
+                    Entity entity = gp.livingEntity[1][1];
+                    System.out.println("Sequence: " + sequenceCheck);
+                    if (entity != null) {
+                        gp.livingEntity[1][1] = null;
+                        gp.entityList.remove(entity);
+                        gp.livingEntity[0][3] = entity;
+                        entity.worldX = entity.spawnPointX = 8 * gp.tileSize;
+                        entity.worldY = entity.spawnPointY = 10 * gp.tileSize;
+                    }
+
+                    eventExit();
                 }
-                event0Flag = true;
             }
         }
     }
@@ -188,25 +190,28 @@ public class EventScenes implements Screen{
         int sequenceLimit = dialogues.size();
         System.out.println("Event: " + eventNum);
         System.out.println("Dialogue size: " + dialogues.size());
-        gp.gameState = gp.eventState;
+        System.out.println("Buffer: " + buffer);
         buffer++;
 
-        if(sequenceCheck == 0) {
-            gp.livingEntity[4][5].worldY++;
-            gp.livingEntity[4][5].worldY--;
-            System.out.println("Sequence: " + sequenceCheck);
-            dialogueOn = true;
+        if(sequenceCheck == 0 && buffer > 2) {
+            gp.livingEntity[4][5].worldY = 37*gp.tileSize+1;
+            if(buffer > 3){
+                gp.livingEntity[4][5].worldY = 37*gp.tileSize-1;
+                System.out.println("Sequence: " + sequenceCheck);
+                buffer = 0;
+                dialogueOn = true;
+            }
+
+        }
+        if(sequenceCheck == 1){
             gp.livingEntity[4][5].isIdling = false;
         }
         if(gp.livingEntity[4][5].collisionOn && sequenceCheck == 2){
             sceneBackground = setBackground("catCaveScene1");
             System.out.println("Sequence: " + sequenceCheck);
         }
-
         if(sequenceCheck == sequenceLimit) {
             if(buffer > 250){
-                gp.ui.addMessage("Invoked");
-                gp.ui.startFadeOut();
                 eventFinished = true;
                 event1Flag = true;
 
@@ -215,6 +220,8 @@ public class EventScenes implements Screen{
                 gp.entityList.remove((entity));
                 gp.livingEntity[4][5].hasEvent = false;
                 gp.livingEntity[4][6].hasEvent = false;
+
+                eventExit();
             }
         }
     }
@@ -223,11 +230,11 @@ public class EventScenes implements Screen{
         int sequenceLimit = dialogues.size();
         System.out.println("Event: " + eventNum);
         System.out.println("Dialogue size: " + dialogues.size());
-        gp.gameState = gp.eventState;
         buffer++;
 
         System.out.println("Buffer:  " + buffer);
         if(buffer>150){
+
             gp.livingEntity[3][0].isIdling = false;
             if(gp.livingEntity[3][0].collisionOn && sequenceCheck == 0){
                 gp.gameState = gp.battleState;
@@ -237,17 +244,17 @@ public class EventScenes implements Screen{
             }
         }
         if (!gp.player.collisionOn && sequenceCheck == 0){
+            dialogueOn = false;
             gp.player.worldX++;
             gp.player.spriteAnim(2);
 
             System.out.println(gp.player.worldX);
         }
 
-        if(sequenceCheck == 1){
+        if(gp.livingEntity[3][0].collisionOn && sequenceCheck == 1){
             dialogueOn = true;
             System.out.println("Sequence: " + sequenceCheck);
             gp.player.isUnconscious = true;
-            gp.ui.startFadeOut();
         }
         if(sequenceCheck == 3){
             sceneBackground = setBackground("nightmareScene1");
@@ -268,9 +275,10 @@ public class EventScenes implements Screen{
         if(sequenceCheck == 7){
             sceneBackground = setBackground("nightmareScene3");
             System.out.println("Sequence: " + sequenceCheck);
+            buffer = 0;
         }
 
-        if(sequenceCheck == sequenceLimit) {
+        if(sequenceCheck >= sequenceLimit) {
             if(buffer > 150){
                 eventFinished = true;
                 event2Flag = true;
@@ -289,6 +297,8 @@ public class EventScenes implements Screen{
                 gp.livingEntity[4][0].speed = 3;
                 gp.livingEntity[4][0].worldX = gp.livingEntity[4][0].spawnPointX = 21 * gp.tileSize;
                 gp.livingEntity[4][0].worldY = gp.livingEntity[4][0].spawnPointY = 22 * gp.tileSize;
+                eventExit();
+
             }
         }
     }
@@ -337,10 +347,6 @@ public class EventScenes implements Screen{
             g2.drawImage(sceneBackground, x, y,gp.screenWidth, gp.screenHeight, null);
         }
 
-//        g2.setColor(Color.black);
-//        g2.fillRect(x, y, gp.screenWidth, gp.tileSize*2);
-//        g2.fillRect(x, gp.screenHeight-gp.tileSize*2, gp.screenWidth, gp.tileSize*2);
-
         int width = gp.screenWidth - (gp.tileSize * 2);
         int height = gp.tileSize * 4;
         x = gp.tileSize;
@@ -387,23 +393,24 @@ public class EventScenes implements Screen{
     }
 
     public void eventExit(){
-        System.out.println("Event " + eventNum + " finished");
         eventNum++;
         eventFinished = false;
-        System.out.println("Finishded : " + eventFinished );
         entitySet = false;
-        gp.player.isUnconscious = false;
+//        gp.player.isUnconscious = false;
         dialogueFinished = false;
         dialogueIndex = 0;
-        System.out.println("Entityset : " + entitySet );
         sequenceCheck = 0;
         portrait = null;
         sceneBackground = null;
         dialogues.clear();
         buffer = 0;
-        System.out.println("buffer MAN"+ buffer);
-        gp.gameState = gp.playState;
 
+        System.out.println("Event " + eventNum + " finished");
+        System.out.println("Finishded : " + eventFinished );
+        System.out.println("Entityset : " + entitySet );
+        System.out.println("buffer MAN "+ buffer);
+
+        gp.gameState = gp.playState;
     }
 }
 

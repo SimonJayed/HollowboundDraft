@@ -5,6 +5,7 @@ import entity.Player;
 import misc.AssetSetter;
 import misc.CollisionChecker;
 import misc.EventHandler;
+import misc.KeyHandler;
 import screen.*;
 import tile.Map;
 import tile.TileManager;
@@ -86,6 +87,7 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void setupGame(){
+        ui.startFadeIn();
         aSetter.setObjectEntity();
         aSetter.setLivingEntity();
         gameState = titleState;
@@ -170,13 +172,7 @@ public class GamePanel extends JPanel implements Runnable {
         if (keyH.showDebugTest){
             drawStart = System.nanoTime();
         }
-        if(gameState == titleState){
-            titleScreen.draw(g2);
-        }
-        else if(gameState == loadGameState){
-            ui.draw(g2);
-        }
-        else if(gameState == settingsState){
+        if(gameState != playState && gameState != inventoryState && gameState != eventState && gameState != dialogueState){
             ui.draw(g2);
         }
         else{

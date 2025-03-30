@@ -59,6 +59,8 @@ public class EventHandler{
                 teleport(gp.playState, 2, 45, "right");
                 if(!gp.event.event0Flag){
                     System.out.println("Event 0 played");
+                    gp.gameState = gp.eventState;
+                    gp.ui.startFadeIn();
                     gp.event.playEvent0();
                 }
             }
@@ -103,6 +105,7 @@ public class EventHandler{
                 if(!gp.event.event1Flag && !gp.event.event2Flag){
                     gp.event.eventNum = 1;
                     gp.gameState = gp.eventState;
+                    gp.ui.startFadeIn();
                     gp.event.playEvent1();
                 }
             }

@@ -1,16 +1,16 @@
-package object;
+package object.foreground;
 
 import entity.Entity;
 import main.GamePanel;
 
-public class OBJ_Tree2 extends Entity {
+public class FG_Tree1 extends Entity {
 
-    public OBJ_Tree2(GamePanel gp){
+    public FG_Tree1(GamePanel gp){
         super(gp);
 
-        setName("House1");
-        down1 = setup("/objects/treeForeground2", gp.tileSize*6, gp.tileSize*6);
-        down2 = setup("/objects/treeForeground2", gp.tileSize*6, gp.tileSize*6);
+        setName("Tree1");
+        down1 = setup("/objects/foreground/treeForeground1", gp.tileSize*6, gp.tileSize*6);
+        down2 = setup("/objects/foreground/treeForeground1", gp.tileSize*6, gp.tileSize*6);
         collision = false;
 
         this.solidArea.x = 0;

@@ -1,12 +1,10 @@
 package entity;
 
 import main.GamePanel;
-import main.KeyHandler;
+import misc.KeyHandler;
 
 
 import java.awt.*;
-
-import java.awt.image.BufferedImage;
 
 
 public class Player extends Entity{
@@ -41,8 +39,8 @@ public class Player extends Entity{
 
     public void setDefaultValues(){
         gp.currentMap = 0;
-        worldX = spawnPointX = gp.tileSize * 44;
-        worldY = spawnPointY = gp.tileSize * 44;
+        worldX = spawnPointX = gp.tileSize * 42;
+        worldY = spawnPointY = gp.tileSize * 45;
         direction = "down";
 
         statPoints = 1;
@@ -92,6 +90,7 @@ public class Player extends Entity{
         }
 
         if (keyH.upPressed || keyH.downPressed || keyH.rightPressed || keyH.leftPressed) {
+            isUnconscious = false;
 //            System.out.println(getName() + " moves but has been defeated is " + isDefeated );
             if (gp.keyH.upPressed) {
                 direction = "up";

@@ -178,7 +178,6 @@ public abstract class Entity {
 
     public void speak(){
         if(gp.gameState == gp.eventState){
-            System.out.println("eventDialogue");
             gp.event.dialogueOn = true;
             gp.event.dialogueFinished = false;
         }
